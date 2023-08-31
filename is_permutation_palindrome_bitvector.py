@@ -51,10 +51,7 @@ def is_palindrome_permutation(s: str) -> bool:
             continue
         ch = ch.lower()
         loc = ord(ch) - ord('a')
-        if 0 != (1 << loc) & res:
-            res ^= (1 << loc) # clear set bit
-        else: 
-            res |= (1 << loc) # set clear bit
+        res ^= (1 << loc) # toggle bit loc
     #true only if 0 or 1 bit set in res
     return sum(1 if res & (1 << loc) != 0 else 0 for loc in range(26)) <= 1
 
@@ -64,4 +61,8 @@ s = 'tt'
 print(is_palindrome_permutation(s)) # true
 s = 'toca ccat'
 print(is_palindrome_permutation(s)) # false
+s = 'noon'
+print(is_palindrome_permutation(s)) # true
+s = '4noon'
+print(is_palindrome_permutation(s)) # true
 
