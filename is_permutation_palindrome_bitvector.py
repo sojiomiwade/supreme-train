@@ -43,7 +43,6 @@ res |= 1 << 2
  00101
  11010 = -00101 = -5
 '''
-
 def is_palindrome_permutation(s: str) -> bool:
     res = 0
     for ch in s:
@@ -53,7 +52,7 @@ def is_palindrome_permutation(s: str) -> bool:
         loc = ord(ch) - ord('a')
         res ^= (1 << loc) # toggle bit loc
     #true only if 0 or 1 bit set in res
-    return sum(1 if res & (1 << loc) != 0 else 0 for loc in range(26)) <= 1
+    return res == 0 or (res & (res - 1)) == 0
 
 s = 'toca cat'
 print(is_palindrome_permutation(s)) # true
