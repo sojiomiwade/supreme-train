@@ -45,9 +45,11 @@ def dd(s: str, t: str) -> int:
             return 1 + max(send_loc, tend_loc)
         if memo[send_loc][tend_loc] != -1:
             return memo[send_loc][tend_loc]
+
         if s[send_loc] == t[tend_loc]:
-            return dd_helper(send_loc - 1, tend_loc -1)
-        res = 1 + min(
+            res = dd_helper(send_loc - 1, tend_loc -1)
+        else:
+            res = 1 + min(
             dd_helper(send_loc -1, tend_loc), 
             dd_helper(send_loc, tend_loc -1))
         memo[send_loc][tend_loc] = res
@@ -58,5 +60,4 @@ def dd(s: str, t: str) -> int:
 s, t = 'ab', 'qcb'
 print(dd(s, t)) # 3
 s, t = 'some', 'thing'
-print(dd(s, t)) # 3
-
+print(dd(s, t)) # 9
