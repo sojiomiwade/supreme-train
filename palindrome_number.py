@@ -26,12 +26,12 @@ but pal: 54321
 '''
 class Solution:
     def isPalindrome(self, x: int) -> bool:
-        if x < 0:
+        if x < 0 or (x > 0 and x % 10 == 0):
             return False
+            
         y = 0
         while y < x: # 1 < 0
             digit = x % 10 # 1
             x //= 10 # 0
             y = y * 10 + digit # 0, 1
         return (y == x) or (y // 10 == x) # if x had odd digit count
-        
