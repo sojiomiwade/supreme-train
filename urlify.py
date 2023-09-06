@@ -15,6 +15,49 @@ return res
 
 
 '''
+'''
+urlify a string
+john smith |<buffer>
+john%20smith%20
+input: name and true length
+output: name urlified in place
+stop: 12:20 - 
+clarify: ascii only? 
+example 
+john smith |<buffer>
+01234567890123456789
+john%20smith%20
+method 
+sc = number of spaces to the left of right
+right = truelen + 2 * sc - 1
+j_
+j%20
+012345
+right = 2 + 2*1 - 1 = 3
+analysis: time: O(n) space: O(1)
+' ' __> '%20'
+ ^
+right = 1 + 2 -1 = 2
+'''
+from typing import List
+def urlify(s: List[str], truelen: int) -> List[str]:
+    sc = sum(1 if s[i] == ' ' else 0 for i in range(truelen))
+    right = truelen + 2 * sc - 1
+    for i in range(truelen-1, -1, -1):
+        if s[i] != ' ':
+            s[right] = s[i]
+            right -= 1
+        else:
+            s[right] = '0'
+            s[right - 1] = '2'
+            s[right - 2] = '%'
+            right -= 3
+    return s
+lis = list('john smith     ')
+print(urlify(lis, 11))
+#john%20smith%20
+
+
 from typing import List
 def urlify_linear_space(arr: List[str], truelen: int) -> List[str]:
     res = []
