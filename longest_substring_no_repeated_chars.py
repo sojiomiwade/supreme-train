@@ -11,7 +11,12 @@ raabcr
   l  r
 qhrabcr
  l    r
+a a
+  l
+  r
+loc: {a: 1}
 
+   l 
 we shouldn't see previous r
 method: 
     go from "left" until a char repeats itself (always updating the longest)
@@ -19,23 +24,17 @@ method:
     continue searching for longest...
     keep location[char] as you go, then we know if we have next char (always update longest)
     when repeated found, also check location[s[right]] >= left, left = location[s[right]] + 1
-    
-a a
-  l
-  r
-loc: {a: 1}
-analysis: time: space
+
+analysis: time: O(n) space: O(n)
 '''
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         left = 0
         n = len(s)
         longest = 0
-        location = {}
+        location = defaultdict(lambda :-1)
         for right in range(n):
-            if s[right] in location and location[s[right]] >= left:
-                left = location[s[right]] + 1
-            location[s[right]] = right    
+            left = max(left, location[s[right]] + 1)
+            location[s[right]] = right
             longest = max(longest, right - left + 1)
         return longest
-
