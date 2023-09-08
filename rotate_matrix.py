@@ -83,3 +83,58 @@ mat = [
 ]
 print(rotate(mat))
 
+
+#begin in place approach
+'''
+zero matrix
+write an algorithm such that if matrix[i][j] == 0, then ensure
+1. matrix[i][k] = 0, for all k 
+2. matrix[k][i] = 0, for all k
+
+
+
+rotate matrix 
+
+1 2 3
+4 5 6
+a b c
+
+a 4 1
+b 5 2
+c 6 3
+
+res = same size as matrix
+for c in range(n):
+    for r in range(n-1,-1,-1): r in [2,0]
+        res[c][n-1-r] = matrix[r][c]
+print(res)
+complexity: O(n**2), O(n**2)
+
+inplace:
+do this for each layer (n layers)
+    temp = top          O(n)
+    top = left          O(n)
+    left = bottom       n
+    bottom = right      n
+    right = top         n
+O(n**2),O(n)
+'''
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+]
+n = len(matrix)
+
+
+right = 
+
+'''
+res = [[0 for _ in range(n)] for _ in range(n)]
+for c in range(n):
+    for r in range(n-1,-1,-1): #r in [2,0]
+        res[c][n-1-r] = matrix[r][c]
+'''
+print(matrix)
+
+
