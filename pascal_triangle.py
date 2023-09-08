@@ -24,3 +24,36 @@ class Solution:
             for j in range(1,i): # 1
                 res[-1][j] = res[-2][j]+res[-2][j-1]
         return res
+
+
+#--------try again------
+'''
+1       
+1 1
+1 1 1       #i=2,n=3
+  j
+1 3 3 1 #i = 3
+  1 2
+
+res = []
+for i in range(num_rows): #i=2
+    res.append([1 for _ in range(i+1)]) #[1 1 1]
+    for j in range(1, i)  #j=1,
+        res[-1][j] = res[-2][j] + res[-2][j-1]
+return res
+
+   1
+  1 1
+ 1 2 1
+1 3 3 1
+
+'''
+
+num_rows = 5
+res = []
+for i in range(num_rows): #i=2
+    res.append([1 for _ in range(i+1)]) #[1 1 1]
+    for j in range(1, i):  #j=1
+        res[-1][j] = res[-2][j] + res[-2][j-1]
+print(res)
+
