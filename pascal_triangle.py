@@ -18,13 +18,9 @@ run it:
 '''
 class Solution:
     def generate(self, numRows: int) -> List[List[int]]:
-        res = [[1]]
-        for i in range(1,numRows): #num=3 -- 3-1=2 -- i = 1
-            a = [1] #
-            for j in range(1,i): # (1,2)
-                first = res[-1][j]    #[2]
-                second = res[-1][j-1] # [1]
-                a.append(first+second)
-            a.append(1)
-            res.append(a)
+        res = []
+        for i in range(numRows): # 0,1,--2
+            res.append([1 for i in range(i+1)]) #[1],[1, 1],[1,1,1]
+            for j in range(1,i): # 1
+                res[-1][j] = res[-2][j]+res[-2][j-1]
         return res
