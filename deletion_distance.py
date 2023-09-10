@@ -82,7 +82,6 @@ s, t = "heat", "hit"
 print(deletion_distance(s,t))
 print(dd(s, t)) # 9
 
-
 #--deletion distance again, 
 '''
 Deletion Distance
@@ -99,30 +98,55 @@ output: 3
 
 input:  str1 = "some", str2 = "some"
 output: 0
-
+    
 input:  str1 = "some", str2 = "thing"
 output: 9
 
 input:  str1 = "", str2 = ""
-output: 0
-
+output: 0 
+    
 Constraints:
 [input] string str1
 [input] string str2
 [output] integer
+        
+0123        
+ d og
+ fr og   
+0123        
+t(1,2) = 
+(d, fr) = (,fr) or (d, r) + 1 = 2
+(brg, frog) = (r,frog) or (
+t(1,1:n) = 1,
+t(2,) = 
+t(3,)
 
-0123
- dog
- frog
-0123
+abc
+cab
 
-d(i,j) = dd(s_0i, t_0j), i in [0,m], j in [0,n]
+ab, ab
+
+(ab,ba) = (a,ba) (ab, b)
+
+tab(i,j) = dd(si, tj), i in [0,m], j in [0,n]
 =>dim(d) = (m+1,n+1)
-=> d(0,j) = j and d(i,0) = i
-ex: d(0,2) = dd('',fr) = 2
-d(i,j) = 
-    d(i-1,j-1)
-'''
+=> tab(0,j) = j and tab(i,0) = i
+ex: tab(0,2) = dd('',fr) = 2
+tab(i,j) = ?
+    tab(i-1,j-1) if si[-1]=tj[-1]   #....x and ..x
+    1+min(tab(i,j-1), min(i-1,j)    if si[-1]!=tj[-1]
+dog
+tab[4][5]
 
-def deletion_distance(str1: str, str2: str) -> int:
-  pass # your code goes here
+''' 
+
+def deletion_distance(s: str, t: str) -> int:
+    m, n = len(s)+1, len(t)+1
+    tab = [[0 for _ in range(n)] for _ in range(m)]
+    for j in range(1,n):
+        tab[0][j] = j
+    for i in range(1,m):
+        tab[i][0] = i
+    for i in range(1,m):
+        for j in range(1,n):
+            tab[i][...
