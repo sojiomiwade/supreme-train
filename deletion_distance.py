@@ -139,21 +139,38 @@ dog
 tab[4][5]
 
 '''
+'''
+0123
+     
+ dog
+ frog
+ 
+tab[0] = j 
+tab[1] = init just the 1st element to nothing, we will do this in loop
 
+loop in a way to set one row based on the previous row set
+    do this with modulo: use i%2
+
+for i in [:m]
+    tab[i%2] # setting 
+0 01234
+1  
+2
+
+'''
 def deletion_distance(s: str, t: str) -> int:
     m, n = len(s)+1, len(t)+1
-    tab = [[0 for _ in range(n)] for _ in range(m)]
+    tab = [[0 for _ in range(n)] for _ in range(2)]
     for j in range(1,n):
         tab[0][j] = j
     for i in range(1,m):
-        tab[i][0] = i
-    for i in range(1,m):
+        tab[i%2][0] = i
         for j in range(1,n):
             if s[i-1] == t[j-1]:
-                tab[i][j] = tab[i-1][j-1]
+                tab[i%2][j] = tab[(i+1)%2][j-1]
             else:
-                tab[i][j] = 1+(min(tab[i][j-1],tab[i-1][j]))
-    return tab[m-1][n-1]
+                tab[i%2][j] = 1+min(tab[i%2][j-1],tab[(i+1)%2][j])
+    return tab[(m-1)%2][n-1] #'ab'->m=3
 s, t = 'dog', 'frog'
 print(deletion_distance(s,t)) # 3 -> og
 s, t = 'ba', 'ab'
@@ -164,3 +181,4 @@ s, t = 'ba', 'ba'
 print(deletion_distance(s,t)) # 0 -> 'ba'
 s, t = '', ''
 print(deletion_distance(s,t)) # 0 -> ''
+
