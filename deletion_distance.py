@@ -138,7 +138,7 @@ tab(i,j) = ?
 dog
 tab[4][5]
 
-''' 
+'''
 
 def deletion_distance(s: str, t: str) -> int:
     m, n = len(s)+1, len(t)+1
@@ -149,4 +149,18 @@ def deletion_distance(s: str, t: str) -> int:
         tab[i][0] = i
     for i in range(1,m):
         for j in range(1,n):
-            tab[i][...
+            if s[i-1] == t[j-1]:
+                tab[i][j] = tab[i-1][j-1]
+            else:
+                tab[i][j] = 1+(min(tab[i][j-1],tab[i-1][j]))
+    return tab[m-1][n-1]
+s, t = 'dog', 'frog'
+print(deletion_distance(s,t)) # 3 -> og
+s, t = 'ba', 'ab'
+print(deletion_distance(s,t)) # 2 -> a or b
+s, t = 'ba', ''
+print(deletion_distance(s,t)) # 2 -> ''
+s, t = 'ba', 'ba'
+print(deletion_distance(s,t)) # 0 -> 'ba'
+s, t = '', ''
+print(deletion_distance(s,t)) # 0 -> ''
