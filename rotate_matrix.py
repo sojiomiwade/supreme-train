@@ -161,20 +161,27 @@ for layer in [:n]
     repeat rotate_layer(layer)
 '''
 from typing import List
-
 def rotate_matrix(matrix: List[List[int]]) -> None:
+    '''
+    0 1
+    2 3
+    ---
+    2 1
+    3 3
+    temp = 01
+    m00=m10=2
+    m10=3
+    '''
     def rotate_layer() -> None:
         temp = [matrix[layer][k] for k in range(layer,n-layer)]
-        print('temp: ', temp)
-        for k in range(layer,n-layer): #[0:n]
+        for k in range(layer,n-layer-1): #[0:1]
             matrix[layer][k] = matrix[n-1-k][layer] #top=left: 00=10,01=10
-        print('m0: ', matrix[0])
-        for k in range(layer,n-layer):
+        for k in range(layer,n-layer-1):
             matrix[n-1-k][layer] = matrix[n-1-layer][n-1-k] # left=bottom
-        for k in range(layer,n-layer):
-            matrix[n-1-layer][n-1-k] = matrix[k][layer] # bottom=... 
-        for k in range(layer,n-layer):
-            matrix[k][layer] = temp[k-layer] # right = 
+        for k in range(layer,n-layer-1):
+            matrix[n-1-layer][n-1-k] = matrix[k][n-1-layer] # bottom=right 
+        for k in range(layer,n-layer-1):
+            matrix[k][n-1-layer] = temp[k-layer] # right = 
 
     n = len(matrix)
     for row in matrix:
@@ -185,9 +192,10 @@ def rotate_matrix(matrix: List[List[int]]) -> None:
     for row in matrix:
         print(row)
 
-dim = 2
+dim = 4
 matrix = [[0 for _ in range(dim)] for _ in range(dim)]
 for i in range(dim):
     for j in range(dim):
         matrix[i][j] = dim*i + j
 rotate_matrix(matrix)
+
