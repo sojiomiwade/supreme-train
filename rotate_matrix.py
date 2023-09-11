@@ -137,4 +137,57 @@ for c in range(n):
 '''
 print(matrix)
 
+#--bah below wont work as it assumes the columns wont write on each other
+'''
+a b c d
+e f g h
+i j k l
+m n o p
 
+m i e a q r # n = 6
+n j f b . . 
+o k g c . . 
+p l h d . . 
+
+any of n rows do: col i -> row j
+use temp to rotate_layer: 
+    temp = top
+    top = left
+    left = bottom
+    bottom = right
+    right = top
+
+for layer in [:n]
+    repeat rotate_layer(layer)
+'''
+from typing import List
+
+def rotate_matrix(matrix: List[List[int]]) -> None:
+    def rotate_layer() -> None:
+        temp = [matrix[layer][k] for k in range(layer,n-layer)]
+        print('temp: ', temp)
+        for k in range(layer,n-layer): #[0:n]
+            matrix[layer][k] = matrix[n-1-k][layer] #top=left: 00=10,01=10
+        print('m0: ', matrix[0])
+        for k in range(layer,n-layer):
+            matrix[n-1-k][layer] = matrix[n-1-layer][n-1-k] # left=bottom
+        for k in range(layer,n-layer):
+            matrix[n-1-layer][n-1-k] = matrix[k][layer] # bottom=... 
+        for k in range(layer,n-layer):
+            matrix[k][layer] = temp[k-layer] # right = 
+
+    n = len(matrix)
+    for row in matrix:
+        print(row)
+    print()
+    for layer in range(n//2):
+        rotate_layer()
+    for row in matrix:
+        print(row)
+
+dim = 2
+matrix = [[0 for _ in range(dim)] for _ in range(dim)]
+for i in range(dim):
+    for j in range(dim):
+        matrix[i][j] = dim*i + j
+rotate_matrix(matrix)
