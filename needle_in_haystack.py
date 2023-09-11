@@ -88,3 +88,5 @@ def grep(haystack: str, needle: str) -> List[int]:
     
 haystack, needle = 'abc', 'aaabcdddbbddddabcdefghi'
 grep(haystack, needle) #[2,14] 
+
+#under 25 mins, but still didn't use example in couple lines: //= instead of %=
