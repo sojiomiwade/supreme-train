@@ -45,3 +45,53 @@ s = 'aaa'
 print(compressed(s)) # a3
 
 #time to finish: 20 mins
+
+#16 mins
+'''
+string compression
+length of string: ? 
+aabcccccaaa -> a2b1c5a3
+count = 1
+prev = s0
+at the end of each iteration we counted the curr character
+for i in range(1,n)
+    curr = s[i] #c
+    if curr == prev #c == b, no
+        count ++
+    else 
+        res.append(prev + count)
+        count = 1
+    prev = curr
+res.append(prev + count)
+'''
+from types import resolve_bases
+
+
+def compression(s: str) -> str:
+    if not s:
+        return ''
+    count = 1
+    prev, n, res = s[0], len(s), []
+    for i in range(1,n):
+        curr = s[i]
+        if curr == prev: #c == b, no
+            count += 1
+        else:
+            res.append(str(prev) + str(count))
+            count = 1
+        prev = curr
+    res.append(str(prev) + str(count))
+    ress = ''.join(res)
+    if len(ress) < n:
+        return ress
+    return s
+s = 'aa'
+print(compression(s)) # aa
+s = 'a'
+print(compression(s)) # a
+s = 'aaa'
+print(compression(s)) # a3
+s = 'aabcccccaaa'
+print(compression(s)) # a2b1c5a3
+
+
