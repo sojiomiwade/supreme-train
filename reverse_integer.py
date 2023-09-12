@@ -41,3 +41,40 @@ class Solution:
                 return 0
             y = y * 10 + digit
         return y * isneg
+
+
+# reverse int again -- 17 min
+'''
+reverse integer while avoiding overflow
+if overflow will occur return -1
+
+num = 2318, res = 8132
+pull from the back with % to get last, and // to chop off last
+for overflow, 
+
+res about to be 649
+curr 64
+64 > maxint //
+'''
+def reverseint(num: int) -> int:
+    res = 0
+    maxint = 2**31-1
+    while num:
+        lastdigit = num % 10
+        if res>maxint // 10 or (res == maxint//10 and lastdigit > 7):
+            return -1
+        res *= 10
+        res += lastdigit
+        num //= 10
+    return res
+
+num = 2318
+print(reverseint(num)) #8132
+num = 2
+print(reverseint(num)) #2
+num = 2**31 - 1 # 011 = 2
+print(reverseint(num)) # -1
+num=7463847412
+print(reverseint(num)) # 2147483647
+num=8463847412
+print(reverseint(num)) # -1
