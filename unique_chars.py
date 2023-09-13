@@ -47,3 +47,40 @@ print(unique(s)) # true
 s = "111111"
 print(unique(s)) #false
 
+
+#again
+'''
+does a string have all unique characters
+frid
+if we know alphabet size, then if string beyond that, False
+can use set, see it again, return False
+otherwise, true
+O(n), O(n) 
+
+could use inplace sort, then if si == s_i-1, False i in 1:n
+O(n lg n), O(1)
+'''
+def all_unique(s: str) -> bool:
+    sset = set()
+    for ch in s:
+        if ch in sset:
+            return False
+        sset.add(ch)
+    return True
+
+def all_unique(s: str) -> bool:
+    rs = list(reversed(s))
+    for i in range(1, len(s)):
+        if rs[i] == rs[i-1]:
+            return False
+    return True
+    
+s = 'Friday'
+print(all_unique(s)) # true
+s = 'Non'
+print(all_unique(s)) # true
+s = 'Noon'
+print(all_unique(s)) # false
+s = ''
+print(all_unique(s)) # true
+
