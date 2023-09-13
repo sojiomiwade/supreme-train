@@ -199,3 +199,69 @@ for i in range(dim):
         matrix[i][j] = dim*i + j
 rotate_matrix(matrix)
 
+# rotate matrix in place with 2 for loops
+'''
+rotate a matrix in-place to the right
+1 2 3
+4 5 6
+7 8 9
+
+7 4 1
+8 5 2
+9 6 3
+
+1 4 7
+- - 
+7 8 9
+temp = top
+top = left
+left = bottom
+bottom = right
+right = temp
+
+layer
+for layer in range(len(matrix) // 2)
+    for i in range(n):
+        temp[i] = matrix[0][n-1-i]
+    for i in range(n) # left to top
+        matrix[0][n-1-i] = matrix[i][0]
+    for i in range(n) # bottom to left
+        matrix[i][0] = matrix[n-1][i]
+    for i in range(n) right to bottom
+        matrix[n-1][i] = matrix[n-1-i][n-1]
+    for i in range(n)
+        matrix[n-1-i][n-1] = temp[i]
+don't write last element for any, because that is just duplicating
+first of new. instead see that  
+actually doesn't matter, instead start from the intersecting corner
+'''
+from typing import List
+
+def print_matrix(matrix: List[List[str]]) -> None:
+    for i in range(len(matrix)):
+            print(' '.join(matrix[i]))
+'''
+abca
+efgh
+ijkl
+mnop
+t=d
+'''
+def rotate_matrix(matrix: List[List[str]]) -> None:
+    n = len(matrix)
+    for layer in range(n//2):
+        for i in range(layer,n-1-layer):
+            temp = matrix[layer][n-1-i] # temp = top
+            matrix[layer][n-1-i] = matrix[i][layer] # top = left
+            matrix[i][layer] = matrix[n-1-layer][i] # left = bottom
+            matrix[n-1-layer][i] = matrix[n-1-i][n-1-layer] # bottom = right
+            matrix[n-1-i][n-1-layer] = temp # right = temp
+
+dim = 5
+matrix = [[chr(97+dim*i+j) for j in range(dim)] for i in range(dim)]
+print_matrix(matrix)
+rotate_matrix(matrix)
+print()
+print_matrix(matrix)
+
+#implement copy solution, and just use assert to compare? nah
