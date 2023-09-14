@@ -95,3 +95,52 @@ s = 'aabcccccaaa'
 print(compression(s)) # a2b1c5a3
 
 
+# again, but pre-allocation of exact amount of buffer needed!
+'''
+compress a string
+think of the time & space complexity
+aaaaabccc
+a5b1c3
+allocation. how? pass through once and figure it out
+count = 1
+for each char if not eq to previous, 
+    count ++
+count ++
+buflen = 2*(count)
+
+avoid the 2 passes?
+
+aaaaabccc
+a5b1c3
+'''
+def compress(s: str) -> str:
+    if not s:
+        return s
+    count = 0
+    for i in range(1, len(s)):
+        if s[i] != s[i-1]:
+            count += 1
+    count += 1
+    buflen = 2 * count
+    clis = ['' for _ in range(buflen)]
+    print('clis len', buflen)
+
+    clis_idx = 0
+    count = 1
+    for i in range(1, len(s)):
+        if s[i] != s[i-1]:
+            clis[clis_idx] = s[i-1]
+            clis[clis_idx+1] = str(count)
+            clis_idx += 2
+            count = 0
+        count += 1
+    clis[clis_idx] = s[-1]
+    clis[clis_idx+1] = str(count)
+    return ''.join(clis)
+
+s = 'aaaaabccc'
+print(compress(s)) # 6, a5b1c3
+s = 'aa'
+print(compress(s)) # 2, a2
+
+
