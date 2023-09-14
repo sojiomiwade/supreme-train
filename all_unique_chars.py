@@ -84,3 +84,55 @@ print(all_unique(s)) # false
 s = ''
 print(all_unique(s)) # true
 
+
+
+#again
+'''
+check if an alphanumeric string has all unique characters in O(n) time, but O(1) space
+abcde: true
+aa: false
+: true
+
+aplep
+00000
+aple
+
+use three integers one each for 
+lowercase, uppercase, numbers
+start with lowercase
+
+alg: when about to set: if a char's bit is already set, then return False. if never so for the entire string, return True. 
+'''
+def all_unique_chars(s: str) -> bool:
+    vec = [0,0,0]
+    for ch in s:
+        pos = ord(ch)
+        if ord('A') <= pos <= ord('Z'):
+            pos -= ord('A')
+            vecidx = 1
+        elif ord('a') <= pos <= ord('z'):
+            pos -= ord('a')
+            vecidx = 0
+        else:
+            pos -= ord('0')
+            vecidx = 2
+        mask = 1 << pos
+        # print('pos', pos, mask, vec, vec | mask)
+        if vec[vecidx] & mask != 0:
+            return False
+        vec[vecidx] |= mask
+    return True
+
+s = 'aa'
+print(all_unique_chars(s)) # false
+s = 'aple'
+print(all_unique_chars(s)) # true
+s = ''
+print(all_unique_chars(s)) # true
+s = 'Aple'
+print(all_unique_chars(s)) # true
+s = 'ApA'
+print(all_unique_chars(s)) # false
+s = '12312'
+print(all_unique_chars(s)) # false
+
