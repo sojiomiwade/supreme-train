@@ -89,3 +89,37 @@ def list_perms(s: str) -> List[str]:
     return mainres
 
 print(list_perms('abc')) # [abc, acb, bac, bca, cab, cba]
+
+
+#again
+'''
+list all permutations of a string s
+a bc
+acb
+bac
+bca
+cab
+cba
+alg: recursively, remove one char from all in string given you, add that to result (prefix), and pass the new string on, along with the result for concatenation 
+abc
+'''
+from typing import List
+
+
+def permute(s: str) -> None:
+    perm(s, [], 0)
+
+def perm(rem: str, prefix: List[str], prefix_len) -> None:
+    if prefix_len == len(s):
+        print(''.join(prefix))
+        return
+    for i in range(len(rem)): # a
+        prefix.append(rem[i])
+        perm(rem[:i] + rem[i+1:], prefix, prefix_len+1)
+        prefix.pop()
+
+s = 'a'
+permute(s) # abc, acb, bac, ...
+s = 'abc'
+permute(s) # abc, acb, bac, ...
+
