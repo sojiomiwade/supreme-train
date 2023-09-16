@@ -58,14 +58,11 @@ Constraints:
 class Solution:
     def firstBadVersion(self, n: int) -> int:
         lo, hi = 1, n
-        last = -1
         while lo <= hi:
             mi = (lo + hi) // 2
-            isbadval = isbad(mi)
+            isbadval = isBadVersion(mi)
             if isbadval:
-                last = mi
                 hi = mi - 1
             else:
                 lo = mi + 1
-        return last
-
+        return hi+1
