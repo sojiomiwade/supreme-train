@@ -265,3 +265,50 @@ print()
 print_matrix(matrix)
 
 #implement copy solution, and just use assert to compare? nah
+
+# again
+'''
+rotate matrix 90 degrees counter clockwise
+a b c d e
+e f g h
+i j k l
+m n o p
+
+d h l p
+c g k o
+b f j n
+a e i m
+
+time: O(n**2)
+space: go for O(1)
+time: 8:00am -- 8:18am = 18mins
+d is the head
+
+for layer in range(n // 2)
+    for i in range(n-1-layer-2)
+        temp = a[layer][i]
+        a[0][i] = a[i][n-1]
+        a[i][n-1] = a[n-1][n-1-i]
+        a[n-1][n-1-i] = a[n-1-i][0]
+        a[n-1-i][0] = temp
+'''
+from typing import List
+
+
+def rotate(a: List[List[str]]) -> None:
+    n = len(a)
+    for layer in range(n // 2):
+        for i in range(layer, n-1-layer):
+            temp = a[layer][i]
+            a[layer][i] = a[i][n-1-layer]
+            a[i][n-1-layer] = a[n-1-layer][n-1-i]
+            a[n-1-layer][n-1-i] = a[n-1-i][layer]
+            a[n-1-i][layer] = temp
+
+dim = 4
+a = [[chr(4*j + i +97) for i in range(4)] for j in range(4)]
+for i in range(dim):
+    print(' '.join(a[i]))
+rotate(a)
+for i in range(dim):
+    print(' '.join(a[i]))
