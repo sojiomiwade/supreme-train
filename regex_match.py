@@ -43,3 +43,93 @@ class Solution:
         memo = [[None for _ in range(1+len(p))] for _ in range(1+len(s))]
         return helper(0, 0)
         
+
+
+# again
+'''
+Basic Regex Parser
+Implement a regular expression function isMatch that supports the '.' and '*' symbols. The function receives two strings - text and pattern - and should return true if the text matches the pattern as a regular expression. For simplicity, assume that the actual symbols '.' and '*' do not appear in the text string and are used as special symbols only in the pattern string.
+
+In case you aren’t familiar with regular expressions, the function determines if the text and pattern are the equal, where the '.' is treated as a single a character wildcard (see third example), and '*' is matched for a zero or more sequence of the previous letter (see fourth and fifth examples). For more information on regular expression matching, see the Regular Expression Wikipedia page.
+
+Explain your algorithm, and analyze its time and space complexities.
+
+Examples:
+
+input:  text = "aa", pattern = "a"
+output: false
+
+input:  text = "aa", pattern = "aa"
+output: true
+
+input:  text = "abc", pattern = "a.c"
+output: true
+
+input:  text = "abbb", pattern = "ab*"
+output: true
+
+input:  text = "acd", pattern = "ab*c."
+output: true
+Constraints:
+
+[time limit] 5000ms
+[input] string text
+[input] string pattern
+[output] boolean
+
+time: 8:27 -- 8:58 = 31
+time comp: exponential; but can memoize for O(n**2)
+space comp:
+
+m(t, p) = 
+    base: if no pattern, then true if no string; false otherwise
+    if p[1] (or there's no p[1]) not a star: return 1st chars match and m(t[1:],p[1:]))
+    else 
+        zero to match:
+        zero = m(t, p[2:]) --> memo[][ploc+2]
+        one = first character matchers and m(t[1:], p)
+        return zero or one
+
+func isMatch(...
+a
+qbcdefg
+
+t = a
+p = a*b*
+'''
+def isMatch(t, p):
+    def helper(tloc: int, ploc: int):
+        if memo[tloc][ploc] != -1:
+            return memo[tloc][ploc]
+
+        if ploc == len(p):
+            val = int(tloc == len(t))
+        else:
+            firstmatch = tloc != len(t) and p[ploc] in (t[tloc],'.')
+            if ploc+1==len(p) or p[ploc+1]!='*':
+                val = int(firstmatch) and helper(tloc+1,ploc+1)
+            else:
+                zero = helper(tloc, 2+ploc)
+                one = int(firstmatch) and helper(1+tloc, ploc)
+                val = zero or one
+        memo[tloc][ploc] = val
+        return val
+
+    memo = [[-1 for _ in range(1+len(p))] for _ in range(1+len(t))]
+    return helper(0, 0)
+
+t, p = ('', 'b') #false
+print(isMatch(t, p))
+t, p = 'aa', 'a' #false
+print(isMatch(t, p)) 
+t, p = ('aa', 'aa') # true
+print(isMatch(t, p)) 
+t, p = ('abc', 'a.c') #true
+print(isMatch(t, p))
+t, p = ('abbb', 'ab*') #true
+print(isMatch(t, p))
+t, p = ('acd', 'ab*c.') #true
+print(isMatch(t, p))
+t, p = ('abd', 'ab*c.') #false
+print(isMatch(t, p))
+
