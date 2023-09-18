@@ -146,3 +146,84 @@ rs.delete('c')
 print(rs.getRandom()) # a, or b,
 print(rs.getRandom()) # a, or b,
 
+#again
+'''
+# /* 
+# insert(val): Inserts an item val to the set. If the value already exist, then don't insert it.
+# remove(val): Removes an item val from the set if present.
+# getRandom(): Returns a random element from current set of elements. Each element must have the same probability of being returned.
+# NOTE: average O(1) time for all three operations. 
+
+#  */
+time: 7:18 - 7:47 = 29 m
+time comp: mandatory O(1)
+space comp: 
+key ob: insert can just be increment a count each time
+getRandom. go to idx2val[idx], after getting a random idx
+in range [0,count)
+delete, say a
+    lastidx = count - 1
+    lastval = idx2val[lastidx]
+    delidx = val2idx[val]
+    delval = val
+    val2idx[lastval] = val2idx[val] # d 0
+    idx2val[delete] = lastval # 0, d
+    del idx2val[a]
+    del val2idx[lastidx]
+    count --
+
+a 0, 0 a
+b 1, 1 b
+d 2, 2 d
+result:
+d 0, 0, d
+'''
+from typing import Counter
+from random import randrange
+
+
+class RandomSet:
+    def __init__(self) -> None:
+        self.val2idx = {}
+        self.idx2val = {}
+        self.count = 0
+
+    def insert(self, val) -> None:
+        if val in self.val2idx:
+            return
+        self.val2idx[val] = self.count
+        self.idx2val[self.count] = val
+        self.count += 1
+
+    def get_random(self) -> str:
+        randidx = randrange(self.count)
+        return self.idx2val[randidx]
+
+    '''
+    a 0, 0 a
+    b 1, 1 b
+    d 2, 2 d
+    result:
+    d 0, 0, d
+    '''
+    def delete(self, val) -> None:
+        if val not in self.val2idx:
+            return None
+        lastidx = self.count - 1        # 2
+        lastval = self.idx2val[lastidx] # d
+        delidx = self.val2idx[val]      # 0
+        self.val2idx[lastval] = delidx  # d 0
+        self.idx2val[delidx] = lastval  #  0 d
+        del self.val2idx[val]           # del a
+        del self.idx2val[lastidx]       # del 2
+        self.count -= 1        
+
+rs = RandomSet()
+for ch in 'abd':
+    rs.insert(ch)
+for _ in range(5):
+    print(rs.get_random(),end=', ')
+print()
+rs.delete('a')
+for _ in range(5):
+    print(rs.get_random(),end=', ')
