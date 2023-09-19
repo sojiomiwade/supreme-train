@@ -23,3 +23,37 @@ class Solution:
                 return i
         return -1
         
+
+
+# again but it works this time
+'''
+time: 7:38 -- 7:54: 16 mins
+loveleetcode
+t t    t 
+for i 
+    update already_seen
+for i 
+    if already_seen
+        mark it as repeated
+for i 
+    if already_seen but not repeated
+        return that one
+
+'''
+class Solution:
+    def firstUniqChar(self, s: str) -> int:
+        already_seen = 0
+        repeated = 0
+        for i, ch in enumerate(s):
+            mask = 1 << ord(ch) - ord('a')
+            if already_seen & mask != 0:
+                repeated |= mask
+            else:
+                already_seen |= mask
+
+        for i, ch in enumerate(s):
+            mask = 1 << ord(ch) - ord('a')
+            if repeated & mask == 0:
+                return i
+
+        return -1
