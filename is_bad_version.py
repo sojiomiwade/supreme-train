@@ -66,3 +66,45 @@ class Solution:
             else:
                 lo = mi + 1
         return hi+1
+
+
+# again but this time no api
+from typing import List
+
+
+# Find the First True in a Sorted Boolean Array
+
+# An array of boolean values is divided into two sections; the left section consists of all false and the right section consists of all true.
+# Find the First True in a Sorted Boolean Array of the right section, i.e.the index of the first true element.If there is no true element, return -1.
+
+#  Input: arr = [false,..., false, | true, true, true]
+# O(lg n)
+'''
+bisect to left if true
+bisect to right if false
+key observation: return hi + 1
+
+boundary
+'''
+#  Output: 2
+
+# Explanation: first true's index is 2.
+def first_true(arr: List[bool]) -> int:
+    lo, hi = 0, len(arr) - 1
+    while lo <= hi: # 0,1,2; 2,1
+        mi = lo + (hi - lo) // 2
+        if arr[mi] == True:
+            hi = mi - 1
+        else:
+            lo = mi + 1
+    return hi + 1
+
+arr = [False, False, True]
+print(first_true(arr)) # 2
+arr = [False, False, True, True]
+print(first_true(arr)) # 2
+arr = [False, False, True, True, True]
+print(first_true(arr)) # 2
+arr = [True, True, True, True]
+print(first_true(arr)) # 0
+
