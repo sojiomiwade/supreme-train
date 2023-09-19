@@ -22,7 +22,25 @@ better:
         else
             r += 1
 
+^ above is n log n, we could do better with hash table
+[1,7,5,9,2,12,3]
+walk through keeping each entry you see in a hashset, and do this
+    add the current one to the set
+    check if curr + k   OR  curr - k is there, and update res accordingly
 
+k - x or x -k is there
+a - b = k
+a = b - k = 6 - 7
+b = a - k = 7 - 6
+
+7   1
+
+1 + k = x or 1 - k = x
+
+
+
+10 20 30 
+k 
 use a left and right index starting at 0
 repeat the following for each right idnex 0..n-1
     while l <= r
@@ -49,6 +67,17 @@ def k_diff(arr: List[int], k: int) -> List[Tuple]:
             right += 1
         else:
             right += 1
+    return res
+
+def two_difference(arr: List[int], k: int) -> List[Tuple]:
+    res = []
+    vals = set()
+    for val in arr:
+        if val + k in vals:
+            res.append((val, val + k))
+        elif val - k in vals:
+            res.append((val - k, val))
+        vals.add(val)
     return res
 
 arr = [1,7,5,9,2,12,3]
