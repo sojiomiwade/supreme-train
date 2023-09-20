@@ -85,19 +85,22 @@ aba; ans = 2
 s = {a:0, b:1, }
 longest = 2
 '''
+from collections import defaultdict
 def longest_substring(s: str) -> int:
-    if len(s) == 0:
-        return 0
     l = 0 # default
     longest = 0
-    loc = {}
+    loc = defaultdict(lambda :float("-inf"))
     for r in range(len(s)):
-        if s[r] in loc:
-            l = max(l, loc[s[r]] + 1)
-        loc[s[r]] = r 
+        l = max(l, loc[s[r]] + 1)
+        loc[s[r]] = r
         longest = max(longest, r - l + 1)
+    assert type(longest) is int
     return longest
-
+  
+s = ""
+print(longest_substring(s)) # 0
+s = "a"
+print(longest_substring(s)) # 1
 s = "abcabcbb"
 print(longest_substring(s)) # 3
 s = "bbbbb"
