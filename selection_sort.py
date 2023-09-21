@@ -3,13 +3,18 @@ from typing import List
 '''
 time: 12:07 - 12:19 = 12 but should have used a big example at first,  +/- 1
 
-    v
-45132
-^ *
-for every element except the last one
+   v
+12345
+     ^
+   *
+on inner loop, update best when something better found in that loop 
+outer loop iterates n - 1 times
 
+simple testcase
+ v
 54
 ^
+*
 n=2
 '''
 
