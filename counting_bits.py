@@ -33,3 +33,11 @@ class Solution:
                 res[-1] += int((x % 2) == 1)
                 x //= 2
         return res
+
+#again, but with Dynamic programming
+class Solution:
+    def countBits(self, n: int) -> List[int]:
+        res = [0 for _ in range(n + 1)]
+        for i in range(1, n + 1):
+            res[i] = res[i >> 1] + i % 2
+        return res
