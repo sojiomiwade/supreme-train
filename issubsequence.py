@@ -52,3 +52,49 @@ class Solution:
         #     if sloc < len(s) and t[tloc] == s[sloc]:
         #         sloc += 1
         # return sloc == len(s)
+
+
+'''
+aec
+abxdcee
+
+build loc apriori
+ps = 0
+for each char in s, bisect in loc[s], start=prior_start
+  ps = for e bisect(loc[e], start=ps)
+  if ps == -1
+    return False
+  ps += 1
+ return True 
+ a
+ ab
+ loc = {a: [0], b: [1]}
+ ps = 0
+ 0
+ aec
+abxdcee
+0123456
+loc = {a:[0], e:[5,6] c:[4]}
+
+v
+abxdcee
+aec
+^
+0123456
+ps = 1
+loc = {a:[0],b:[1],x:[2],d:[3],c:[4],e:[5,6]}
+bl(loc[e], 1)
+'''
+class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        char_locs = defaultdict(list)
+        for ch_loc, ch in enumerate(t):
+            char_locs[ch].append(ch_loc)            
+        prior_start = 0
+        for ch in s: 
+            ch_loc = bisect.bisect_left(char_locs[ch], prior_start)
+            if ch_loc == len(char_locs[ch]):
+                return False
+            prior_start = char_locs[ch][ch_loc] + 1
+        return True 
+
