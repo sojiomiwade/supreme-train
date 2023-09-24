@@ -60,31 +60,43 @@ print(diffBetweenTwoStrings(s, t))
 # trying to memoize and clean up the recursive calls
 from typing import List, Optional
 
+from typing import List
+
 
 def diffBetweenTwoStrings(source, target) -> List[str]:
   def helper(sloc: int, tloc: int) -> None:
+    # 0, 0; 1,0
     nonlocal bestres
-    if sloc == len(source):
-        rest = ('+' + target[tloc] for i in range(tloc, len(target)))
-    if tloc == len(target):
-        rest = ("-" + source[sloc] for i in range(sloc, len(source)))
-#        if not bestres or len(res)+len(rest) < 
+    if sloc == len(source) or tloc == len(target):
+        rest1 = ['+' + target[tloc] for i in range(tloc, len(target))]
+        rest2 = ["-" + source[sloc] for i in range(sloc, len(source))]
+        if not bestres or len(res)+len(rest1)+len(rest2) < len(bestres):
+            bestres = res[:] + rest1 + rest2
+        return 
 
-    res_same = res_remove_from_s = res_add_from_t = None
     if source[sloc] == target[tloc]:
       res.append(source[sloc])
       helper(1 + sloc, 1 + tloc)
       res.pop()
     else:
-      helper(s[1:], t, res + ["-" + s[0]])
-      helper(s, t[1:], res + ["+" + t[0]])
-    return min(res_same, res_remove_from_s, res_add_from_t,
-                  key=lambda x: float("inf") if not x else len(x)) #
+      res.append("-" + source[sloc]) #res = [ -A 
+      helper(1 + sloc, tloc)
+      res.pop()
+      res.append("+" + target[tloc])
+      helper(sloc, 1 + tloc)
+      res.pop()
+
   res = []
   bestres = None
-  helper(source, target)
+  helper(0, 0)
+  assert bestres
   return bestres
 
-s = "ABCDEFG"
-t = "ABDFFGH"
-print(diffBetweenTwoStrings(s, t))
+# source = "ABCDEFG"
+# target = "ABDFFGH"
+#
+source = 'AB'
+target = 'CA'
+#output
+#
+print(diffBetweenTwoStrings(source, target))
