@@ -24,3 +24,22 @@ class Solution:
             if tch_count[ord(ch)-ord('a')] != sch_count[ord(ch)-ord('a')]:
                 return ch
         return None
+
+
+class Solution:
+    def findTheDifference(self, s: str, t: str) -> str:
+        svec = tvec = 0
+        for ch in s: #abcd: 
+            mask = 1 << (ord(ch) - ord('a'))
+            svec ^= mask
+        for ch in t:
+            mask = 1 << (ord(ch) - ord('a'))
+            tvec ^= mask
+        resvec = svec ^ tvec
+        for chidx in range(26):
+            char_is_set = resvec & 1 #1011 & 1
+            if char_is_set:
+                return chr(chidx + 97)
+            resvec >>= 1
+        return None
+            
