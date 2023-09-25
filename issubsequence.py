@@ -98,3 +98,18 @@ class Solution:
             prior_start = char_locs[ch][ch_loc] + 1
         return True 
 
+
+# again but using char array instead of defaultdict, sincee input is limited to lowercase english alphabet
+class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        sublocs = [[] for _ in range(26)]
+        for tloc, ch in enumerate(t):
+            sublocs[ord(ch) - ord('a')].append(tloc)            
+        prior_start = 0
+        for ch in s: 
+            idxidx = bisect.bisect_left(sublocs[ord(ch) - ord('a')], prior_start)
+            if idxidx == len(sublocs[ord(ch) - ord('a')]):
+                return False
+            prior_start = sublocs[ord(ch) - ord('a')][idxidx] + 1
+        return True 
+
