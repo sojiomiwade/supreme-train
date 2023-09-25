@@ -1,4 +1,30 @@
 '''
+problem: given a number, check if it is a palindrome
+
+touch
+-----
+49387
+  ^
+in a new number inited to 0, keep adding the modulo of successive divs of original number
+b4 each such addition, multiply res by 10.
+to avoid overflow
+78...493
+783..49
+
+12321
+123..12
+if res > orig, then original isn't a pal, or without that last modulo, the numbers are equal
+
+res = 0
+while x > 0 #can also just say True
+  mod = x % 10
+  x //= 10
+  if (res == x)
+    True
+  elif (res*10+mod > x)
+    return res == x
+  res*=10
+  res+=mod
 y = 0
 while y < x # 0 < 41814, 4 < 4181, 41 < 418, 418 < 41
     digit = x % 10 # 4

@@ -1,3 +1,23 @@
+'''
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+11
+ 73
+ 58
+---
+171
+
+new list, head = res = Node(null) 
+get element from l1 and l2 and carry if possible # move l1 and l2 accordingly
+res.next = new Node(l1val + l2val + carry // 10)
+carry = above operand % 10
+if not we are done
+return head.next
+'''
+
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):

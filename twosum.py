@@ -1,4 +1,12 @@
 '''
+find in a given list, the indices, of two numbers such that their sum equals k
+
+touch
+------
+go through and keep in hash table arr[i]: i
+then when we also check arr[i], we just need to see if k - arr[i] is in hash table
+and then we can return i, loc[k - arr[i]]
+
 no sort
 keep comp[x] as you go. 
 and along the way, once you see comp[x], we are done
