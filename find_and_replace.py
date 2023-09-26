@@ -1,4 +1,48 @@
 '''
+In a given string s, replace all spaces with %20
+a b c
+012345678
+a%20b%20c
+write from the back, otherwise you overwrite orig string
+c gets shifted by two deltas
+delta is replace key len - space key len = 2
+b by one deltas
+a by zero
+back = n-1 + spacecount * delta # 2 * 2 = 4 + 4 = 8
+for i in range(n-1, -1, -1):
+  if s[i] != ' '
+    s[back] = s[i]
+    back -= 1
+  else
+    s[back], s[back-1], s[back-2] = '%20'
+    back -= 3
+return   
+
+# corollary: what if we wanted to replace %20 by a space?
+    v
+a%20b%20c
+012345678
+a b c
+a x 
+
+   
+%20%20  6-2*2 = 2
+_
+__
+cannot write from the back, will delete b with c
+can write from the front, since we won't be able to overwrite
+right = left = 0
+while right <= n
+  if s[right:right+3] == '%20'
+    s[left] = ' '
+    right += 3
+    left += 1
+  else 
+    s[left] = s[right]
+    left += 1
+    right += 1
+
+
 replace each space with %20
 there is enough space after replacements are done
 
