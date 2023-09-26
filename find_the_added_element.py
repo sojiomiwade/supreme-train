@@ -42,4 +42,38 @@ class Solution:
                 return chr(chidx + 97)
             resvec >>= 1
         return None
-            
+           
+
+# the no sweat bit manipulation way of doing this
+'''
+fish
+fiysh
+sum of si and ti. at the end just add t_last
+
+by xor
+s, t
+res ^= ch
+then return result
+'''
+from itertools import chain
+def find_the_difference(s: str, t: str) -> str:
+    res = 0
+    for sch, tch in zip(s, t):
+        res += ord(tch) - ord(sch)
+    return chr(ord(t[-1]) + res)
+
+def find_the_difference_xor(s: str, t: str) -> str:
+    res = 0
+    for ch in chain(s, t):
+        res ^= ord(ch)
+    return chr(res)
+
+find_the_difference = find_the_difference_xor
+
+s, t = 'fish', 'fishy'
+print(find_the_difference(s, t)) #y
+s, t = '', 'a'
+print(find_the_difference(s, t)) #a
+s, t = 'fish', 'shiyf'
+print(find_the_difference(s, t)) #y
+ 
