@@ -32,3 +32,25 @@ class Solution:
             mask <<= 1
         return rescount
         
+
+#refresh
+'''
+0101
+0110
+0011 <-- xy
+
+xord = x^y 
+sum_ += xord & 1 and shift xord and do this 31 more times
+time: O(1), space: O(1)
+'''
+class Solution:
+    def hammingDistance(self, x: int, y: int) -> int:
+        res = 0
+        xy = x ^ y
+        while xy:
+            res += xy & 1
+            xy >>= 1
+        return res
+
+x, y = 5, 6
+print(Solution().hammingDistance(x, y)) # 2
