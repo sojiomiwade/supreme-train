@@ -2,6 +2,90 @@
 Deletion Distance
 The deletion distance of two strings is the minimum number of characters you need to delete in the two strings in order to get the same string. For instance, the deletion distance between "heat" and "hit" is 3:
 
+By deleting 'e' and 'a' in "heat", and 'i' in "hit", we get the string "ht" in both cases.
+We cannot get the same string from both strings by deleting 2 letters or fewer.
+Given the strings str1 and str2, write an efficient function deletionDistance that returns the deletion distance between them. Explain how your function works, and analyze its time and space complexities.
+
+Examples:
+
+input:  str1 = "dog", str2 = "frog"
+output: 3
+d  og
+fr og
+
+input:  str1 = "some", str2 = "some"
+output: 0
+
+input:  str1 = "some", str2 = "thing"
+output: 9
+
+input:  str1 = "", str2 = ""
+output: 0
+
+Constraints:
+[input] string str1
+[input] string str2
+[output] integer
+define d_ij as del(s[:i], t[:j])
+=> ans is d_mn
+consider all possibilities
+if a char will cause a del, remove it imm
+otherwise, take the minimum of del on either s[1:],t and then s,t[1:]; add 1 ==> memo ==> d[1][0] ==> ans is d[0][0]
+base case: if s or t is empty, return the len of the other.
+run time expo. can memoize? yes
+d_ij = del(s, t, i, j), i and j are "lengths"
+
+so size of d is m+1,n+1
+
+del(s, t) = del(s[:], 
+
+time: 8:10 - 8:47 = 37 m
+e l b o w i t
+2 3 2 3         
+
+       i
+h e a t
+h i t
+j
+-------
+h t
+h t
+
+'''
+
+def deldist(s: str, t: str) -> int:
+    def helper(i: int, j: int) -> int: # 1 1
+        if d[i][j] != -1:
+            return d[i][j]
+        if i == m or j == n: # 4, 5
+            d[i][j] = max(m - i, n - j)
+            return d[i][j]
+        if s[i] == t[j]:
+            d[i][j] = helper(i + 1, j + 1)
+            return d[i][j]
+        remove_in_s = helper(i + 1, j)
+        remove_in_t = helper(i, j + 1)
+        d[i][j] = 1 + min(remove_in_s, remove_in_t)
+        return d[i][j]
+    
+    m, n = len(s), len(t)
+    d = [[-1 for _ in range(n + 1)] for _ in range(m + 1)]
+    return helper(0, 0) # ans distance from s0 and t0 to their ends
+    
+s, t = 'b', 'a' # 2
+print(deldist(s, t)) # 
+
+s, t = 'a', 'a' # 0
+print(deldist(s, t)) # 
+
+s, t = 'hit', 'heat' # 3
+print(deldist(s, t))
+
+
+
+Deletion Distance
+The deletion distance of two strings is the minimum number of characters you need to delete in the two strings in order to get the same string. For instance, the deletion distance between "heat" and "hit" is 3:
+
 heat
 hit
 
