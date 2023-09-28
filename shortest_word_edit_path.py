@@ -54,23 +54,22 @@ from typing import List
 def shortest_path(words: List[str], source: str, target: str) -> int:
     def helper(curr, count) -> int: #bit0,but1,put2
         if curr == target:
-            return min(mincount, count)
-        bestcount
+            return count
+        mincount = None
         for i in range(len(curr)):
             for j in range(256):
                 if chr(j) != curr[i]:
                     test = curr[:i] + chr(j) + curr[i+1:]
                     if test in have:
                         have.remove(test)
-                        mincount = helper(test, count + 1, mincount)
-                        if mincount != float("inf"):
-                            return mincount
+                        if not helper(test, count + 1):
+                            assert mincount
+                            mincount = min(count + 1, mincount)
                         have.add(test)
-        return mincount
+        return -1 if not mincount else mincount
 
     have = set(words)
-    return helper(source, 0, float('inf'))
-
+    return helper(source, 0)
 
 source = "bit"
 target = "dog"
