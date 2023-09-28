@@ -1,6 +1,35 @@
 '''
 One Away
-insert, remove, edit to get the same
+if an edit is in (insert, remove, replace) a character a string, given two strings, write a function to check if they're one (or zero) edit away
+
+pale, ple -> true: insert a at 1
+pales, pale -> true: insert s at 4
+pale, bale -> true: replace p with b
+pale, bake -> false: 2 replaces required (two differences found)
+
+don't need delete if we 'start' with smaller string 
+cant do insert when strings same length, must resort to replace check
+likewise, can't do replace when strings are different, must insert
+different len strings must be off by 1
+
+
+strings have same len
+replace check: run, counting number of differences, return imm if a 2nd is found
+
+insert check:
+return if len t  - len s != 1 (replace check cheched for 0 already)
+s: o r n g e
+t: o r a n g e
+s: p l e
+t: a p l e
+s: p l e
+t: p l e a  <-- ah ha!
+
+diff spotted? then move j, and rest of s and t must have no diff
+no diff spotted, that's ok! it is then 0 or 1 edit away since if t had an extra char, that's only one edit away; and we already chedcked the diff in 2 strings len is 1.
+
+
+
 if len of s and t are same, can only use edit
 else, can use insert (ignore remove since we can always start with smaller string)
 func edithelps -> boolean: 
