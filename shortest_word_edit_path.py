@@ -50,45 +50,45 @@ explanation: bit -> but -> put.    -> pot -> pog -> dog has 5 transitions.
 import sys
 from typing import List
 
-
 def shortest_path(words: List[str], source: str, target: str) -> int:
-    def helper(curr, count) -> int: #bit0,but1,put2
+    def helper(curr, count) -> int: 
         if curr == target:
             return count
-        mincount = None
+        mincount = 1 + len(words) #b a b c
         for i in range(len(curr)):
             for j in range(256):
                 if chr(j) != curr[i]:
                     test = curr[:i] + chr(j) + curr[i+1:]
                     if test in have:
                         have.remove(test)
-                        if not helper(test, count + 1):
-                            assert mincount
-                            mincount = min(count + 1, mincount)
+                        mincount = min(mincount, helper(test, count + 1))
                         have.add(test)
-        return -1 if not mincount else mincount
+        return mincount
 
     have = set(words)
-    return helper(source, 0)
+    res = helper(source, 0)
+    if res != 1 + len(words):
+        return res
+    return -1
 
 source = "bit"
 target = "dog"
 words = ["but", "put", "big", "pot", "pog", "dog", "lot"]
-print(shortest_path(words, source, target))
+print(shortest_path(words, source, target)) # 5
 
-# source = "bit"
-# target = "put"
-# words = ["but", "put", "big", "pot", "pog", "dog", "lot"]
-# print(shortest_path(words, source, target))
+source = "bit"
+target = "put"
+words = ["but", "put", "big", "pot", "pog", "dog", "lot"]
+print(shortest_path(words, source, target)) # 2
 
 
-# source = "bit"
-# target = "bit"
-# words = ["but", "put", "big", "pot", "pog", "dog", "lot"]
-# print(shortest_path(words, source, target)) # 0
+source = "bit"
+target = "bit"
+words = ["but", "put", "big", "pot", "pog", "dog", "lot"]
+print(shortest_path(words, source, target)) # 0
 
-# source = "bit"
-# target = "but"
-# words = ["but", "put", "big", "pot", "pog", "dog", "lot"]
-# print(shortest_path(words, source, target)) # 1
+source = "bit"
+target = "but"
+words = ["but", "put", "big", "pot", "pog", "dog", "lot"]
+print(shortest_path(words, source, target)) # 1
 
