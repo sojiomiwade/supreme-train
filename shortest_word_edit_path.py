@@ -1,3 +1,24 @@
+start  ---  x ------- stop
+       \
+        y
+0      inf  1            2
+
+dfs(G, start, stop)
+    func min_distance(curr, count)
+        if curr == stop
+            return count
+        currmin = node_count
+        for nb in nbs of curr that aren't colored
+            color[nb] = true
+            currmin = min(node_count, min_distance(nb, count + 1))
+            color[nb] = false
+        return currmin
+
+    color[*] = false
+    return min_distance(start, 0)
+    
+
+
 '''
 Shortest Word Edit Path
 Given two words source and target, and a list of words words, find the length of the shortest series of edits that transforms source to target.
