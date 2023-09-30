@@ -1,3 +1,13 @@
+from random import randrange
+a = [randrange(10) for _ in range(10)]
+print(a)
+l = 0
+for r in range(10):
+    if a[r] % 2 == 0:
+        a[l], a[r] = a[r], a[l]
+        l += 1
+print(a)
+
 '''
 time 12:32 -- 12:44 = 12
 3,1,2,4
