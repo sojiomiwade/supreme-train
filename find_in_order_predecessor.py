@@ -28,20 +28,19 @@ class BinarySearchTree:
       self.root = None
 
   def find_largest_smaller_key(self, num): # 17
-    '''starting for root, just search for node with 
-    val num, until we hit null. keep track of the node
-    closest to num but smaller
+    '''starting for root, just search for node with val num, until we hit null. 
+    if curr node is greater or equal num, don't alter best
+    else, best is max of best and curr key (start best of at -1)
+    
     '''
-    def helper(curr, best): #9 12 14
+    def helper(curr, best): #9
       if not curr:
         return best
-      if num == curr.key:
-        return best
-      if num < curr.key:
+      if curr.key >= num:
         return helper(curr.left, best)
       return helper(curr.right, max(best, curr.key))
     
-    return helper(self.root, -1) # 
+    return helper(self.root, -1)
   # Given a binary search tree and a number, inserts a
   # new node with the given number in the correct place
   # in the tree. Returns the new root pointer which the
@@ -91,12 +90,16 @@ bst.insert(12);
 bst.insert(11);  
 bst.insert(14);    
 
-result = bst.find_largest_smaller_key(25)
-
+result = bst.find_largest_smaller_key(9) # 5
+print ("Largest smaller number is %d " %(result))
+result = bst.find_largest_smaller_key(17) # 14
+print ("Largest smaller number is %d " %(result))
+result = bst.find_largest_smaller_key(4) # -1
+print ("Largest smaller number is %d " %(result))
+result = bst.find_largest_smaller_key(25) # 20
 print ("Largest smaller number is %d " %(result))
 
 '''
 time 9:31 -- 9:53 = 22
 
 '''
-
