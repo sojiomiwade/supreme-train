@@ -39,8 +39,16 @@ class BinarySearchTree:
       if curr.key >= num:
         return helper(curr.left, best)
       return helper(curr.right, max(best, curr.key))
-    
-    return helper(self.root, -1)
+
+    curr = self.root
+    biggest_smaller = -1
+    while curr:
+      if curr.key < num:
+        biggest_smaller = max(biggest_smaller, curr.key)
+        curr = curr.right
+      else:
+        curr = curr.left
+    return biggest_smaller
   # Given a binary search tree and a number, inserts a
   # new node with the given number in the correct place
   # in the tree. Returns the new root pointer which the
