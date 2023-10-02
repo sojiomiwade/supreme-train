@@ -1,4 +1,22 @@
 '''
+using longest repeating character replacement method from LC lee315
+'''
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        top = 0
+        count = Counter()
+        for bottom in range(len(s)):
+            count[s[bottom]] += 1
+            if len(count) < bottom - top + 1 : # time to advance
+                count[s[top]] -= 1
+                if count[s[top]] == 0:
+                    del count[s[top]]
+                top += 1
+        return len(s) - top
+
+
+
+'''
 problem: abcabcbb -> 3
 stopwatch: 8:38 - 9:03 = 25 mins
 confirms: ascii? lowercase only, ok, 26 length arr
