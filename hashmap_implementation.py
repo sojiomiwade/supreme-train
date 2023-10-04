@@ -2,52 +2,51 @@
 approach 1
 use linked list for each slot, slot is an array element, so we have an array of linked lists. to minimize collisions, let's use a factor of 10 less than the worst case
 '''
-from typing import Optional
+from typing_extensions import Self
+from typing import Optional, Tuple
 
+class Node:
+    def __init__(
+        self, 
+        key: Optional[int],
+        val: Optional[int], 
+        nextnode: Optional[Self],
+        ) -> None:
+        self.key = key
+        self.val = val
+        self.nextnode = nextnode
 
 class MyHashMap:
-    class Node:
-        def __init__(
-            self, 
-            key: Optional[int],
-            val: Optional[int], 
-            nextnode: Optional[Node],
-            ) -> None:
-            self.key = key
-            self.val = val
-            self.nextnode = nextnode
-
-        def __init__(self) -> None:
-            self.headnode =
-
     def __init__(self) -> None:
         self.size = 1000
-        self.table = [Node() for _ in self.size]
+        self.table = [Node(None, None, None) for _ in range(self.size)]
 
-    def hashfunc(self, code) -> int:
-        return code % self.size
+    def hashfunc(self, key: int) -> int:
+        return key % self.size
 
-    def put(self, key: int, value: int) -> None:
+    def put(self, key: int, val: int) -> None:
         # lis -> (new) -> temp
-        nodelist = self.hashfunc(key)
-        temp = nodelist.nextnode
-        nodelist.next = Node(key, val, temp)
+        head = self.table[self.hashfunc(key)]
+        temp = head.nextnode
+        head.nextnode = Node(key, val, temp)
         
     def _findnode(self, key: int) -> Optional[Tuple[Node, Node]]:
         '''
         p -> x -> n
         '''
-        nodelist = table[self.hashfunc(key)]
-        prevnode = None
-        for node in nodelist:
-            if node.key == key:
-                return prevnode, node
-            prevnode = node
+        prevnode = self.table[self.hashfunc(key)]
+        curr = prevnode.nextnode
+        while curr:
+            if curr.key == key:
+                return prevnode, curr
+            prevnode = curr
         return None
 
     def get(self, key: int) -> int:
-        _, node = self._findnode(key)
-        if node:
+        _findnode_return = self._findnode(key)
+        if _findnode_return:
+            _, node  = _findnode_return
+            assert type(node.val) is int
             return node.val
         return -1
 
@@ -56,7 +55,22 @@ class MyHashMap:
             prev -> x -> next
             prev -> next
         '''
-        prevnode, node = self._findnode(key)
-        if node:
-            prevnode.next = node.next
+        _findnode_return = self._findnode(key)
+        if _findnode_return:
+            prevnode, node = _findnode_return
+            prevnode.nextnode = node.nextnode
+
+hm = MyHashMap()
+print(hm.get(2)) # -1
+hm.put(2, 3)
+print(hm.get(2)) # 3
+hm.put(2, 5)
+print(hm.get(2)) # 5
+hm.put(1100, 42)
+hm.put(50000, 420) 
+print(hm.get(2)) # 5
+print(hm.get(1100)) # 42
+print(hm.get(110)) # -1
+print(hm.get(50000)) # 420
+
 
