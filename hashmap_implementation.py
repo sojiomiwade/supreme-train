@@ -1,3 +1,4 @@
+
 '''
 approach 1
 use linked list for each slot, slot is an array element, so we have an array of linked lists. to minimize collisions, let's use a factor of 10 less than the worst case
@@ -26,9 +27,14 @@ class MyHashMap:
 
     def put(self, key: int, val: int) -> None:
         # lis -> (new) -> temp
-        head = self.table[self.hashfunc(key)]
-        temp = head.nextnode
-        head.nextnode = Node(key, val, temp)
+        find_return_val = self._findnode(key)
+        if find_return_val:
+            _, node = find_return_val
+            node.val = val
+        else:
+            head = self.table[self.hashfunc(key)]
+            temp = head.nextnode
+            head.nextnode = Node(key, val, temp)
         
     def _findnode(self, key: int) -> Optional[Tuple[Node, Node]]:
         '''
@@ -40,6 +46,7 @@ class MyHashMap:
             if curr.key == key:
                 return prevnode, curr
             prevnode = curr
+            curr = curr.nextnode
         return None
 
     def get(self, key: int) -> int:
@@ -66,11 +73,25 @@ hm.put(2, 3)
 print(hm.get(2)) # 3
 hm.put(2, 5)
 print(hm.get(2)) # 5
+hm.remove(2)
+print(hm.get(2)) # -1
+
 hm.put(1100, 42)
 hm.put(50000, 420) 
 print(hm.get(2)) # 5
+
 print(hm.get(1100)) # 42
+hm.remove(1100)
+print(hm.get(1100)) # -1
+
 print(hm.get(110)) # -1
 print(hm.get(50000)) # 420
 
+print('goodbye!')
+print(hm.put(100, 1))
+print('goodbye again!')
+print(hm.get(100))
+print('goodbye seen!')
+print(hm.get(1100))
+print('goodbye not seen!')
 
