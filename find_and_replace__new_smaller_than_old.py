@@ -23,19 +23,23 @@ put in array list
 we can replace from front since dest string is less than src
 
 I gave a mouse a good mouse.
+                            r
+                        l
 I gave a dog a good dog.
-           l          r
 '''
 def find_and_replace(sentence: str, src: str, dest: str) -> str:
-    def assign_dest():
+    def change_one_pattern() -> None:
         for i in range(len(dest)):
             lis[l+i] = dest[i]
+    
+    def match() -> bool:
+        return sentence[r:r+len(src)] == src
 
     lis = list(sentence)
     l = r = 0
     while r < len(sentence):
-        if sentence[r:r+len(src)] == 'mouse': #0:5
-            assign_dest()
+        if match(): #0:5
+            change_one_pattern()
             r += len(src)
             l += len(dest)
         else:
