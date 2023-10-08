@@ -63,6 +63,7 @@ class Solution:
     def majorityElement(self, nums: List[int]) -> int:
         def me_bysort():
             return sorted(nums)[len(nums) // 2]
+
         def me_by_count():
             count = Counter()
             maxf = 0
@@ -72,6 +73,7 @@ class Solution:
                 if count[el] > maxf: 
                     maxf, res = count[el], el # 2,3
             return res
+
         def bisect(lo, hi) -> int:
             '''
             323
@@ -89,6 +91,7 @@ class Solution:
             lc = op.countOf((nums[idx] for idx in range(lo, hi + 1)), left)
             rc = op.countOf((nums[idx] for idx in range(lo, hi + 1)), right)
             return left if lc > rc else right
+
         def moore():
             '''
             AABA
@@ -105,4 +108,36 @@ class Solution:
                 else:
                     count += 1
             return res
-        return moore()
+        
+        def bitvec():
+            '''
+            get distribution into array of each bit
+            then go through and aggregate sum those
+            ones having value greater than n/2
+            agg part: if bit 4 high enough freq, then
+            8 has a presence so 
+            agg += (1 >> i)
+
+            3 2 3
+            '''
+            def init_distro() -> List[int]:
+                distro = [0] * 32
+                for num in nums:
+                    mask = 1
+                    for i in range(32):
+                        distro[i] += int(mask & num != 0)
+                        mask <<= 1
+                return distro
+
+            def aggregate_majority() -> int:
+                ret = 0
+                mask = 1
+                for i in range(32):
+                    if distro[i] > len(nums)//2:
+                        ret += mask
+                    mask <<= 1
+                return ret
+            distro = init_distro()
+            return aggregate_majority()
+
+        return bitvec()
