@@ -266,3 +266,79 @@ print(deletion_distance(s,t)) # 0 -> 'ba'
 s, t = '', ''
 print(deletion_distance(s,t)) # 0 -> ''
 
+'''
+The deletion distance of two strings is the minimum number of characters you need to delete in the two strings in order to get the same string. For instance, the deletion distance between "heat" and "hit" is 3:
+
+By deleting 'e' and 'a' in "heat", and 'i' in "hit", we get the string "ht" in both cases.
+We cannot get the same string from both strings by deleting 2 letters or fewer.
+Given the strings str1 and str2, write an efficient function deletionDistance that returns the deletion distance between them. Explain how your function works, and analyze its time and space complexities.
+
+eat + it = 5
+ea + i = 3
+
+heat
+ t
+ b
+hit
+
+dd(s,t):
+if s0 == t0 return dd(s[1:], t[1:])
+else
+    return 1 +  min(dd(s[1:t], t), dd(s, t[1:])
+
+func do_dfs(s, t) -> int
+
+Examples:
+
+input:  str1 = "dog", str2 = "frog"
+output: 3
+
+input:  str1 = "some", str2 = "some"
+output: 0
+
+input:  str1 = "some", str2 = "thing"
+output: 9
+
+input:  str1 = "", str2 = ""
+output: 0
+
+heat
+ t
+ b
+hit
+
+dd(s,t):
+if s0 == t0 return dd(s[1:], t[1:])
+else
+    return 1 +  min(dd(s[1:t], t), dd(s, t[1:])
+'''
+
+def deletion_distance(str1, str2):
+    def branch(one_index: int, two_index: int) -> int: #10
+        if one_index == len(str1) or two_index == len(str2):
+            return max(len(str1)-one_index,len(str2)-two_index)
+        if (one_index,two_index) in cache:
+            return cache[one_index,two_index]
+
+        if str1[one_index] == str2[two_index]:
+            val = branch(one_index+1,two_index+1)
+        else:
+            val = 1 + min(branch(one_index+1,two_index), branch(one_index,two_index+1))
+        cache[one_index,two_index] = val
+        return val
+    cache = {}
+    return branch(0, 0)
+
+
+str1, str2 = 'h', 'i'
+print(deletion_distance(str1, str2)) # 2
+str1, str2 = 'h', 'h'
+print(deletion_distance(str1, str2)) # 0
+str1, str2 = 'h', 'ih'
+print(deletion_distance(str1, str2)) # 1
+str1, str2 = 'heat', 'hit'
+print(deletion_distance(str1, str2)) # 3
+str1, str2 = 'thea', 'hit'
+print(deletion_distance(str1, str2)) #5
+# thea
+# hit
