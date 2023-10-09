@@ -136,6 +136,17 @@ class Solution:
                     if distro[i] > len(nums)//2:
                         ret += mask
                     mask <<= 1
+                '''
+                11010110
+                if there is a 1 in the bit-31
+                then make 111...1[ret]
+                which is front with 32 zeros OR ret
+                (-1 << 32) | ret
+
+                fron
+                '''
+                if ((1 << 31) & ret) != 0:
+                    ret |= (-1 << 32)
                 return ret
             distro = init_distro()
             return aggregate_majority()
