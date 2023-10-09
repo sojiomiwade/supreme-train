@@ -1,4 +1,63 @@
 '''
+7:46 -- 
+1,1,1,3,3,4,3,2,4,2 -> true
+could use map and see if map[idx] > 1 for any => truee; false otherwise: O(n), O(n)
+could sort; then if neighboring is the same anytime => true; false otherwise: O(n lg n), O(n)
+could use array of bit vector as hash table? yes constant size of ~ 1GB: O(n), O(1)
+
+0 - 31    idx 0
+31 - 63   idx 1
+64 - 95.  idx 2
+64 5 6 7 8 9
+0  1 2 3 4 5
+...
+0000
+69 --> 69//32 = 2; 69%32 = 69-64 =5 <-- exact bit we need 2 set
+10**9 ~ 2**30
+then div by 4
+~  10**9 B elements  *  1 slot/4B  *  1B/32 elements = 
+781 + 1 <-- size == 782
+
+2 3 -> False
+2 2 -> True
+
+2 // 32 = 0
+00000
+'''
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        def setbit(num: int) -> None:
+            isneg = False
+            if num < 0:
+                isneg = True
+                num = -num
+            vidx = num // 8
+            if isneg:
+                vidx += m
+            bidx = num % 8
+            bitvec[vidx] |= (1 << bidx)
+        
+        def bitset(num: int) -> bool:
+            isneg = False
+            if num < 0:
+                isneg = True
+                num = -num
+            vidx = num // 8
+            if isneg:
+                vidx += m
+            bidx = num % 8
+            return (bitvec[vidx] & (1 << bidx)) != 0
+
+        m = 7812500*4
+        bitvec = [0 for _ in range(2*m)]
+        for num in nums:
+            if bitset(num):
+                return True
+            setbit(num)
+        return False
+
+
+'''
 time 2:09 -- 2:21 = 12
 Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.
 
