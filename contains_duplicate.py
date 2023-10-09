@@ -31,10 +31,10 @@ class Solution:
             if num < 0:
                 isneg = True
                 num = -num
-            vidx = num // 8
+            vidx = num // wordsize_bits
             if isneg:
                 vidx += m
-            bidx = num % 8
+            bidx = num % wordsize_bits
             bitvec[vidx] |= (1 << bidx)
         
         def bitset(num: int) -> bool:
@@ -42,20 +42,22 @@ class Solution:
             if num < 0:
                 isneg = True
                 num = -num
-            vidx = num // 8
+            vidx = num // wordsize_bits
             if isneg:
                 vidx += m
-            bidx = num % 8
+            bidx = num % wordsize_bits
             return (bitvec[vidx] & (1 << bidx)) != 0
 
-        m = 7812500*4
+        wordsize_bits = 32
+        largest_num = 10**9
+        m = largest_num // wordsize_bits
+        # use 2*m to hold negative numbers
         bitvec = [0 for _ in range(2*m)]
         for num in nums:
             if bitset(num):
                 return True
             setbit(num)
         return False
-
 
 '''
 time 2:09 -- 2:21 = 12
