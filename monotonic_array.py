@@ -1,4 +1,30 @@
 '''
+let us use a set. we don't care about equal 
+1 2 2 2 2 3 4
+all that matters is for the ne, it's always lt, or gt
+so throw True in there if lt. otherwise throw false in there. 
+at the end, the set length must be 1, (with element true)
+
+0 means no less than found
+1 2 2 -> ok
+1 2 0
+
+3 2 1
+1 2 2 3
+
+3 2 1 1
+1 -1 0 vs 1 -1
+
+0 no less than (mix of eq and/or gt) -> ok
+1 all less than -> ok
+2 both less and greater -> not ok
+'''
+class Solution:
+    def isMonotonic(self, nums: List[int]) -> bool:
+        input_result = {nums[i-1] < nums[i] for i in range(1,len(nums)) if nums[i-1] != nums[i]}
+        return len(input_result) < 2
+
+'''
 time 8:17 -- 8:29 = 12
 1,3,3,  4,2,...
         ^
