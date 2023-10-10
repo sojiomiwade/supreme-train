@@ -152,3 +152,41 @@ class Solution:
             return aggregate_majority()
 
         return bitvec()
+'''
+1 2 1 1 --> 1
+1 1 1 2
+
+1 2 1 2 1 --> 
+
+1 1 1 2 2 --> when sorted, majority is just the middle floor(n/2). if n even can take either n/2 or n/2 + 1
+both are floor (n/2)
+
+1 1 1 2
+01
+01
+01
+10
+11
+can build majority from bits showing up more than n//2 times
+for each bit, then for each num, increment a bit-counter for that bit
+if counter goes beyond n//2 then that bit needs to be added to majority
+because of python, when we have 1101 as majority for example, then we need to make this truly -ve by padding it with 1s: 11111111 + 1101
+'''
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        res = 0
+        mask = 1
+        for i in range(32):
+            count = 0
+            for num in nums: #3 
+                count += (num & mask) != 0 # 01 & 1 != 0, 01 & 10 == 0
+                if count > len(nums) // 2: # 3 > 2? yes
+                    res |= mask
+                    break
+            mask <<= 1
+        if (1 << 31) & res != 0:
+            res = (-1 << 32) | res
+        return res
+
+
+        
