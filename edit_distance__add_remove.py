@@ -1,4 +1,57 @@
 '''
+1:02 - 
+ABCDEFG
+ABDFFGH
+when the same, next call: sloc+1, tloc+1
+consider this remove c, and add -C, next call is   sloc+1, tloc
+or this: add D, hence add +D, next call is sloc, tloc+1
+when source has chars left, add the requisite series of -ch from source
+when dst has chars left, add +ch for each remaining in targetr
+this is exponential branching
+we can memoize with a cache[sloc, tloc]
+can build res, and at the end update bestres according to mindist vs dist
+NOTE: remove source char first  
+'''
+
+'''
+ABCDEF G
+ABDF   FGH
+["A","B","-C","    D","-E", "F", "+F", "G",  "+H"]
+['A', 'B', '-C', 'D', '-E', 'F', '-G', '+F', '+G', '+H']
+'''
+def diffBetweenTwoStrings(source, target):
+  def branch(sidx, tidx, res):
+    if (sidx,tidx) in cache:
+      return cache[sidx,tidx]
+    
+    if sidx == m or tidx == n:
+      remsource = ['-'+source[i] for i in range(sidx, m)]
+      remtarget = ['+'+target[i] for i in range(tidx, n)]
+      if len(res+remsource+remtarget) < len(var['bestres']):
+        var['bestres'] = res+remsource+remtarget
+      return 
+    if source[sidx] == target[tidx]:
+      res += [source[sidx]]
+      path = branch(sidx+1, tidx+1, res)
+      res.pop()
+    else:
+      res += ['-'+source[sidx]]
+      path = branch(sidx+1, tidx, res)
+      res.pop()
+      res += ['+'+target[tidx]]
+      path = branch(sidx, tidx+1, res)
+      res.pop()
+    cache[sidx, tidx] = path[:]
+  m, n = len(source), len(target)
+  cache = {}
+  var = {'bestres': [None for _ in range(m+n+1)]}
+  branch(0,0,[])
+  return var['bestres']
+
+source, target = 'ABC', 'ABD' # ['A', 'B', '-C', '+D']
+#source, target = 'ABCDEFG', 'ABDFFGH'
+print(diffBetweenTwoStrings(source, target))
+'''
        v
      ABC "
      ABD  ==target
