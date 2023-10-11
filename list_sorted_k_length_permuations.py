@@ -2,7 +2,7 @@
 find all k-length strings alphabetically sorted, lower case only
 
 complexity:
-time: k * factorial(k-1) * ksi**2
+time: ck * c**(k-1) * c**2
 '''
 from typing import List
 
