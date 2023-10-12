@@ -40,17 +40,19 @@ class Solution:
     p  c  t
        p  c  t
           p  c
+
+   <-1<-2<-3
+           p
+             c   
+             t
     '''
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        if not head:
-            return None
-        prev, curr = head, head.next, 
+        prev, curr = None, head
         while curr:
             temp = curr.next # x
             curr.next = prev # 1
             prev = curr
             curr = temp
-        head.next = None
         return prev
 
     def rl_recursive(self, head: Optional[ListNode]) -> Optional[ListNode]:
@@ -68,5 +70,5 @@ sol = Solution()
 for val in range(n):
     sol.append_to_tail(val + 1)
 print(sol.as_list(sol.dummyhead))
-node = sol.rl_recursive(sol.dummyhead.next)
+node = sol.reverseList(sol.dummyhead.next)
 print(sol.as_list(node))
