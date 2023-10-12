@@ -30,17 +30,19 @@ class Node:
 
      = y,x
     '''
-    def insertafter(self, node: Node):
+    def insert_after_self(self, node: Node):
         self.nxt, node.nxt = node, self.nxt
 
     '''
     1 2
+
+    1 2 3 4
         f
       s
     '''
-    def get_other_head(self) -> Node:
+    def get_tail_a(self) -> Node:
         pslow = pfast = self
-        while pfast:
+        while pfast and pfast.nxt and pfast.nxt.nxt:
             pfast = pfast.nxt
             assert pfast
             pfast = pfast.nxt
@@ -62,9 +64,10 @@ class Node:
                 a b  
     '''
     def weave(self) -> None:
-        otherhead = self.get_first_tail()
+        tail_a = self.get_tail_a()
         # print(otherhead.val) # 4 
-        a, b = head, otherhead
+        a, b = head, tail_a.nxt
+        tail_a.nxt = None
         while a and b:
             c, d = a.nxt, b.nxt
             a.nxt, b.nxt = b, c
@@ -73,12 +76,13 @@ class Node:
 
 def init_list(n: int) -> Node:
     dhead = Node()
-    for i in range(n, 0, -1):
-        dhead.insertafter(Node(i))
+    for i in range(n, 0, -2):
+        dhead.insert_after_self(Node(i))
+    for i in range(n-1, 0, -2):
+        dhead.insert_after_self(Node(i))
     assert dhead.nxt
     return dhead.nxt
-
-head = init_list(6)
+head = init_list(10)
 head.print_list() # 1 2 3 4 5 6
 head.weave()
 head.print_list() # 1 4 2 5 3 6
