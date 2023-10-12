@@ -62,7 +62,41 @@ class Node:
 
     1 4 2 5 3 6 4 x
                 a b  
+    
+    1 3 5 
+      a
+    c
+      b     
+    2 4 6
+    
+    
+
+    12
+    h->1->2->3
+          c
     '''
+    def weave2(self) -> None:
+        tail_a = self.get_tail_a()
+        a, b = head, tail_a.nxt
+        tail_a.nxt = None
+        curr = self
+        print('all', a.nxt.val)
+        while a:
+            assert b
+            print(a.val,b.val,end=', ')
+            assert curr
+
+            curr.nxt = a
+            curr = curr.nxt
+            a = a.nxt
+            print('sall', a.val, a.nxt.val)
+
+            
+            curr.nxt = b
+            curr = curr.nxt
+            b = b.nxt
+            
+
     def weave(self) -> None:
         tail_a = self.get_tail_a()
         # print(otherhead.val) # 4 
@@ -84,6 +118,6 @@ def init_list(n: int) -> Node:
     return dhead.nxt
 head = init_list(10)
 head.print_list() # 1 2 3 4 5 6
-head.weave()
+head.weave2()
 head.print_list() # 1 4 2 5 3 6
 
