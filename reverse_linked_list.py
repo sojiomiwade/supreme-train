@@ -52,10 +52,21 @@ class Solution:
             curr = temp
         head.next = None
         return prev
+
+    def rl_recursive(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        def rr(curr: Optional[ListNode]) -> Optional[ListNode]:
+            if not curr or not curr.next:
+                return curr
+            head = rr(curr.next)
+            curr.next.next = curr
+            return head
+
+        return rr(head)
+
 n = 5
 sol = Solution()
 for val in range(n):
     sol.append_to_tail(val + 1)
 print(sol.as_list(sol.dummyhead))
-node = sol.reverseList(sol.dummyhead.next)
+node = sol.rl_recursive(sol.dummyhead.next)
 print(sol.as_list(node))
