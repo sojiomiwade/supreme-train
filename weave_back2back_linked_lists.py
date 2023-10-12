@@ -17,9 +17,8 @@ class Node:
         self.val = val
         self.nxt = nxt
 
-    def getlist(self) -> List[int]:
+    def getlist(self, node: Optional[Node]) -> List[int]:
         res = []
-        node = self
         while node:
             res += [node.val]
             node = node.nxt
@@ -58,7 +57,6 @@ class Node:
 
     def weave(self) -> None:
         tail_a = self.get_tail_a()
-        # print(otherhead.val) # 4 
         a, b = self.nxt, tail_a.nxt
         tail_a.nxt = None
         while a:
@@ -67,6 +65,25 @@ class Node:
             a.nxt, b.nxt = b, c
             a, b = c, d
         
+    def weave_recursive(self) -> None:
+        def merge(a: Optional[Node], b: Optional[Node]) -> Optional[Node]:
+            if not a:
+                assert not b
+                return None
+            assert b
+            c = merge(a.nxt, b.nxt)
+            a.nxt = b
+            b.nxt = c
+            return a
+
+        tail_a = self.get_tail_a()
+        a, b = self.nxt, tail_a.nxt
+        tail_a.nxt = None
+        print(self.getlist(a))
+        print(self.getlist(b))
+        merge(a, b)
+
+
 
 def init_list(n: int) -> Node:
     dhead = Node()
@@ -80,7 +97,6 @@ def init_list(n: int) -> Node:
 n = 10
 dhead = init_list(n)
 assert dhead.nxt
-dhead.weave2()
-reslist = dhead.nxt.getlist()
-assert reslist == list(range(1,11))
+dhead.weave_recursive()
+assert dhead.getlist(dhead.nxt) == list(range(1,11))
 
