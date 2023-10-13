@@ -21,18 +21,15 @@ from typing import Optional, List, Tuple
 
         
 class ListNode:
-    def __init__(self, 
-        val: Optional[int]=None, 
-        next: Optional[ListNode]=None
-        ) -> None:
+    def __init__(self, val: int, next: Optional[ListNode]) -> None:
         self.val = val
         self.next = next
         
 class SLL:
     def __init__(self) -> None:
-        self.head = ListNode('head')
-        self.tail = ListNode('tail')
-        self.tail.next, self.head.next = self.head, self.tail
+        self.head = ListNode(0, None)
+        self.tail = ListNode(0, self.head)
+        self.head.next = self.tail
         
     # h <-> t
     #    5
@@ -40,7 +37,7 @@ class SLL:
     def append_to_tail(self, val: int) -> ListNode:
         last = self.tail.next
         assert last
-        newnode = ListNode(val)
+        newnode = ListNode(val, None)
         last.next = newnode
         newnode.next = self.tail
         self.tail.next = newnode
@@ -54,10 +51,10 @@ class SLL:
             curr = curr.next
         return res
 
-    def delete_next(self, node: ListNode) -> ListNode:
-        delnode = node.next
+    def delete_next(self, prev: ListNode) -> ListNode:
+        delnode = prev.next
         assert delnode and delnode is not self.tail
-        node.next = delnode.next
+        prev.next = delnode.next
         return delnode
 
     # 5 1 2 3 4 5
@@ -77,34 +74,44 @@ class SLL:
 
 
     def remove_dups2(self) -> None:
-        def find_node_by_val(val: int, prevstart: Optional[ListNode]) -> Optional[ListNode]:
+        '''
+      N 2 2 N
+      h c
+        p n
+        '''
+        def find_prevnode(val: int, prevstart: ListNode) -> Optional[ListNode]:
             assert prevstart
             while prevstart.next is not self.tail:
-                if prevstart.next == val:
+                assert prevstart.next
+                if prevstart.next.val == val:
                     return prevstart
                 prevstart = prevstart.next
-                assert prevstart
             return None
 
-        prevstart = self.head
-        start = curr = self.head.next
+        curr = self.head.next
+        prevstart = curr
         while curr is not self.tail:
-            assert curr and curr.val is not None
-            prevstart = find_node_by_val(curr.val, prevstart)
+            assert curr and prevstart
+            prevstart = find_prevnode(curr.val, prevstart)
             if prevstart:
-                assert start
                 self.delete_next(prevstart)
-                found = startnode.next
             else:
                 curr = curr.next
+                prevstart = curr
 
 from itertools import chain
-sll = SLL()
-for x in chain(range(5), range(5)):
-    sll.append_to_tail(x+1)
-print(sll.as_list())
-sll.remove_dups()
-print(sll.as_list())
+def make_list_with_dups() -> SLL:
+    sll = SLL()
+    for x in chain(range(5), range(5)):
+        sll.append_to_tail(x+1)
+    return sll
 
-# todo remove the default spec of None for Node. it doesn't help much as there aren't a hundred places having Node(None, None)
-# and it makes clear what you are passing
+sll = make_list_with_dups()
+assert len(sll.as_list()) == 2 * len(set(sll.as_list()))
+sll.remove_dups2()
+assert len(sll.as_list()) == len(set(sll.as_list()))
+
+sll = make_list_with_dups()
+assert len(sll.as_list()) == 2 * len(set(sll.as_list()))
+sll.remove_dups()
+assert len(sll.as_list()) == len(set(sll.as_list()))
