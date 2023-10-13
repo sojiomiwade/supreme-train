@@ -153,3 +153,54 @@ target = 'CA'
 #output
 #
 print(diffBetweenTwoStrings(source, target))
+'''
+first build the dp array to understand which to pick
+then use it to get the res
+AC
+  s
+ t
+AB
+'''
+def diffBetweenTwoStrings(source, target):
+  def dd(sidx, tidx):
+    if (sidx,tidx) in dp:
+      return dp[sidx,tidx]
+    if sidx == len(source) or tidx == len(target):
+      dp[sidx,tidx] = max(len(target)-tidx, len(source)-sidx)
+      return dp[sidx,tidx]
+    if source[sidx] == target[tidx]:
+      dp[sidx,tidx] = dd(sidx+1, tidx+1)
+    else:
+      dp[sidx,tidx] = 1 + min(dd(sidx+1,tidx), dd(sidx,tidx+1))
+    return dp[sidx,tidx]
+
+  '''
+  AC
+    s
+   t
+  AB
+  '''
+  def helper(sidx, tidx):
+    res = []
+    while sidx < len(source) and tidx < len(target):
+      if source[sidx] == target[tidx]:
+        res += [source[sidx]]
+        sidx, tidx = sidx+1, tidx+1
+      else:
+        if dp[sidx+1,tidx] <= dp[sidx,tidx+1]:
+          res += ['-'+source[sidx]]
+          sidx += 1
+        else:
+          res += ['+'+target[tidx]]
+          tidx += 1
+    for i in range(sidx, len(source)):
+      res += ['-'+source[i]]
+    for i in range(tidx, len(target)):
+      res += ['+'+target[i]]
+    return res
+  dp = {}
+  dd(0,0)
+  return helper(0,0)
+
+source, target = 'dog', 'frog'
+print(diffBetweenTwoStrings(source, target))
