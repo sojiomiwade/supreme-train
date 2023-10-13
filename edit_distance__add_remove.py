@@ -157,11 +157,19 @@ print(diffBetweenTwoStrings(source, target))
 first build the dp array to understand which to pick
 then use it to get the res
 AC
-  s
- t
+ s
+  t 
 AB
+dp[sidx][tidx] == dd of s[:sidx] and t[:tidx], 0<=sidx<=m, 0<=tidx<=n
+dp[s,t] = dp[s-1][t-1] if chars s[sidx-1] and t[tidx-1] are the same 
+dp[s,t] = 1 + min(dp[s-1][t], dp[s][t-1]) if 
+
 '''
 def diffBetweenTwoStrings(source, target):
+  def ddtab():
+    tab = [0]
+    ...
+    
   def dd(sidx, tidx):
     if (sidx,tidx) in dp:
       return dp[sidx,tidx]
