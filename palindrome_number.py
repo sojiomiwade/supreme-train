@@ -61,3 +61,53 @@ class Solution:
             x //= 10 # 0
             y = y * 10 + digit # 0, 1
         return (y == x) or (y // 10 == x) # if x had odd digit count
+'''
+check if a given number is a palindrome
+
+1234 no
+1221 yes
+12521 yes
+0 yes
+
+orig: 1221
+12
+
+other
+12
+
+12
+
+125
+keep adding orig % 10 (then update orig to orig div 10) to other. if other equals orig return true. 
+    if more 
+        check if without that last digit on both, they're the same. if so, return true
+        othewise return false. 
+    otherwise just keep going
+
+x = 12
+ot = 125
+mod = 5
+
+'''
+def palindrome_number(x: int) -> bool:
+    other = 0
+    while True:
+        mod = x % 10
+        x //= 10
+        other *= 10
+        other += mod
+        if other == x:
+            return True
+        if other > x:
+            if other // 10 == x:
+                return True
+            return False
+
+x = 1221
+print(palindrome_number(x)) # true
+x = 12215
+print(palindrome_number(x)) # false
+x = 12521
+print(palindrome_number(x)) # true
+x = 0
+print(palindrome_number(x)) # true
