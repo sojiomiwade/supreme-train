@@ -111,3 +111,13 @@ print ("Largest smaller number is %d " %(result))
 time 9:31 -- 9:53 = 22
 
 '''
+  def find_largest_smaller_key(self, num):
+    curr = self.root
+    res = float('-inf')
+    while curr:
+      if num <= curr.key:
+        curr = curr.left
+      else:
+        res = max(res, curr.key)
+        curr = curr.right
+    return res
