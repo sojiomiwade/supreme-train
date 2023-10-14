@@ -61,6 +61,8 @@ class Solution:
             x //= 10 # 0
             y = y * 10 + digit # 0, 1
         return (y == x) or (y // 10 == x) # if x had odd digit count
+
+
 '''
 check if a given number is a palindrome
 
@@ -88,20 +90,17 @@ x = 12
 ot = 125
 mod = 5
 
+12521
+
 '''
 def palindrome_number(x: int) -> bool:
     other = 0
-    while True:
+    while x > other:
         mod = x % 10
         x //= 10
         other *= 10
         other += mod
-        if other == x:
-            return True
-        if other > x:
-            if other // 10 == x:
-                return True
-            return False
+    return x==other or x == other//10
 
 x = 1221
 print(palindrome_number(x)) # true
@@ -111,3 +110,4 @@ x = 12521
 print(palindrome_number(x)) # true
 x = 0
 print(palindrome_number(x)) # true
+
