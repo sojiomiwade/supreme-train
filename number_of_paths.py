@@ -77,3 +77,23 @@ def num_of_paths_to_dest(n):
 
 n = 20
 print(num_of_paths_to_dest(n))
+'''
+
+
+using linear space cache but with tabulation
+   0 1 2
+1 |x 1 2 
+0 |1 1 3 22
+'''
+def num_of_paths_to_dest(n):
+  tab = [[1 if i==0 else 0 for j in range(n)] for i in range(2)]
+  for r in range(1,n):
+    for c in range(r,n):# 12
+      val = 0
+      if r < c: #22 21 20<-no,no. ok: 23 24
+        val = tab[r%2][c-1] #
+      tab[r%2][c] = tab[(r-1)%2][c] + val # 0+t10
+  return tab[(n-1)%2][n-1]
+
+n = 4
+print(num_of_paths_to_dest(n))
