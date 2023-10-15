@@ -54,3 +54,26 @@ def num_of_paths_to_dest(n):
 n = 5
 
 print(num_of_paths_to_dest(n))
+
+
+'''
+using linear space cache
+'''
+def num_of_paths_to_dest(n):
+  def valid(row, col):
+    return row <= col and col < n
+  def dfs(row, col, incache):
+    if not valid(row, col):
+      return 0
+    if row == col == n-1:
+      return 1    
+    if cache[col] != 0 and incache != False:
+      return cache[col]
+    cache[col] = dfs(row + 1, col, incache=None) + dfs(row, col + 1, incache=False)
+    return cache[col]
+  cache = [0 for _ in range(n)]
+  
+  return dfs(0, 0, None)
+
+n = 20
+print(num_of_paths_to_dest(n))
