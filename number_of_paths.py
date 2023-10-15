@@ -29,3 +29,28 @@ def num_of_paths_to_dest(n):
   
 n = 4
 print(num_of_paths_to_dest(n))
+
+
+'''
+now tabulate...
+r>0, c>0
+
+  0 1 2 3 4
+4 x x x x 14
+3 x x x 5 14
+2 x x 2 5 9
+1 x 1 2 3 4
+0 1 1 1 1 1
+
+  0 0
+  1 1
+'''
+def num_of_paths_to_dest(n):
+  tab = [[1 if i==0 else 0 for j in range(n)] for i in range(n)]
+  for r in range(1,n):
+    for c in range(r,n):
+      tab[r][c] = tab[r-1][c] + tab[r][c-1]
+  return tab[n-1][n-1]
+n = 5
+
+print(num_of_paths_to_dest(n))
