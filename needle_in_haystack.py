@@ -90,3 +90,63 @@ haystack, needle = 'abc', 'aaabcdddbbddddabcdefghi'
 grep(haystack, needle) #[2,14] 
 
 #under 25 mins, but still didn't use example in couple lines: //= instead of %=
+
+
+
+'''
+function int[] grep(string haystack, string needle)
+haystack = "aaabcdddbbddddabcdefghi"
+needle = "abc"
+[2,14]
+
+aaabcdddbbddddabcdefghi
+0123456789012345678901
+
+nh = hash(needle)
+for each substring of haystack, hash it. 
+to get the next hash of the haystack
+xa b c d e
+21 0 ^
+    
+curr-=x*10**(length-1)
+curr*=10
+curr+=c
+
+buildup. build up length - 1
+then make hl-nl+1 checks in while loop for 
+[nl-1..hl-1]
+
+813392
+3 * 10**0 + 3 * 10**1 + 1 * 10**2
+'''
+from typing import List
+def grep(needle: str, haystack: str) -> List[int]:
+    def hash(s: str, sidx: int, length: int) -> int:
+        shiftval = 1
+        res = 0
+        for i in reversed(range(sidx, length)):
+            res += ord(s[i]) * shiftval
+            shiftval *= base
+        print(res)
+        return res
+
+    base = 256
+    needle_len = len(needle) # 2
+    needle_val = hash(needle, 0, needle_len)
+    curr = hash(haystack, 0, needle_len)
+    bigshift = base ** (needle_len - 1)
+    res = []
+    for i in range(needle_len, len(haystack)):
+        if curr == needle_val:
+            res += [i - needle_len]
+        curr -= ord(haystack[i - needle_len]) * bigshift
+        curr *= base
+        curr += ord(haystack[i])
+    if curr == needle_val:
+        res += [len(haystack) - needle_len]
+    return res
+
+needle, haystack = 'ab', 'cabqrab'
+#                         0123456 
+print(grep(needle, haystack)) # 1
+#

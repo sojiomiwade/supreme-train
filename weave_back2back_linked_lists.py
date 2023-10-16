@@ -100,3 +100,37 @@ assert dhead.nxt
 dhead.weave_recursive()
 assert dhead.getlist(dhead.nxt) == list(range(1,11))
 
+
+
+
+'''
+weave back to back linked lists
+135246
+   s
+      f    
+first of all find where 2nd list is: O(n)
+then cut it off, a and b: O(1)
+then can do a'snext gets b, and b's next gets rec-call on a.next and b.next. 
+'''
+def find_second_head(head: ListNode) -> ListNode:
+    fast = slow = head
+    prevslow = None
+    while fast:
+        fast = fast.next.next
+        prevslow = slow
+        slow = slow.next
+    return prevslow
+
+def merge(head: ListNode) -> ListNode:
+    def _merge(head: ListNode, otherhead: ListNode) -> ListNode:
+        if not head:
+            assert not otherhead
+            return None
+        
+
+    prev = find_second_head(head)
+    otherhead = prev.next
+    prev.next = None
+    otherhead.next = _merge(head.next, otherhead.next)
+    head.next = otherhead
+    return head
