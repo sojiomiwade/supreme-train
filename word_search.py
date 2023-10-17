@@ -27,8 +27,6 @@ class Solution:
                 return True    
             if not valid():
                 return False
-            if (row, col, idx) in cache:
-                return cache[row, col, idx]
 
             visit.add((row, col))
             res = _exist(row, col - 1, idx + 1)
@@ -36,11 +34,9 @@ class Solution:
             res = res or _exist(row, col + 1, idx + 1)
             res = res or _exist(row + 1, col, idx + 1)
             visit.remove((row,col))
-            cache[row, col, idx] = res
             return res
 
         res = False
-        cache = {}
         for row in range(len(board)):
             for col in range(len(board[0])):
                 visit = set()
