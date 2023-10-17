@@ -134,3 +134,71 @@ def merge(head: ListNode) -> ListNode:
     otherhead.next = _merge(head.next, otherhead.next)
     head.next = otherhead
     return head
+'''
+weave back to back linked lists
+135246
+   s
+      f    
+first of all find where 2nd list is: O(n)
+then cut it off, a and b: O(1)
+then can do a'snext gets b, and b's next gets rec-call on a.next and b.next. 
+'''
+from __future__ import annotations
+from typing import Optional
+
+
+class ListNode:
+    def __init__(self, data, next: Optional[ListNode]=None) -> None:
+        self.data = data
+        self.next: Optional[ListNode] = None
+
+    def __str__(self) -> str:
+        curr = self
+        res = []
+        while curr:
+            res += [curr.data]
+            curr = curr.next
+        return ''.join
+
+def find_second_head(head: ListNode) -> Optional[ListNode]:
+    fast = slow = head
+    prevslow = None
+    while fast:
+        assert slow
+        assert fast.next
+        fast = fast.next.next
+        prevslow = slow
+        slow = slow.next
+    return prevslow
+
+'''
+1 3
+2 4
+
+1->2->m(3,4)
+3->4->N
+'''
+def merge(head: ListNode) -> Optional[ListNode]:
+    def _merge(head: Optional[ListNode], otherhead: Optional[ListNode]) -> Optional[ListNode]:
+        if not head:
+            assert not otherhead
+            return None
+
+        assert otherhead
+        otherhead.next = _merge(head.next, otherhead.next)
+        head.next = otherhead
+        return head
+           
+    prev = find_second_head(head)
+    if not prev:
+        return None
+    assert prev
+    prev.next = None
+    otherhead = prev.next
+    return _merge(head, otherhead)
+ 
+otherhead = ListNode(2, ListNode(4, ListNode(6)))
+head = ListNode(1, ListNode(3, ListNode(5,otherhead)))
+print(head)
+# reshead = merge(head)
+# print(reshead)
