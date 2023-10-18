@@ -150,3 +150,33 @@ needle, haystack = 'ab', 'cabqrab'
 #                         0123456 
 print(grep(needle, haystack)) # 1
 #
+
+
+
+from typing import List
+
+'''
+def g abccdef, abcc
+012
+'''
+
+def grep(haystack: str, needle: str) -> List[str]:
+    def hash(s: str, length: int) -> int:
+        shift = 1
+        val = 0
+        for idx in range(length - 1, -1, -1):
+            val += shift * ord(s[idx])
+            shift *= base
+        return val
+
+    n, m = len(haystack), len(needle)
+    hval = hash(haystack, m - 1)
+    nval = hash(needle, m)
+    base = 256
+    shift = 1
+    for idx in range(m, n):
+        hval += 
+    return []
+
+haystack, needle = 'defabcdef', 'abc'
+print(grep(haystack, needle))
