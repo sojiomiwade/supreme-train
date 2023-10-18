@@ -115,3 +115,63 @@ sll = make_list_with_dups()
 assert len(sll.as_list()) == 2 * len(set(sll.as_list()))
 sll.remove_dups()
 assert len(sll.as_list()) == len(set(sll.as_list()))
+'''
+Write code to remove duplicates from a linked list
+4->1->2->5->2->3->1
+4->1->2->5->3
+'''
+from __future__ import annotations
+from typing import Optional
+
+
+class ListNode:
+    def __init__(self, val: int, next: Optional[ListNode]) -> None:
+        self.val = val
+        self.next = next
+
+    def __str__(self) -> str:
+        curr = self
+        res = []
+        while curr:
+            res += [str(curr.val)]
+            curr = curr.next
+        return ''.join(res)
+
+#space, time: O(n), O(n)
+def remove_dups_linear_space(head: Optional[ListNode]) -> None:
+    seen = set()
+    prev, curr = None, head
+    while curr:
+        if curr.val in seen:
+            assert prev
+            prev.next = curr.next
+        else:
+            prev = curr
+        seen |= {curr.val}
+        curr = curr.next
+# 1 1 2 3 1 2 4
+# p   h    
+def remove_dups(head: Optional[ListNode]) -> None:
+    outer = head
+    while outer:
+        inner = outer.next
+        prev = outer
+        while inner:
+            if inner.val == outer.val:
+                prev.next = inner.next
+            else:
+                prev = inner
+            inner = inner.next
+        outer = outer.next
+
+#1 -1-  1  1
+#p      pn
+head = ListNode(4, ListNode(1, ListNode(2, ListNode(1, None))))
+print(head)
+remove_dups(head)
+print(head)
+
+head = ListNode(4, ListNode(4, ListNode(4, ListNode(4, None))))
+print(head)
+remove_dups(head)
+print(head)
