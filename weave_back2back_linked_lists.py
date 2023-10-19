@@ -202,3 +202,195 @@ head = ListNode(1, ListNode(3, ListNode(5,otherhead)))
 print(head)
 # reshead = merge(head)
 # print(reshead)
+
+
+'''
+lessons learned: be careful, don't jump into structural code changes until you know
+what you see the result mentally (or other) well
+Given a linked list node, a1 such that
+a1 -> a2 -> ... -> an -> b1 -> b2 -> ... -> bn, make a  linked list so that it becomes
+a1 -> b1 -> a2 -> b2 -> ... -> an -> bn
+
+a b c
+r t x
+
+a r ...
+    b t ...
+        c x 
+            ...
+can go recursive. how?  
+return merge(a, b) # assume detached lists or put merged in a and return that
+'''
+from __future__ import annotations
+from typing import Optional
+
+
+class ListNode:
+    def __init__(self, val: str, next: Optional[ListNode]) -> None:
+        self.val = val
+        self.next = next
+
+    def __str__(self) -> str:
+        curr = self
+        res = []
+        while curr:
+            res += [curr.val]
+            curr = curr.next
+        return ''.join(res)
+
+def partition(a: Optional[ListNode]) -> Optional[ListNode]:
+    '''
+    abcrtx
+      ps
+          f
+    '''
+    slowprev = None
+    slow = fast = a
+    while fast:
+        assert slow
+        assert fast.next
+        fast = fast.next.next
+        slowprev = slow
+        slow = slow.next
+    assert slowprev
+    b = slowprev.next
+    slowprev.next = None
+    assert b
+    return b
+
+def merge_r(a: Optional[ListNode], b: Optional[ListNode]) -> Optional[ListNode]:
+    if not a:
+        assert not b
+        return None
+    assert a and b
+    b.next = merge_r(a.next, b.next)
+    a.next = b
+    return a
+
+def merge_i(a: Optional[ListNode], b: Optional[ListNode]) -> Optional[ListNode]:
+    '''
+    point at a, move a, move c, point at b, move b, 
+      a
+     qbd
+     rtx
+     cb
+
+     c->a
+    '''
+    res = c = ListNode('', None)
+    while a:
+        assert b
+        c.next = a
+        a = a.next
+        c = c.next
+
+        c.next = b
+        b = b.next
+        c = c.next
+    return res
+
+def weave(a: Optional[ListNode], use_recursive: bool) -> Optional[ListNode]:
+    b = partition(a)
+    if use_recursive:
+        return merge_r(a, b)
+    return merge_i(a, b)
+
+a = ListNode('a', ListNode('b', ListNode('c', ListNode('r', ListNode('t', ListNode('x', None))))))
+print(a) # abcrtx -> arbtcx
+print(weave(a, False))
+
+
+'''
+lessons learned: be careful, don't jump into structural code changes until you know
+what you see the result mentally (or other) well
+Given a linked list node, a1 such that
+a1 -> a2 -> ... -> an -> b1 -> b2 -> ... -> bn, make a  linked list so that it becomes
+a1 -> b1 -> a2 -> b2 -> ... -> an -> bn
+
+a b c
+r t x
+
+a r ...
+    b t ...
+        c x 
+            ...
+can go recursive. how?  
+return merge(a, b) # assume detached lists or put merged in a and return that
+'''
+from __future__ import annotations
+from typing import Optional
+
+
+class ListNode:
+    def __init__(self, val: str, next: Optional[ListNode]) -> None:
+        self.val = val
+        self.next = next
+
+    def __str__(self) -> str:
+        curr = self
+        res = []
+        while curr:
+            res += [curr.val]
+            curr = curr.next
+        return ''.join(res)
+
+def partition(a: Optional[ListNode]) -> Optional[ListNode]:
+    '''
+    abcrtx
+      ps
+          f
+    '''
+    slowprev = None
+    slow = fast = a
+    while fast:
+        assert slow
+        assert fast.next
+        fast = fast.next.next
+        slowprev = slow
+        slow = slow.next
+    assert slowprev
+    b = slowprev.next
+    slowprev.next = None
+    assert b
+    return b
+
+def weave_recursive(a: Optional[ListNode], b: Optional[ListNode]) -> Optional[ListNode]:
+    if not a:
+        assert not b
+        return None
+    assert a and b
+    b.next = weave_recursive(a.next, b.next)
+    a.next = b
+    return a
+
+def weave_iterative(a: Optional[ListNode], b: Optional[ListNode]) -> Optional[ListNode]:
+    '''
+    point at a, move a, move c, point at b, move b, 
+      a
+     qbd
+     rtx
+     cb
+
+     c->a
+    '''
+    res = c = ListNode('', None)
+    while a:
+        assert b
+        c.next = a
+        a = a.next
+        c = c.next
+
+        c.next = b
+        b = b.next
+        c = c.next
+    return res
+
+def weave_stacked(a: Optional[ListNode], use_recursive: bool) -> Optional[ListNode]:
+    b = partition(a)
+    if use_recursive:
+        return weave_recursive(a, b)
+    return weave_iterative(a, b)
+
+a = ListNode('a', ListNode('b', ListNode('c', ListNode('r', ListNode('t', ListNode('x', None))))))
+print(a) # abcrtx -> arbtcx
+print(weave_stacked(a, False))
