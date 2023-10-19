@@ -179,4 +179,46 @@ def grep(haystack: str, needle: str) -> List[str]:
     return []
 
 haystack, needle = 'defabcdef', 'abc'
-print(grep(haystack, needle))
+print(grep(haystack, needle))'''
+find the needle in the haystack
+
+def abcdhiabcdjabc, abcd
+210 ^     ^
+
+make partial haysub
+make needle 
+for i in m..n)
+  complete haysub
+  check it against needle-val update res
+  remove first char from haysub
+'''
+from typing import List
+
+
+def grep(haystack: str, needle: str) -> List[str]:
+    def hash(s: str, length: int) -> int:
+        shift = 1
+        res = 0
+        for idx in range(length-1,-1,-1): 
+            res += shift * ord(s[idx])
+            shift *= 256
+        return res
+    
+    base = 256
+    n, m = len(haystack), len(needle)
+    subval = hash(haystack, m - 1)
+    nval = hash(needle, m)
+    res = []
+    remove = base ** (m-1)
+    # 832|4|5 = 8320 + 4
+    # 012|3|4
+    for i in range(m-1, n):
+        subval *= 256
+        subval += ord(haystack[i])
+        if subval == nval:
+            res += [i-m+1]
+        subval -= remove * ord(haystack[i-m+1])
+    return res
+
+haystack, needle = 'abcdhiabcdjabc', 'abcd' # 0, 6
+print(grep(haystack, needle)) #
