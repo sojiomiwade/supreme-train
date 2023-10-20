@@ -113,3 +113,92 @@ target = "but"
 words = ["but", "put", "big", "pot", "pog", "dog", "lot"]
 print(shortest_path(words, source, target)) # 1
 
+
+
+
+'''
+Shortest Word Edit Path
+Given two words source and target, and a list of words words, find the length of the shortest series of edits that transforms source to target.
+
+Each edit must change exactly one letter at a time, and each intermediate word (and the final target word) must exist in words.
+
+If the task is impossible, return -1.
+
+Examples:
+source = "bit", target = "dog"
+words = ["but", "put", "big", "pot", "pog", "dog", "lot"]
+output: 5
+explanation: bit -> but -> put -> pot -> pog -> dog has 5 transitions.
+
+source = "no", target = "go"
+words = ["to"]
+output: -1
+
+1 ≤ source.length ≤ 20
+[input] string target, 1 ≤ target.length ≤ 20
+array.string words,  1 ≤ words.length ≤ 20
+[output] array.integer
+
+can do all search dfs. if n words. then cost is d**w or f(d)
+. . ./- ./-
+d * (d-1) * (d-2) * (d-w) * ...  = 
+
+can use bfs and we know when we get there
+d + 2d + 4d + 8d + ...
+d ( 2**(log w)) = dw
+but log w can be made log(w/2)  with bidirectional search
+
+                bit
+        but ...
+        /
+      ...
+    /
+  target
+
+time of this bfs approach: 
+'''
+from typing import Deque, List, Tuple
+from collections import deque
+
+#can check for uplicates iin words; all words have equal length
+def find(source: str, target: str, words: List[str]) -> int:
+    def process():
+        res = []
+        curr = target
+        while curr:
+            res.append(curr)
+            curr = pi[curr]
+        return res
+        
+    def oneaway(word: str, otherword: str):
+        count = 0
+        for cha, chb in zip(word, otherword):
+            count += cha != chb
+        return count == 1
+
+    #time: w+d*w = dw; space: w
+    #vs all dfs paths: time: d**w; space: w
+    q = deque([source])
+    level = 0
+    marked = {source}
+    pi = {source: ''} 
+    while q:
+        level += 1
+        for _ in range(len(q)):
+            parent = q.popleft()
+            for candchild in words:
+                if candchild not in marked and oneaway(parent, candchild):
+                    q.append(candchild)
+                    marked.add(candchild)
+                    pi[candchild] = parent
+                    if candchild == target:
+                        res = process()
+                        print(res)
+                        return level
+    return -1
+
+source = "bit"; target = "dog"
+words = ["but", "put", "big", "pot", "pog", "dog", "lot"]
+print(find(source, target, words)) # (list), 5
+#explanation: bit -> but -> put -> pot -> pog -> dog has 5 transitions.
+
