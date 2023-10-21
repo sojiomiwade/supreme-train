@@ -144,3 +144,53 @@ s = 'aa'
 print(compress(s)) # 2, a2
 
 
+'''
+string compression
+implement a method to perform basic string compression using the counts of repeated characters. For example, the string aabcccccaaa would become a2b1c5a3. if the 'compressed' string would not become smaller than the original string, your method should return the original string. You can assume the string has only uppercase and lowercase letters (a-z)
+aabcccccaaa
+l r
+a2b1c5a3
+can make new string and write the compressed string there: O(n), O(n)
+can alter the current string too, without this extra space in place: O(n), O(1), then trim it? NO, it seems
+
+ba
+a1
+b1
+writing from either side will destroy original string! in a way we can't continue
+so have to make a copy!
+make a pass to know whether to even bother. then do it. can use a vector to track frequencies
+    then loop over that vector specifying char and count to make the new list of strings easily if 2*the vec length is less than original_string's length
+ab
+'''
+def compress(string: str) -> str:
+    count = 1
+    buffer = []
+    for idx in range(1, len(string)):
+        if string[idx] != string[idx-1]:
+            count += 1
+    if 2 * count >= len(string):
+        return string
+    '''
+    aabcccccaaa
+    0123
+
+    run through with i
+    count += 
+    '''
+    count = 1
+    for i in range(1, len(string)):
+        if string[i] == string[i-1]:
+            count += 1 # 2
+        else:
+            buffer.append(string[i-1]+str(count))
+            count = 1
+    buffer.append(string[-1]+str(count))
+    return ''.join(buffer)
+
+string = 'ab'
+print(compress(string)) #ab
+string = 'aabb'
+print(compress(string)) #aabb
+string = 'aabbb' 
+#           ^
+print(compress(string)) #a2b3
