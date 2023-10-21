@@ -312,3 +312,41 @@ for i in range(dim):
 rotate(a)
 for i in range(dim):
     print(' '.join(a[i]))
+
+
+
+'''
+lesson learned: 
+you have to define well what the solution looks like even before pouncing into 'pseudocode' which really isn't but just trying to recollect memorized!
+
+
+Given an image represented by an NxN matrix, rotate it
+
+a b c d e
+0 1 2 3 4
+f g h i j
+5 6 7 8 9
+k l m n p
+
+top: 
+'''
+from typing import List
+
+
+def rotate_image(matrix: List[List[str]]) -> None:
+    n = len(matrix)
+    for peel in range(n // 2):
+        for k in range(1 + peel, n-peel):
+            temp = matrix[peel][k]
+            matrix[peel][k] = matrix[n-1-k][peel]
+            matrix[n-1-k][peel] = matrix[n-1-peel][n-1-k]
+            matrix[n-1-peel][n-1-k] = matrix[k][n-1-peel]
+            matrix[k][n-1-peel] = temp
+
+matrix = [
+    ['a', 'b', 'c'],
+    ['d', 'e', 'f'],
+    ['g', 'h', 'i'],
+]
+rotate_image(matrix)
+print(matrix)
