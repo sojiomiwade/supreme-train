@@ -176,7 +176,15 @@ def find(source: str, target: str, words: List[str]) -> int:
             count += cha != chb
         return count == 1
 
-    #time: w+d*w = dw; space: w
+    '''
+    w: length of a word
+    v: number of words
+    d: average degree
+    e: number of edges in graph
+    '''
+    # time : v + ew
+    #      : or dvw (from perspective of d + d**2 + ... + d**lg_d(v)
+    # space: w (how many nodes could get in the queue)
     #vs all dfs paths: time: d**w; space: w
     q = deque([source])
     level = 0
