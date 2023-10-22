@@ -350,3 +350,74 @@ matrix = [
 ]
 rotate_image(matrix)
 print(matrix)
+
+'''
+going to rotate a matrix counter clockwise, via multiple transformations
+
+1 2 3 4 5
+a b c d e  c = 1,2
+6 7 8 9 0. 7 = 2,1
+g h i j k
+^ & * ( )
+
+4 should end up at where a is: 1,0
+
+flip over the 45 degree diagonal (transpose): a_ij <-> a_ji, i < j
+then flip horizontally: aij <-> a_(n-1-i)_j, i in [0,n//2)
+'''
+from typing import List
+
+
+def rotate_matrix(matrix: List[List[int]]) -> None:
+    n = len(matrix)
+    for i in range(n):
+        for j in range(n):
+            if i < j:
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+
+    for i in range(n):
+        for j in range(n):
+            if i < n // 2:
+                matrix[i][j], matrix[n-1-i][j] = matrix[n-1-i][j], matrix[i][j]
+
+'''
+0 1 2  
+3 4 5
+6 7 8
+
+6 1 2  
+3 4 5
+0 7 8
+
+final ans should be
+2 5 8
+1 4 7
+0 3 6
+'''
+n = 3
+# matrix = [[i*n+j for j in range(n)] for i in range(n)]
+# for i in range(n):
+#     for j in range(n):
+#         print(matrix[i][j], end=" ")
+#     print()
+# print()
+# rotate_matrix(matrix)
+# for i in range(n):
+#     for j in range(n):
+#         print(matrix[i][j], end=" ")
+#     print()
+
+
+from random import randrange
+n = 5
+matrix = [[randrange(10) for j in range(n)] for i in range(n)]
+for i in range(n):
+    for j in range(n):
+        print(matrix[i][j], end=" ")
+    print()
+print()
+rotate_matrix(matrix)
+for i in range(n):
+    for j in range(n):
+        print(matrix[i][j], end=" ")
+    print()
