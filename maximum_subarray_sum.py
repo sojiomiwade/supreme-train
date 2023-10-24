@@ -20,3 +20,27 @@ class Solution:
         print(dp)
         return res
 
+
+'''
+at index i: i won't take worse than where i'm at
+
+-2, 1,-3, 4, -1  2
+rs=0,1, 
+rs = max(0, this + rs), but immediately track max
+return min element in array if rs is still -inf
+exp(res) = 5
+
+[5,4,-1,7,8]
+
+-2, 1,-3, 4, -1  2
+rs ?0?,1,-2,4,3,5
+ms=-2
+exp(ms) = 5
+'''
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        rs = maxsum = nums[0]
+        for i in range(1, len(nums)):
+            rs = max(nums[i], nums[i] + rs)
+            maxsum = max(maxsum, rs)
+        return maxsum
