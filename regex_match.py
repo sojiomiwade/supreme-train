@@ -264,3 +264,54 @@ print(isMatch(t, p))
 t, p = ('abd', 'ab*c.') #false
 print(isMatch(t, p))
 
+'''
+aa
+a.
+-> true
+
+aaa
+a*b
+-> false because of b
+
+pj not equal *
+    if si and pj match, advance i and j
+    otherwise return false
+pj equal *
+    try couple things:
+        remove the a*: i stays, advance j by 2
+        try with one or more a: j stays, adbance i by 1
+the result will be s[:i] and p[:j]
+can always cache the i, j
+
+p=a*aa => true
+    ^
+s=, p=a* => true
+s=, p=q => false
+s=ab,p=ac
+
+
+aa, 
+^
+a
+^
+'''
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        def helper(sidx: int, pidx: int):
+            if pidx == n:
+                return sidx == m
+            if (sidx,pidx) in cache:
+                return cache[sidx,pidx]
+            # not a *
+            if pidx + 1 == n or p[pidx + 1] != '*':
+                cache[sidx,pidx] = sidx<m and p[pidx]in(s[sidx],'.') and helper(sidx+1,pidx+1)
+                return cache[sidx,pidx]
+            # is a *
+            zeromatch = helper(sidx,2+pidx)
+            morematch = sidx<m and p[pidx]in(s[sidx],'.') and helper(sidx+1,pidx)
+            cache[sidx,pidx] = zeromatch or morematch
+            return cache[sidx,pidx]
+
+        cache = {}
+        m, n = len(s), len(p)
+        return helper(0, 0)
