@@ -317,6 +317,9 @@ a r ...
 can go recursive. how?  
 return merge(a, b) # assume detached lists or put merged in a and return that
 '''
+
+
+
 from __future__ import annotations
 from typing import Optional
 
@@ -330,7 +333,7 @@ class ListNode:
         curr = self
         res = []
         while curr:
-            res += [curr.val]
+            res += [curr.val + ', ']
             curr = curr.next
         return ''.join(res)
 
@@ -373,16 +376,17 @@ def weave_iterative(a: Optional[ListNode], b: Optional[ListNode]) -> Optional[Li
 
      c->a
     '''
-    res = c = ListNode('', None)
+    res = c = a
     while a:
         assert b
-        c.next = a
+        assert c
         a = a.next
-        c = c.next
-
         c.next = b
+        c = b
+
         b = b.next
-        c = c.next
+        c.next = a
+        c = a
     return res
 
 def weave_stacked(a: Optional[ListNode], use_recursive: bool) -> Optional[ListNode]:
@@ -391,6 +395,11 @@ def weave_stacked(a: Optional[ListNode], use_recursive: bool) -> Optional[ListNo
         return weave_recursive(a, b)
     return weave_iterative(a, b)
 
-a = ListNode('a', ListNode('b', ListNode('c', ListNode('r', ListNode('t', ListNode('x', None))))))
-print(a) # abcrtx -> arbtcx
+a = ListNode('1', ListNode('2', ListNode('3', ListNode('4', ListNode('5', ListNode('6', None))))))
+print(a)
 print(weave_stacked(a, False))
+
+a = ListNode('1', ListNode('2', ListNode('3', ListNode('4', ListNode('5', ListNode('6', None))))))
+print(a)
+print(weave_stacked(a, True))
+
