@@ -136,3 +136,53 @@ print(all_unique_chars(s)) # false
 s = '12312'
 print(all_unique_chars(s)) # false
 
+
+
+
+'''
+implement an algorithm to check if a string has all unique characters
+
+abcdea -> false
+^
+abcde  -> true
+
+hash table, if you see element you've seen return false. at the end return true. O(n) + O(n)
+but if restricted to lower case for example, can use an int for 0-25 characters if we have seen it: space becomes O(1)
+
+also consider an algorithm that uses constant space
+here we could sort and check neighboring characters: O(n lg n) + O(n), space can become O(1) if we use heapsort, since quicksort is n**2 time, and merge sort is n space
+
+abca
+
+bitvec: 0..000
+0..111
+000001 
+'''
+def is_unique(s: str) -> bool:
+    lowerbitvec: int = 0
+    upperbitvec: int = 0
+    for ch in s:
+        if ord('a') <= ord(ch) <= ord('z'):
+            bitvec = lowerbitvec
+            base = 'a'
+        else:
+            bitvec = upperbitvec
+            base = 'A'
+
+        pos = ord(ch) - ord(base)
+        mask = 1 << pos
+        if bitvec & mask != 0: #we have seen it
+            return False
+        bitvec |= mask
+        if ord('a') <= ord(ch) <= ord('z'):
+            lowerbitvec = bitvec
+        else:
+            upperbitvec = bitvec
+
+    return True
+
+print(is_unique('abca')) # false
+print(is_unique('abc')) # true
+print(is_unique('abcA')) # true
+print(is_unique('ABCA')) # false
+print(is_unique('BCA')) # true
