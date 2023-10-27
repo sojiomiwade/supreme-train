@@ -123,4 +123,53 @@ class Solution:
                 return 0
             res = 10*res + mod
         return -res if isneg else res 
+        class Solution:
+    def reverse(self, x: int) -> int:
+        '''
+        1234
+        4321
+        keep adding to res 10*res +module(x), then dividing x  by 10
+        at some point res * 10 is more than max_int or if not
+        10res + mod is more. 
+        (1) 10res > max_int => res > max_int//10
+        below x is the 10res which less than max int now
+        (2) also x + mod > max_int => x > max_int - mod
+        for negative how to do this? max_int can be one more! this applies just to (2)
+
+        max_int = 1235
+        res = 12
+
+        res = 123
+        123*10 = 1230
+        123 <-> 123
+        res = 154
+        154*10 = 1540
+        154 <-> 123 violation
+
+        max_int=232...7
+        123
+        mod=2
+        x=1
+        res=32
+        320 + 1
+        32 > max_int//10
+        33 > 32
+
+        2143, 2159, 2156, 2161<--> 2158
+        2150 + 9 > 
+        '''
+        res = 0 #
+        isneg = True if x < 0 else False
+        x = abs(x)
+        max_int = (2**31-1)
+        max_int_div10 = max_int // 10
+        max_int_mod = max_int % 10
+        while x > 0:
+            mod = x % 10
+            if res > max_int_div10 or (
+                res==max_int_div10 and mod >  max_int_mod + isneg):
+                return 0
+            res = 10*res + mod
+            x //= 10
+        return -res if isneg else res 
         
