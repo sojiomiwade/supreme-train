@@ -123,3 +123,58 @@ permute(s) # abc, acb, bac, ...
 s = 'abc'
 permute(s) # abc, acb, bac, ...
 
+
+
+
+'''
+Provide a list of all permutations of a string
+
+example
+input: abc
+output: abc, acb, bac, bca, cab, cba 
+
+to get the string of length k 
+for every string length k-1, t, for every char in s not in t
+resk = place k in every position in between. 
+
+left={d,c},  
+ a b c
+^ ^ ^ ^
+
+tabulate the res[k]
+with res[1] is length of s, and each t there is equal each character of s
+
+we can do above until k == n
+
+s = ab
+expres = ab ba
+tab = [[a, b], [] ]
+
+ a b c
+^ ^ ^ ^
+
+ba, ab
+1st: '' + ch + all. 
+last: all + ch + 
+'''
+from typing import List
+
+
+def all_perms(s: str) -> List[str]:
+    n = len(s)
+    tab = [[]]
+    for ch in s:
+        tab[0].append(ch)
+    for k in range(1, n): # 1 time => correct
+        tab.append([])
+        for t in tab[k-1]: #take a k-1 string
+            #all the characters not in t
+            candset = set(s) - set(t)
+            for ch in candset:
+                for i in range(1 + len(t)):
+                    tab[-1].append(t[:i] + ch + t[i:])
+    print(tab)
+    return tab[-1]
+
+s = 'abc'
+print(all_perms(s))
