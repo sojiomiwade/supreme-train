@@ -231,3 +231,52 @@ def all_perms(s: str) -> List[str]:
 
 s = 'abcdef'
 print(len(all_perms(s)))
+
+
+'''
+Provide a list of all permutations of a string
+
+example
+input: abc
+output: abc, acb, bac, bca, cab, cba 
+
+first char is base case
+abc = 
+ a b
+^ ^ ^ <-- put c in all those positions
+repeat for each result (just ba in this case)
+
+return 
+'''
+from typing import List
+
+#complexity: T(n) = n * n * T(n-1)
+'''
+n
+
+k = n**2
+n=4
+4**2 * T(3)
+       3**2 * T(2)
+              2**2 * T(1)
+                      1
+(n**2)! <--- result
+k * 
+ k-1 k-2 k-3
+3 2 1
+'''
+def allperms(s: str) -> int:
+    def helper(n: int) -> List[str]: #abc, 2
+        if n == 1:
+            return [s[0]]
+        res = []
+        for t in helper(n-1): 
+            for i in range(n): #3
+                res.append(t[:i] + s[n-1] + t[i:])
+        return res
+    if not s:
+        raise ValueError('input is null or empty')
+    return len(helper(len(s))) # abc
+
+s = 'abcde'
+print(allperms(s))
