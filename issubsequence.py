@@ -113,3 +113,14 @@ class Solution:
             prior_start = sublocs[ord(ch) - ord('a')][idxidx] + 1
         return True 
 
+'''
+ ace
+ abcde
+      ^
+(tt)
+'''
+class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        it = iter(t)
+        return all(ch in it for ch in s)
+            
