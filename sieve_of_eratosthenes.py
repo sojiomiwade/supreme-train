@@ -18,7 +18,7 @@ def isprime(n: int) -> bool:
     isprime = [True for _ in range(n+1)]
     x = 2
     while x <= 1 + int(n**0.5): #  3 <= 3
-        for y in range(2*x, n+1, x):
+        for y in range(x**2, n+1, x):
             isprime[y] = False
         x += 1
         while not isprime[x]:
