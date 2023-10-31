@@ -279,7 +279,11 @@ def allperms(s: str) -> int:
     return len(helper(len(s))) # abc
 
 s = 'abcde'
-print(allperms(s))'''
+print(allperms(s))
+
+
+
+'''
 list all permutations of length n
 abcde
 pre = 'bc'
@@ -315,14 +319,54 @@ ac,b
     a,bc
         bca
 ab,c
+
+abcde, k = 3
+abc
+
+abcd
+    bcd,a
+            cd ab
+                    c   da
+    acd,b
+
+abcde
+bcde a
+cde ab
+
+    de
+abcdef
+
+ab,cde
+
+*, cde
+a-z, c
+    a-z, cd
+
+abcde 
+call 1
+bcde, a
+    cde,ab
+        de,abc
+            e,abcd
+        ce,abd
+        cd,abe
+
+call2
+acde, b
+
+call 25
+acde, b
+
+call 26
+
 '''
 from typing import List
 
 
 
-def allperms(s: str) -> List[str]:
+def allperms(s: str, k: int) -> List[str]:
     def _allperms(rem: str, prefix: str) -> None:
-        if len(prefix) == len(s):
+        if len(prefix) == k:
             res.append(prefix)
         for i in range(len(rem)):
             _allperms(rem[:i] + rem[i+1:], prefix + rem[i])
@@ -332,5 +376,6 @@ def allperms(s: str) -> List[str]:
     return res
 
 s = 'abcde'
-res = allperms(s)
-print(res, len(res))
+res = allperms(s, 3)
+print(res, len(res)) #60
+
