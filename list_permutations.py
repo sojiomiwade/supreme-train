@@ -279,4 +279,58 @@ def allperms(s: str) -> int:
     return len(helper(len(s))) # abc
 
 s = 'abcde'
-print(allperms(s))
+print(allperms(s))'''
+list all permutations of length n
+abcde
+pre = 'bc'
+rem = 
+ a d e
+    ^
+|abcde
+ ^
+a|cde
+
+put prefix everywhere in remaining
+how to generate prefix? by s
+
+abcde
+^
+
+        bcde,a
+    cde,ab      bde,ac
+
+acde,b
+abde,c
+
+abc
+  ^
+bc,a
+    c,ab
+        abc
+    b,ac
+        acb
+ac,b
+    c,ba
+        cab
+    a,bc
+        bca
+ab,c
+'''
+from typing import List
+
+
+
+def allperms(s: str) -> List[str]:
+    def _allperms(rem: str, prefix: str) -> None:
+        if len(prefix) == len(s):
+            res.append(prefix)
+        for i in range(len(rem)):
+            _allperms(rem[:i] + rem[i+1:], prefix + rem[i])
+
+    res = []
+    _allperms(s, '')
+    return res
+
+s = 'abcde'
+res = allperms(s)
+print(res, len(res))
