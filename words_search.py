@@ -80,3 +80,75 @@ board = [["o","a","a","n"],
 words = ["oaa", "oath","pea", "eat","rain"] #oaa, oath, eat
 print(find_words(board, words))
 
+
+
+
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        def buildtrie() -> Dict[str, Dict]:
+            root = {}
+            for word in words:
+                cur = root
+                for i in range(len(word)):
+                    ch = word[i]
+                    if ch not in cur:
+                        break
+                    cur = cur[ch]
+                else:
+                    i += 1
+                for j in range(i, len(word)):
+                    ch = word[j]
+                    cur[ch] = {}
+                    cur = cur[ch]
+                cur[''] = {}
+            return root
+
+        def printtrie(root: Dict[str, Dict], word=None) -> None:
+            '''
+                     .
+                    /|\
+             .-t-a-e q r
+            '''
+            if not word:
+                word = []
+            if not root:
+                print(''.join(word))
+                return
+            for let in root:
+                word.append(let)
+                printtrie(root[let], word)
+                word.pop()
+
+        def _findWords(r, c, tch) -> None:
+            '''
+            cand word = eat
+            0,0,tl=null,tch=(e:{}, q:{}, r:{})
+            0,1,{a:{}, null:{}}
+            e a
+            b c
+                     .
+                    /|\
+             .-t-a-e q r
+            '''
+            if not 0<=r<m or not 0<=c<n:
+                return
+            for tl in tch: # e, q, r / a, null
+                if tl == board[r][c]:
+                    word.append(tl)
+                    if '' in tch[tl]:
+                        found.append(''.join(word))
+                    _findWords(r+1, c, tch[tl])
+                    _findWords(r-1, c, tch[tl])
+                    _findWords(r, c+1, tch[tl])
+                    _findWords(r, c-1, tch[tl])
+                    word.pop()
+
+        found = []
+        m, n = len(board), len(board[0])
+        root = buildtrie()
+        printtrie(root)
+        word = []
+        for r in range(m):
+            for c in range(n):
+                _findWords(r, c, root)
+        return found
