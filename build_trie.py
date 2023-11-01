@@ -104,4 +104,55 @@ class Trie:
 # obj = Trie()
 # obj.insert(word)
 # param_2 = obj.search(word)
-# param_3 = obj.startsWith(prefix)
+# param_3 = obj.startsWith(prefix)from typing import Dict, List
+
+
+
+def buildtrie(words: List[str]) -> Dict[str, Dict]:
+    root = {}
+    '''
+            .
+            /|\
+            a b o-a-t-.
+                    \
+                    m-e-
+    a b c
+    o a t
+    m e a
+
+    func fw(r, c, cur: Dict)
+        check trie children for a matching char to b[r][c]
+        if one child found
+            word += b[r][c]
+            see if word so far is done: one of child's child is ''
+            recurse to neighboring cells of b with the child's trie nodes
+            word.pop
+    '''
+    for word in words:
+        cur = root
+        for ch in word:
+            if ch not in cur:
+                cur[ch] = {}
+            cur = cur[ch]
+        cur['.'] = None 
+    return root
+
+def search(root: Dict, word: str) -> bool:
+    '''
+            .
+            /|\
+            a b o-a-t-.
+                    \
+                    m-e-
+    '''
+    cur = root
+    for ch in word:
+        if ch not in cur:
+            return False
+        cur = cur[ch]
+    return '.' in cur
+
+root = buildtrie(['a', 'b', 'oat'])
+print(search(root, 'oat')) # true
+print(search(root, 'oa')) # false
+print(search(root, 'a')) # true
