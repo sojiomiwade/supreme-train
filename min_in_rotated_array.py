@@ -89,3 +89,78 @@ print(rot(arr)) # 0
 arr = [11,13,15,17]
 print(rot(arr)) # 11
 
+
+
+
+'''
+Suppose an array of length n sorted in ascending order is rotated between 1 and n times. Given the sorted rotated array nums of unique elements, return the minimum element of this array.
+
+assumes uniquness in elements
+'''
+
+from typing import List
+
+
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        '''
+        there is an issue because a[lo] > a[hi]
+        issue could be in either place.
+        min element is with the issue
+        note no issue in sorted 2 element case
+        so to not get rid of the minimum, check the right
+        for ok-ness. if so
+        take array where a[lo] > a[hi]
+
+        if no issue in both pick min from both left
+        if issue, only one will have issue and that has the min
+            => we have to keep that one
+
+        0 1 2 | 4 5 6 7: left
+        4 5 6 7 | 0 1 2: 
+        7 0 | 1 2       :
+        7 | 0           :right
+        4 5 6 7 | 9 0 1 2: right...
+
+
+        0 1 2 3 | 4 5 6: left
+        6 0 1 2 | 3 4 5
+        6 0 | 1 2
+
+        0 | 7
+
+        0 1 | 2 ->> if left arr is fine, answer is in right
+
+        if only one element, just return it. =>
+        now we have more than 1:
+            if no issue in both pick min from both left
+            if issue, only one will have issue and that has the min
+                => we have to keep that one
+
+        '''
+        if not nums:
+            raise ValueError('need numbers in input')
+        lo, hi = 0, len(nums) - 1
+        while lo < hi:
+            mi = lo + (hi - lo) // 2
+            okleft, okright = nums[lo]<nums[mi], nums[mi+1]<nums[hi]
+            if okleft and okright:
+                return min(nums[lo],nums[mi+1])
+            if okleft:
+                lo = mi + 1
+            else:
+                hi = mi
+        return nums[lo]
+
+
+nums = [4,5,6,7,0,1,2]
+print(Solution().findMin(nums)) # 0
+
+nums = [3,4,5,1,2]
+print(Solution().findMin(nums)) # 1
+
+nums = [3]
+print(Solution().findMin(nums)) # 3
+
+nums = []
+print(Solution().findMin(nums)) # ValueError
