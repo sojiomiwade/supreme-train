@@ -48,3 +48,55 @@ class Solution:
 comp = {7: 0, }
 retval = [1, 0]
 '''
+'''
+Merging 2 Packages
+Given a package with a weight limit limit and an array arr of item weights, implement a function getIndicesOfItemWeights that finds two items whose sum of weights equals the weight limit limit. Your function should return a pair [i, j] of the indices of the item weights, ordered such that i > j. If such a pair doesn’t exist, return an empty array.
+
+Analyze the time and space complexities of your solution.
+
+Example:
+
+input:  arr = [4, 6, 10, 15, 16],  lim = 21
+
+output: [3, 1] # since these are the indices of the
+               # weights 6 and 15 whose sum equals to 21
+Constraints:
+
+[time limit] 5000ms
+
+[input] array.integer arr
+
+0 ≤ arr.length ≤ 100
+[input] integer limit
+
+[output] array.integer
+
+
+2sum
+4, 6, 10, 15, 16, lim = 21
+
+put each number in a hashmap as we traverse array
+check for complement for any given number. return true if it exists
+time and space: n and n
+
+could sort
+4 6 10 15 16
+l          r
+move l or r depending on if sum less (move l) or greater (move r) than limit
+when we find two, then go back to original array to find the respective indices
+n lg n and  n(need sorted array + sort actually itself takes n)
+'''
+from typing import List
+
+
+def get_indices_of_item_wights(arr: List[int], limit: int) -> List[int]:
+    lookup = {}
+    for idx, elem in enumerate(arr): # 
+        if limit-elem in lookup: # 6 in lookup?
+            return [idx, lookup[limit-elem]]
+        lookup[elem] = idx # {4:0,6:1,}
+    return []
+
+arr = [4, 6, 10, 15, 16]
+lim = 21
+print(get_indices_of_item_wights(arr, lim)) # [3,1]
