@@ -227,3 +227,73 @@ print()
 rs.delete('a')
 for _ in range(5):
     print(rs.get_random(),end=', ')
+'''
+lookup
+4 7 2 3 8 9
+0 1 2 3 4 5
+
+rlookup
+0 1 2 3 4 5
+4 7 2 3 8 9
+
+lookup
+4 9 2 3 8
+0 1 2 3 4
+
+rlookup
+0 1 2 3 4
+4 9 2 3 8
+
+insert: put in lookup[elem] = count, then incrment count
+
+get-random: ret =rand(count). return rlookup[ret]
+
+delete(delkey): 
+adjust lookup
+    delidx = lookup[delkey]
+    lookup[rlookup[count-1]] = delidx
+    #l[rl[5]] = 1: {9:1}
+    del lookup[delkey] # bye bye 7
+
+adjust rlookup
+    rlookup[delidx] = rlookup[count-1] 
+    #rl[]
+    del rlookup[count-1]
+'''
+class RandomizedSet:
+
+    def __init__(self):
+        self.count = 0
+        self.lookup = {}
+        self.rlookup = {}
+
+    def insert(self, val: int) -> bool:
+        if val in self.lookup:
+            return False
+        self.lookup[val] = self.count
+        self.rlookup[self.count] = val
+        self.count += 1
+        return True
+
+    def remove(self, val: int) -> bool:
+        # adjust lookup
+        if val not in self.lookup:
+            return False
+        delidx = self.lookup[val]
+        self.lookup[self.rlookup[self.count-1]] = delidx
+        del self.lookup[val] # bye bye 7
+
+        # adjust rlookup
+        self.rlookup[delidx] = self.rlookup[self.count-1] 
+        del self.rlookup[self.count-1]
+        self.count -= 1
+        return True
+
+    def getRandom(self) -> int:
+        return self.rlookup[random.randrange(self.count)]
+        
+# Your RandomizedSet object will be instantiated and called as such:
+# obj = RandomizedSet()
+# param_1 = obj.insert(val)
+# param_2 = obj.remove(val)
+# param_3 = obj.getRandom()
