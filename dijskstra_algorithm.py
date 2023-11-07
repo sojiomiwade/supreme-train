@@ -99,3 +99,92 @@ edge_weight = {(v,w):weight for (v,w,weight) in flights}
 nbs = build_graph(flights)
 print(minprice(nbs, edge_weight, 0, 2)) # 150
 
+from itertools import count
+from collections import defaultdict
+from typing import Dict, List, Tuple
+from heapq import heapify, heappop, heappush
+
+"""
+        0
+     1 / \ 5
+      1 - 2
+        1
+"""
+def build_graph(
+        edges: List[Tuple[int,int,int]]
+        ) -> Tuple[Dict[int, List[int]], Dict[Tuple[int,int],int]]:
+    edge_cost = {}
+    nbs = defaultdict(list)
+    for node, nb, cost in edges: #01 02 12
+        nbs[node].append(nb) # {0:12,12:,2:}
+        nbs[nb]
+        edge_cost[node,nb] = cost
+    return nbs, edge_cost
+
+class PriorityQueue:
+    def __init__(self, tasklist_size: int, special: int) -> None:
+        INT_MAX = 2**31 - 1
+        self.counter = count()
+        self.heap = [[INT_MAX,next(self.counter),i] for i in range(tasklist_size)]
+        self.heapitem = {i: self.heap[i] for i in range(tasklist_size)}
+        # heap = [[inf,0,0], [inf,0,1], [inf,0,2]]
+        # heapitem = {0:h0,   1:h1,        2:h2}
+        heapentry_for_start_node = self.heapitem[special] # [inf,0,start]
+        heapentry_for_start_node[0] = 0
+        heapify(self.heap)
+
+    def task_key(self, task: int) -> int:
+        print(self.heapitem)
+        heapitem = self.heapitem[task]
+        return heapitem[0]
+
+    def decrease_key(self, task: int, key: int) -> None:
+        heapentry = self.heapitem.pop(task) # {0:[0,0,], ...}
+        heapentry[-1] = None
+        newentry = [key, next(self.counter), task]
+        heappush(self.heap, newentry)
+
+    def pop_task(self) -> int:
+        while self.heap:
+            heapentry = heappop(self.heap)
+            if heapentry[-1] is not None:
+                del self.heapitem[heapentry[-1]]
+                return heapentry[-1]
+        raise IndexError('empty heap')
+
+    def __len__(self) -> int:
+        return len(self.heap)
+        
+def shortest_path(
+        edges: List[Tuple[int,int,int]],
+        src: int, dst: int) -> List[int]:
+    nbs, edge_cost = build_graph(edges)
+    pq = PriorityQueue(len(nbs), src)
+    # pq.decrease_key(task=src, key=0)
+    path = []
+    """
+               1
+            1 / \ 5
+             0 - 2
+               1
+        
+    """
+    while len(pq) > 0:
+        print('b4', pq.heap)
+        min_city_cost = pq.task_key(task=pq.top())
+        min_city = pq.pop_task() #0
+        path.append(min_city) # [0]
+        if min_city == dst:
+            return path
+        print('hi', pq.heap)
+        for nb in nbs[min_city]:
+            nb_cost = pq.task_key(task=nb)
+            newval = min(nb_cost, mc_cost + edge_cost[(min_city, nb)])
+            pq.decrease_key(task=nb, key=newval)
+    return path
+
+edges = [(0,1,1),(0,2,5),(1,2,1)]
+src,dst = (0,2)
+print(shortest_path(edges,src,dst)) # 0-1-2
+
+    
