@@ -145,12 +145,11 @@ class PriorityQueue:
         heappush(self.heap, newentry)
 
     def pop_task(self) -> int:
-        while self.heap:
-            heapentry = heappop(self.heap)
-            if heapentry[-1] is not None:
-                del self.heapitem[heapentry[-1]]
-                return heapentry[-1]
-        raise IndexError('empty heap')
+        heapentry = heappop(self.heap)
+        assert heapentry[-1] != -1
+        self.size -= 1
+        del self.heapitem_lookup[heapentry[-1]]
+        return heapentry[-1]
 
     def __len__(self) -> int:
         return len(self.heap)
