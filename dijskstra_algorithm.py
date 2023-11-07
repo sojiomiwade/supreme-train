@@ -187,4 +187,103 @@ edges = [(0,1,1),(0,2,5),(1,2,1)]
 src,dst = (0,2)
 print(shortest_path(edges,src,dst)) # 0-1-2
 
+    from itertools import count
+from collections import defaultdict
+from typing import Dict, List, Tuple
+from heapq import heapify, heappop, heappush
+
+"""
+        0
+     1 / \ 5
+      1 - 2
+        1
+"""
+def build_graph(
+        edges: List[Tuple[int,int,int]]
+        ) -> Tuple[Dict[int, List[int]], Dict[Tuple[int,int],int]]:
+    edge_cost = {}
+    nbs = defaultdict(list)
+    for node, nb, cost in edges: #01 02 12
+        nbs[node].append(nb) # {0:12,12:,2:}
+        nbs[nb]
+        edge_cost[node,nb] = cost
+    return nbs, edge_cost
+
+class PriorityQueue:
+    def __init__(self, tasklist_size: int, special: int) -> None:
+        INT_MAX = 9 #2**31 - 1
+        self.size = tasklist_size
+        self.counter = count()
+        self.heap = [[INT_MAX,next(self.counter),i] for i in range(tasklist_size)]
+        self.heapitem_lookup = {i: self.heap[i] for i in range(tasklist_size)}
+        heapentry_for_start_node = self.heapitem_lookup[special] # [inf,0,start]
+        heapentry_for_start_node[0] = 0
+        heapify(self.heap)
+
+    def task_key(self, task: int) -> int:
+        heapitem = self.heapitem_lookup[task]
+        return heapitem[0]
+
+    def peek(self) -> int:
+        while self.heap[0][-1] is None:
+            heappop(self.heap)
+        return self.heap[0][-1]
+
+    def decrease_key(self, task: int, key: int) -> None:
+        self.heapitem_lookup[task][-1] = -1
+        heapitem = [key, next(self.counter), task]
+        heappush(self.heap, heapitem)
+        self.heapitem_lookup[task] = heapitem
+
+
+    def pop_task(self) -> int:
+        while self.heap:
+            heapentry = heappop(self.heap)
+            if heapentry[-1] != -1:
+                self.size -= 1
+                del self.heapitem_lookup[heapentry[-1]]
+                return heapentry[-1]
+        raise IndexError('empty heap')
+
+    def __len__(self) -> int:
+        return self.size
+        
+def shortest_path(
+        edges: List[Tuple[int,int,int]],
+        src: int, dst: int) -> List[int]:
+    nbs, edge_cost = build_graph(edges)
+    pq = PriorityQueue(len(nbs), src)
+    """
+                [0]
+                 0
+            1 /    \ 5
+             1 ---- 2
+          [inf]  1  [inf]
+        
+    """
+    pi_lookup = {src: -1}
+    while len(pq) > 0: # 3
+        min_city_cost = pq.task_key(task=pq.peek()) 
+        min_city = pq.pop_task()
+        for nb in nbs[min_city]:
+            nbcost = pq.task_key(task=nb)
+            cand = min_city_cost + edge_cost[(min_city, nb)]
+            if cand < nbcost:
+                pq.decrease_key(task=nb, key=cand)
+                pi_lookup[nb] = min_city
+
+    cur = dst
+    path = []
+    while cur != -1:
+        path.append(cur)
+        cur = pi_lookup[cur]
+    return path[::-1]
+
+edges = [(0,1,1),(0,2,5),(1,2,1)]
+src,dst = (0,2)
+print(shortest_path(edges,src,dst)) # 0-1-2
+
+edges = [(0,1,1),(0,2,1),(1,2,1)]
+src,dst = (0,2)
+print(shortest_path(edges,src,dst)) # 0-2
     
