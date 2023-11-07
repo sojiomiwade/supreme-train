@@ -286,3 +286,28 @@ edges = [(0,1,1),(0,2,1),(1,2,1)]
 src,dst = (0,2)
 print(shortest_path(edges,src,dst)) # 0-2
     
+
+
+
+
+class Solution:
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        q = [(0,k)]
+        elookup = defaultdict(list)
+        for u,v,w in times:
+            elookup[u].append((v,w)) 
+        dlookup = {}
+        '''
+        elookup: {2:[(1,1),(3,1)], 1:, 3:[(4,1)], 4:}
+        q: [ ]
+        dlookup: {2:0, 1:1, 3:1, 4:2}
+        delay,node: (1,4)
+        v,w: 4,1
+        '''
+        while q: 
+            delay, node = heapq.heappop(q) 
+            if node not in dlookup: 
+                dlookup[node] = delay
+                for v, w in elookup[node]: 
+                    heapq.heappush(q, (dlookup[node] + w, v))
+        return max(dlookup.values()) if len(dlookup) == n else -1
