@@ -296,4 +296,63 @@ class RandomizedSet:
 # obj = RandomizedSet()
 # param_1 = obj.insert(val)
 # param_2 = obj.remove(val)
+# param_3 = obj.getRandom()'''
+brute force: use a regular set, but get random will be linear
+since we first gather all: O(n)
+use a lookup and reverse lookup? 
+
+1 3 5 7
+0 1 2 3
+0 1 2 3
+1 3 5 7
+
+1 3x 5 7
+0 1x 2 31
+   2    1
+
+0 1  2 3x
+1 37 5 7x
+  1.   2
+insert ^
+delete(val):
+    make the assiignmet first b4 deleting or you may not delete
+    size: 4;  i,v: 1,3; li,lv: 3,7
+'''
+class RandomizedSet:
+    def remove(self, val: int) -> bool:
+        if val not in self.il:
+            return False
+
+        size = len(self.ril)
+        idx = self.il[val]
+        lidx, lval = size-1, self.ril[size-1]
+
+        self.il[lval] = idx
+        del self.il[val]
+
+        self.ril[idx] = lval
+        del self.ril[lidx]
+
+        return True
+
+    def __init__(self):
+        self.il = {}
+        self.ril = {}
+
+    def insert(self, val: int) -> bool:
+        if val in self.il:
+            return False
+        size = len(self.il)
+        self.il[val] = size
+        self.ril[size] = val
+        return True
+
+    def getRandom(self) -> int:
+        return self.ril[random.randrange(len(self.il))]
+
+
+# Your RandomizedSet object will be instantiated and called as such:
+# obj = RandomizedSet()
+# param_1 = obj.insert(val)
+# param_2 = obj.remove(val)
 # param_3 = obj.getRandom()
