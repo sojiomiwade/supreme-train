@@ -42,3 +42,23 @@ class Solution:
                 visit = set()
                 res = res or _exist(row, col, 0)
         return res
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        def _exist(i, r, c):
+            if i==m:
+                return True
+            if 0<=r<n1 and 0<=c<n2 and word[i]==board[r][c]:
+                board[r][c],temp='#',board[r][c]
+                up = _exist(i+1,r+1,c)
+                do = _exist(i+1,r-1,c)
+                ri = _exist(i+1,r,c+1)
+                le = _exist(i+1,r,c-1)
+                board[r][c] = temp
+                return up or do or ri or le
+
+        m,n1,n2 = len(word),len(board),len(board[0])
+        for i in range(n1):
+            for j in range(n2):
+                if _exist(0,i,j):
+                    return True
+        return False
