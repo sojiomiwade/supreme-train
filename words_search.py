@@ -210,3 +210,62 @@ class Trie:
 # obj.insert(word)
 # param_2 = obj.search(word)
 # param_3 = obj.startsWith(prefix)
+
+
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        def buildtrie():
+            '''
+            o
+            oa
+            b
+                             .
+                            / \
+                           o   b
+                          /
+                         a
+            ws=[o, o a , b]
+                         w
+                         c
+            root = {o:{.:{},a:{.:{}}}, b:{.:{}} }
+                                         t
+            '''
+            root = {}
+            for w in words:
+                t = root
+                for c in w:
+                    if c not in t:
+                        t[c] = {}
+                    t = t[c]
+                t['.'] = {}
+            return root
+        '''
+            root={o:{.:{},a:{.:{}}}}
+        '''
+        def printtrie(t,w):
+            if '.' in t:
+                print(''.join(w))
+            for c in t:
+                if c != '.':
+                    printtrie(t[c], w+[c])
+
+        def ts(r, c, t, w):
+            if '.' in t:
+                res.append(''.join(w))
+                del t['.']
+
+            if 0<=r<n1 and 0<=c<n2 and board[r][c] in t:
+                brc = board[r][c]
+                board[r][c] = '#'
+                ts(r+1,c,t[brc],w+[brc])
+                ts(r-1,c,t[brc],w+[brc])
+                ts(r,c+1,t[brc],w+[brc])
+                ts(r,c-1,t[brc],w+[brc])
+                board[r][c] = brc
+
+        res,t = [],buildtrie()
+        n1,n2=len(board),len(board[0])
+        for i in range(n1):
+            for j in range(n2):
+                ts(i,j,t,[])
+        return res
