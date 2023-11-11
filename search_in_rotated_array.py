@@ -1,10 +1,11 @@
-if left is sorted pick it to check,
-  clo, chi = lo, mi
-  olo, ohi = mi, hi
-else
-  clo, chi = mi, hi
-  olo, ohi = lo, mi
+func call(lo, hi, x)
+  if a[lo] < a[mi]
+    slo, shi = lo, mi
+    ulo, uhi = mi+1, hi
+  else
+    slo, shi = mi+1, hi
+    ulo, uhi = lo, mi
 
-if clo<x<chi
-  return call(clo,chi)
-return call(olo, ohi)
+  if slo<=x<=shi
+    return call(slo, shi,x)
+  return call(ulo, uhi,x)
