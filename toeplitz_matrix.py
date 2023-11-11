@@ -1,3 +1,5 @@
+#just need to check 1 pair of diagonals, for all diagonals. easy peezy.
+
 class Solution:
     def isToeplitzMatrix(self, matrix: List[List[int]]) -> bool:
         m, n = len(matrix), len(matrix[0])

@@ -57,3 +57,37 @@ class Solution:
                 return i
 
         return -1
+'''
+could use collections.counter to run through and get each freq
+then run through again and return the first with 0 freq. if none, return -1
+that's O(1) actually since we have 26 such chars
+O(n) for the two passes, but space is O(1)
+---
+could also sort and check neighboring elements n lg n + n-space
+---
+can use an int instead for better space (1 int vs 26 ints)
+still need to run through twice!
+here's how it works. wait! can use two ints
+abccc
+abcdefghi
+011
+001
+now loop through s again, and find first char where 2nd int bit is not set. otherwise return -1
+'''
+class Solution:
+    def firstUniqChar(self, ss: str) -> int:
+        f,s = 0,0
+        for c in ss:
+            i = ord(c)-ord('a')
+            m = 1 << i
+            if (f & m) != 0:
+                s |= m
+            else:
+                f |= m
+
+        for r,c in enumerate(ss): #0l 1o ...
+            i = ord(c)-ord('a')
+            m = 1 << i
+            if (s & m) == 0:
+                return r
+        return -1
