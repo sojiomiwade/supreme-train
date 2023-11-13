@@ -108,3 +108,37 @@ print(first_true(arr)) # 2
 arr = [True, True, True, True]
 print(first_true(arr)) # 0
 
+# The isBadVersion API is already defined for you.
+# def isBadVersion(version: int) -> bool:
+class Solution:
+    def firstBadVersion(self, n: int) -> int:
+        '''
+        012345678
+        1234 5 6. 7 89
+        ffff f f. t tt
+
+        12345
+        ffftt
+        3,4
+        use binary search and 
+        new lo/hi is mi-1, or mi+1
+        brute-force: linear is a no-no at O(n)
+        time: O(lg n)
+        space: O(1)
+        '''
+        lo,hi=1,n
+        res=-1
+        while lo <= hi:
+            mi = lo + (hi - lo)//2
+            isbad = isBadVersion(mi)
+            if isbad:
+                hi = mi - 1
+                res = mi
+            else:
+                lo = mi + 1
+        if res==-1:
+            raise ValueError('no bad version')
+        return res
+            
+            
+        
