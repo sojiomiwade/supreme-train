@@ -77,3 +77,32 @@ class Solution:
         dp={}
         return (m+n-dd(0,0))//2
 
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        m,n=len(text1),len(text2)
+        dp=[[0 for j in range(n+1)] for i in range(2)]
+        for ti in range(1,m+1):
+            i=ti%2
+            for j in range(1,n+1):
+                if text1[ti-1]==text2[j-1]:
+                    dp[i][j]=dp[i-1][j-1]+1
+                else:
+                    dp[i][j]=max(dp[i][j-1],dp[i-1][j])
+        return dp[m%2][n]
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        def _lcs(i,j):
+            if (i,j) in dp:
+                return dp[i,j]
+
+            if i==m or j==n:
+                val=0
+            elif text1[i]==text2[j]:
+                val=1+_lcs(i+1,j+1)
+            else:
+                val=max(_lcs(i+1,j),_lcs(i,j+1))
+            dp[i,j]=val
+            return val
+
+        m,n,dp=len(text1),len(text2),{}
+        return _lcs(0,0)
