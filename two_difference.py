@@ -95,3 +95,42 @@ print(k_diff(arr, 2))
 arr = [1,7,5]
 # res = [(1,5)]
 print(k_diff(arr, 4))
+'''
+return a list of all pairs with difference k in a given array
+example
+arr,k = [1,7,5,9,2,12,3],2
+res = [(1,3), (3,5), (5,7), (7,9)]
+k = 2
+
+comp={1,7,}
+res={(5,7),()}
+7 will look for 5 and 9
+1 will look for 1+k, and -1 (1-k)
+can do bruteforce for each pair -> n**2 time, constant space
+could use hashtable as a set to remember elements that exist
+'''
+def two_diff(arr, k):
+    comp = set()
+    res = set()
+    for x in arr:
+        y = None
+        if x+k in comp:
+            y = x+k
+        if y is not None:
+            if x > y:
+                x,y = y,x
+            res.add((x,y))
+        y=None
+        if x-k in comp:
+            y = x-k
+        if y is not None:
+            if x > y:
+                x,y = y,x
+            res.add((x,y))
+        comp.add(x)
+    return list(res)
+
+
+arr,k = [1,7,5,9,2,12,3],2
+#res = [(1,3), (3,5), (5,7), (7,9)]
+print(two_diff(arr,k))
