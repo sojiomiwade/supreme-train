@@ -271,3 +271,54 @@ print(shortestWordEditPath(source, target, words)) # 1
 source, target = 'bit', 'dog'
 words = ["but", "put", "big", "pot", "pog", "dog", "lot"]
 print(shortestWordEditPath(source, target, words)) # 5
+'''
+example
+beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log","cog"]
+Output: 5
+Explanation: One shortest transformation sequence is "hit" -> "hot" -> "dot" -> "dog" -> cog", 
+
+bruteforce: n! listing all permutations (can achieve it via DFS, it appears)
+better: 
+    BFS. then the time+space: O((V+E)len(w))
+    could iterate in words to find all neighbors: O(Vw)=50_000
+    or could iterate in alphabet and look in V: O(26w**2c)=2_600c, c is hashtable constant
+    hat hit
+
+what if we never find
+ew=d
+a-b-c
+hit -> dot -> dog
+output: 3
+
+'''
+class Solution:
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        def append_oneaways(was: str):
+            '''hit, {hat,bot}
+            az={a,b,h}
+            c=h
+            ow=hat
+            '''
+            w=list(was)
+            for i in range(len(was)):
+                for c in az:
+                    ow=w[:i]+c+w[i+1:]
+                    temp,w[i]=w[i],c
+                    if ow in ws:
+                        ws.remove(ow)
+                        q.append(ow)
+
+        az=[chr(i+97) for i in range(26)]            
+        ws=set(wordList)
+        ws.discard(beginWord)
+        q = deque([beginWord])
+        sl=1
+        while q:
+            for _ in range(len(q)):
+                w=q.popleft()
+                if w==endWord:
+                    return sl
+                append_oneaways(w) # remember to visit each one
+            sl += 1
+        return 0
+
