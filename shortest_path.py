@@ -310,4 +310,25 @@ class Solution:
                 dlookup[node] = delay
                 for v, w in elookup[node]: 
                     heapq.heappush(q, (dlookup[node] + w, v))
-        return max(dlookup.values()) if len(dlookup) == n else -1
+        return max(dlookup.values()) if len(dlookup) == n else -1class Solution:
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        r,q,f={},[(0,k)],defaultdict(dict)
+        '''
+        f={0:{2:1,1:4},2:{1:1}}
+        r exp = {0:0,1:2,2:1}=>2
+        q=[  ]
+        c,u=41
+        r={00 21 12}
+        '''
+        for u,v,w in times:
+            f[u][v]=w
+        while q:
+            c,u=heapq.heappop(q)
+            if u in r:
+                continue
+            r[u]=c
+            for (v,vc) in f[u].items():
+                heapq.heappush(q,(vc+c,v))
+        if len(r)<n:
+            return -1
+        return max(r.values())
