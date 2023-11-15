@@ -155,4 +155,47 @@ def search(root: Dict, word: str) -> bool:
 root = buildtrie(['a', 'b', 'oat'])
 print(search(root, 'oat')) # true
 print(search(root, 'oa')) # false
-print(search(root, 'a')) # true
+print(search(root, 'a')) # trueclass Trie:
+
+    def __init__(self):
+        self.root={}
+
+    def insert(self, word: str) -> None:
+        '''
+        .
+         q-u-e-e-n-.
+         c-a-t-.
+             -e-r-.
+        root add the letter and a dict, then change root to that dict for next letter
+        but if letter exists, only change root to that dict
+        time: O(w), space: O(w)
+        '''
+        cur=self.root
+        for l in word:
+            if l not in cur:
+                cur[l]={} #{c:{  a:{   t:{     .:      }   }  }}
+            cur=cur[l]
+        cur['.']=''
+
+    def search(self, word: str) -> bool:
+        cur=self.root
+        for l in word:
+            if l not in cur:
+                return False
+            cur=cur[l]
+        return '.' in cur
+
+    def startsWith(self, prefix: str) -> bool:
+        cur=self.root
+        for l in prefix:
+            if l not in cur:
+                return False
+            cur=cur[l]
+        return True        
+
+
+# Your Trie object will be instantiated and called as such:
+# obj = Trie()
+# obj.insert(word)
+# param_2 = obj.search(word)
+# param_3 = obj.startsWith(prefix)
