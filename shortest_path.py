@@ -331,4 +331,21 @@ class Solution:
                 heapq.heappush(q,(vc+c,v))
         if len(r)<n:
             return -1
-        return max(r.values())
+        return max(r.values())class Solution:
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        #time cost: O(V**2) -- in general nodes can see themselves popped a lot
+        #space cost: O(V) -- if all nodes get in the queue
+        q=deque([k])
+        r=defaultdict(lambda :float('inf'))
+        r[k]=0
+        f=defaultdict(dict)
+        for u,v,w in times:
+            f[u][v]=w
+        print(f)
+        while q:
+            u=q.popleft()
+            for (v,vc) in f[u].items():
+                if r[u]+vc < r[v]:
+                    q.append(v)
+                    r[v]=r[u]+vc
+        return max(r.values()) if len(r)==n else -1
