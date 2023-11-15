@@ -327,4 +327,60 @@ class Solution:
         for i in range(n1):
             for j in range(n2):
                 ts(i,j,t)
-        return res
+        return res'''
+need visited
+bruteforce: for each word, flip w of mn bits to 1 => 2**(mn)
+better: at each cell, while avoiding going back, try to incrementally form
+        the word with BFS/DFS: time: (d**w)*m*n*W. space: w (due to DFS)
+better: at each cell, instead advance in a trie. then d**w -> O(1) because
+        lookup in trie is average constant. time becomes: m*n*W. space 
+        becomes DFS + trie: w + W = W
+opt:    can keep the word at the bottom for each word to simplify recursion
+        call parameters, and avoid that appending anyway
+        for free, with trie, if multiple words have same prefix, after
+        finding one, we can continue to find others, and not have to search
+        for those found again
+            .-c-a-.
+                 -t-.
+                   -e-r-.
+             -d-o-g-.
+'''
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        def buildtrie():
+            root={}
+            for word in words:
+                cur=root
+                for l in word:
+                    if l not in cur:
+                        cur[l]={}
+                    cur=cur[l]
+                cur['.']=word
+            return root
+
+        def _findWords(r, c, cur):
+            '''
+            trie
+            .-o-.
+               -a-.
+            board:[[o,a]]
+            '''
+            if '.' in cur and cur['.'] in ws:
+                res.add(cur['.'])
+            if 0<=r<m and 0<=c<n and (r,c) not in visited and board[r][c] in cur:
+                visited.add((r,c))
+                cur=cur[board[r][c]]
+                _findWords(r+1,c,cur)
+                _findWords(r-1,c,cur)
+                _findWords(r,c+1,cur)
+                _findWords(r,c-1,cur)
+                visited.remove((r,c))
+
+        visited,m,n=set(),len(board),len(board[0])
+        ws=set(words)
+        res=set()
+        root=buildtrie()
+        for r in range(m):
+            for c in range(n):
+                _findWords(r,c,root)
+        return list(res)
