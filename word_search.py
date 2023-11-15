@@ -61,4 +61,38 @@ class Solution:
             for j in range(n2):
                 if _exist(0,i,j):
                     return True
+        return False'''
+need visited
+1 possible bruteforce: switch on w bits given mxn bits,
+check for validity, and return true accordingly
+complexity: 2**n
+better is just recursively find the word checking *cell*
+validity and word validity as you go, don't forget to not
+revisit in any search (DFS)
+complexity: m*n*(d**w)
+BFS could be employed with a similar cost
+pick DFS for simpler solution
+'''
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        def _exist(r, c, wi):
+            if wi==len(word):
+                return True
+            if 0<=r<m or 0<=c<n and (r,c) not in visited and word[wi]==board[r][c]:
+                visited.add((r,c))
+                exists=(
+                    _exist(r+1,c,wi+1) or 
+                    _exist(r-1,c,wi+1) or 
+                    _exist(r,c+1,wi+1) or 
+                    _exist(r,c-1,wi+1))
+                visited.remove((r,c))
+                return exists
+            return False
+
+        m,n=len(board),len(board[0])
+        visited=set()
+        for r in range(m):
+            for c in range(n):
+                if _exist(r,c,0):
+                    return True
         return False
