@@ -77,4 +77,51 @@ class Solution:
             bar[u]=l
             for v,vc in f[u].items():
                 heapq.heappush(q,(p+vc,v,l-1))
-        return -1
+        return -1'''
+lebcowit
+k stops => k+1 leaps => L=k+1 leaps
+can use heaps with cost: E lg E
+    K is not a factor here because we could radially pick nodes, which approaches E, not K
+    space: E, since arbitrary number of edges could be in pq
+for BFS now not so simple with K factor: 
+    can visit a node arbitrary number of times (degree)
+    since this will hold for all nodes, then add/remove for any node 
+    add/remove: V*V, that's it since each is O(1)
+    again K doesn't really factor into asymptotic comp
+    space: E, since arbitrary number of nodes could add a given node
+            this runs as E for all nodes
+    queue item: (p,node,l)
+    will we cycle? no, if 01 existed in fig, then 12 would be disallowed in the queue
+        when? note not on popleft, but from queue entry point
+    since it doesn't make 2 cheaper
+    another disallow condition is if l is 0 meaning 
+        upon popleft, if l == 0, discard it
+
+               0
+            //    \
+           1 ===== 2
+           src,dst=02
+           L=2
+           q=(0,0,2)
+           (1,1),(2,5)
+           c={0:0,1:1,2:2}
+           q=(2,2,0)
+           p,u,l=(5,2,1)
+           v,vc=(2,1)
+'''
+class Solution:
+    def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
+        f=defaultdict(dict)
+        for u,v,p in flights:
+            f[u][v]=p
+        c=defaultdict(lambda :float('inf'))
+        c[src]=0
+        q=deque([(0,src,k+1)])
+        while q:
+            p,u,l=q.popleft()
+            if l>0:
+                for v,vc in f[u].items():
+                    if p+vc < c[v]:
+                        c[v]=p+vc
+                        q.append((c[v],v,l-1))
+        return -1 if dst not in c else c[dst]
