@@ -86,3 +86,33 @@ print(peak(arr)) # 3, 5 # --> 1 from code
 arr = [1,2,1, 3 ,5,6,4]
 print(peak(arr)) 
 
+'''
+1, 2, 1, 3, 5, 6, 4
+lo       mi       hi
+l=1
+r=5
+c=3
+boundary: l=r=-inf, which could change if the bounds exist
+raise error if none found
+'''
+class Solution:
+    def findPeakElement(self, nums: List[int]) -> int:
+        def findpeak(lo,hi):
+            while lo <= hi:
+                l=r=float('-inf')
+                mi=lo+(hi-lo)//2
+                if mi-1>=0:
+                    l=nums[mi-1]
+                if mi+1<n:
+                    r=nums[mi+1]
+                c=nums[mi]
+                if c > max(l,r):
+                    return mi
+                if l > r:
+                    hi=mi-1
+                else:
+                    lo=mi+1
+            raise ValueError('no peak')
+
+        n=len(nums)
+        return findpeak(0,n-1)
