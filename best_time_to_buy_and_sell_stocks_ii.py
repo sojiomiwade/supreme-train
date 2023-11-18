@@ -71,3 +71,44 @@ print(maxprofit(prices)) # 4
 
 prices = [7,1,5,3,6,4]
 print(maxprofit(prices)) # 7 but will give 5 
+'''
+brute force
+find each valid combination 
+0 bs 0 b s 0
+0 b  0 b s s <- invalid since we buy twice before selling
+3**n
+
+better
+buy then sell once higher. 
+7  1 5 3 6 4
+bs b s b s .
+       s   c
+
+buy if next day is worse, then sell with curr day and update profit
+    cur
+
+otherwise move day to the next
+
+don't forget to collect the last day's profit
+1 5
+  c
+  s
+
+1 5 4 6 
+      c
+    s
+p 4
+'''
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        c=s=0
+        n=len(prices)
+        p=0
+        while c < n-1:
+            if prices[c] < prices[c+1]:
+                c+=1
+            else:
+                p += prices[c]-prices[s]
+                c=s=c+1
+        p += max(0,prices[c]-prices[s])
+        return p
