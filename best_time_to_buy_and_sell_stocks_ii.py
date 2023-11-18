@@ -111,4 +111,12 @@ class Solution:
                 p += prices[c]-prices[s]
                 c=s=c+1
         p += max(0,prices[c]-prices[s])
+        return pclass Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        n=len(prices)
+        prev=prices[0]
+        p=0
+        for i in range(1,n):
+            p+=max(0,prices[i]-prev)
+            prev=prices[i]
         return p
