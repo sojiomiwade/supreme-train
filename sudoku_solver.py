@@ -129,4 +129,43 @@ board=[
   [".",".",".",".",".","9",".",".","8"],
   ["8",".","5",".",".","4",".",".","."]]
 
-print(sudoku_solve(board))
+print(sudoku_solve(board))'''
+brute force put all possibilities in the board; then test for validity (9**n) where n is number of empty cells. storage: 9*9, because call stack is board size
+better: fill a cell. immediately check for validity, then proceed. still 9**n but will avoid unnecessary tables generated, when in linear time could have validated immediately!
+
+if i am at a cell, try 
+'''
+class Solution:
+    def solveSudoku(self, board: List[List[str]]) -> None:
+        def rowlacks(r,v):
+            return v not in board[r]
+
+        def collacks(c,v):
+            return v not in (board[i][c] for i in range(9))
+
+        def sublacks(r,c,v):
+            sr,sc=(r//3)*3,(c//3)*3
+            for i in range(3):
+                for j in range(3):
+                    if board[i+sr][j+sc]==v:
+                        return False
+            return True
+
+        def ss(r,c):
+            if c==9:
+                r,c=r+1,0
+            if r==9:
+                return True
+            if board[r][c]!='.':
+                return ss(r,c+1)
+            for i in range(9):
+                v=chr(ord('1')+i)
+                if rowlacks(r,v) and collacks(c,v) and sublacks(r,c,v):
+                    board[r][c]=v
+                    if ss(r,c+1):
+                        return True
+            board[r][c]='.'
+            return False
+
+        ss(0,0)
+        
