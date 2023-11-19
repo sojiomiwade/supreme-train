@@ -102,4 +102,20 @@ class Solution:
                 clookup[nb]=Node(nb.val)
                 _clonegraph(nb,clookup[nb])
             nc.neighbors.append(clookup[nb])
-        return nc
+        return nc"""
+1 2
+3 4
+"""
+
+from typing import Optional
+class Solution:
+    def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
+        def _clonegraph(u):
+            uc=clookup[u]=Node(u.val)
+            for v in u.neighbors:
+                if v not in clookup:
+                    _clonegraph(v)
+                uc.neighbors.append(clookup[v])
+            return uc
+        clookup={}
+        return _clonegraph(node) if node else None
