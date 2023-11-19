@@ -36,3 +36,20 @@ print(Solution().invertTree(None))
                 q.append(node.right)
         return root        
 
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        q=deque([root]) if root else deque()
+        while q:
+            v=q.popleft()
+            v.left,v.right=v.right,v.left
+            if v.left:
+                q.append(v.left)
+            if v.right:
+                q.append(v.right)
+        return root
