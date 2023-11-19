@@ -118,4 +118,26 @@ class Solution:
                 uc.neighbors.append(clookup[v])
             return uc
         clookup={}
-        return _clonegraph(node) if node else None
+        return _clonegraph(node) if node else None"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val = 0, neighbors = None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+
+
+"""
+
+from typing import Optional
+class Solution:
+    def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
+        q=deque([node]) if node else deque([])
+        cl={node: Node(node.val)} if node else {}
+        while q:
+            u=q.popleft()
+            for v in u.neighbors:
+                if v not in cl:
+                    q.append(v)
+                    cl[v]=Node(v.val)
+                cl[v].neighbors.append(cl[u])
+        return cl[node] if node else None
