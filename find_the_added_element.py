@@ -95,4 +95,33 @@ class Solution:
         tot%=26
         return chr(tot+ord('a'))
 
-            
+            '''
+can be done with bit toggle
+
+abc
+abca
+
+abc
+abcd
+
+ ab
+x01
+y10
+v10
+ 
+0010
+0001
+'''
+class Solution:
+    def findTheDifference(self, s: str, t: str) -> str:
+        v=0
+        for x,y in zip(s,t):
+            mx=1<<(ord(x)-ord('a'))
+            my=1<<(ord(y)-ord('a'))
+            v^= mx ^ my
+        v^=1<<(ord(t[-1])-ord('a'))
+        m=1
+        for i in range(26):
+            if v&m != 0:
+                return chr(i+ord('a'))
+            m<<=1
