@@ -161,3 +161,54 @@ urlify = urlify_const_space
 s, truelen = list("Mr John Smith    "), 13
 print(urlify(s, truelen)) 
 
+'''
+replace every occurence of a word f with amala
+ab_f_bar
+ab_amala_bar
+
+ab_foo_ba_foo_r
+   ^      |^ 
+   amala
+        |
+
+abcfd
+0123456789
+abcamalad
+    ^   |
+r=7
+start=3=7-5+1
+3
+first we can just write a new string, where every foo 
+assume the input is a buffer array and do this inplace
+
+if it werent' inplace, we can't just write, or we overwrite
+so instead:
+m=len(amala)
+1) calculate length of new buffer: n+(m-1)*fcount
+2) from the back replace each f with amala
+'''
+def replace(b, n, f, w):
+    m=len(w) #5
+    fc=sum(1 if c==f else 0 for c in b) #1
+    nl=n+(m-1)*fc # 5+(4)=9
+    right=nl-1 # =8
+    left=n-1 #4
+    for left in range(n-1,-1,-1):
+        if b[left]!=f:
+            b[right]=b[left]
+            right-=1
+        else:
+            for i in range(m):
+                b[right-m+1+i]=w[i] #7-4+0=3
+            right-=m
+    
+b=list('abcfd    ')
+b=list('abfcfd        ')
+'''
+01234567890
+abcamalad
+  l   
+  r
+'''
+replace(b,6,'f','amala')
+print(''.join(b)) #'abcamalad'
