@@ -77,3 +77,22 @@ print(find_the_difference(s, t)) #a
 s, t = 'fish', 'shiyf'
 print(find_the_difference(s, t)) #y
  
+'''
+1 2 3 = x
+1 2 3 5 = 5 + x
+1+2+3+5 - (1-2-3)
+a
+aa
+tot=2*97-2*97=0
+'''
+class Solution:
+    def findTheDifference(self, s: str, t: str) -> str:
+        tot=0
+        for x,y in zip(s,t):
+            tot+=ord(y)-ord(x)
+            tot%=26
+        tot+=(ord(t[-1])-ord('a'))
+        tot%=26
+        return chr(tot+ord('a'))
+
+            
