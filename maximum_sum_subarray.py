@@ -72,4 +72,15 @@ class Solution:
             curr = max(nums[i], nums[i]+curr)
             bs = max(bs, curr)
         return bs
-    
+    '''
+nums:-2,1,-3,4,-1,2,1,-5,4
+dp:[-2,1,-2,4,3,5,6,1,5]
+'''
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        dp=[nums[0]]
+        n=len(nums)
+        for i in range(1,n):
+            dp.append(max(dp[-1]+nums[i],nums[i]))
+        return max(dp)
+
