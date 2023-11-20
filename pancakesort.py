@@ -110,3 +110,41 @@ def pancakeSort(arr: List[int]) -> List[int]:
 arr = [2,3,1]
 print(pancakeSort(arr))
 
+'''
+0 1 2 3 4
+3 1 5 2 4
+mi=0
+
+5 1 3 2 4
+4 2 3 1 5
+
+for k in n-1
+find element k
+
+
+0 1 2
+1 2 3
+
+0 1
+  k
+n=3
+'''
+def pancake_sort(arr):
+  def flip(k):
+    for i in range(k//2):
+      j=k-i-1
+      arr[i],arr[j]=arr[j],arr[i]
+      
+  def findmaxidx(n):
+    mi=0
+    for i in range(1,n):
+      if arr[i]>arr[mi]:
+        mi=i
+    return mi
+  
+  n=len(arr)
+  for k in range(n-1):
+    mi=findmaxidx(n-k) #f(5) 
+    flip(mi+1)
+    flip(n-k)# 5432
+  return arr
