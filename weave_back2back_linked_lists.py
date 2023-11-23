@@ -403,3 +403,71 @@ a = ListNode('1', ListNode('2', ListNode('3', ListNode('4', ListNode('5', ListNo
 print(a)
 print(weave_stacked(a, True))
 
+'''
+a b c n
+  s
+    f
+
+a b n
+s
+f
+
+
+a an
+a   b  c d n
+|  /
+| / 
+1   2  3 4 n
+b
+
+
+expected:       
+a 1 b 2 c 3 d 4 n
+
+a   b n 
+| /
+|/
+1   2 n
+t=an
+'''
+def find_mp(a):
+  s=f=a
+  while f.next and f.next.next:
+    f=f.next.next
+    s=s.next
+  return s
+
+def merge(a,b):
+    if not a:
+        assert not b
+        return None
+    a.next,temp=b,a.next
+    b.next=merge(temp,b.next)
+    return a
+
+def weave_lists(a):
+    p=find_mp(a)
+    b=p.next
+    p.next=None
+    return merge(a,b)
+
+
+class Node:
+    def __init__(self,val,next=None) -> None:
+       self.val=val
+       self.next=next
+
+b=Node('1',Node('2', Node('3')))
+a=Node('a', Node('b', Node('c', None)))
+# print(find_mp(a).val) # c
+c=merge(a,b)
+print(c.next.next.next.next.val) #c
+print(c.next.next.next.next.next.val) # 3
+#a b c 1 2 3
+# a 1 b 2 c 3
+
+b=Node('1',Node('2', Node('3')))
+a=Node('a', Node('b', Node('c', b)))
+weave_lists(a)
+print(a.next.next.next.next.val) #c
+print(a.next.next.next.next.next.val) # 3
