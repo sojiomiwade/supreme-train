@@ -72,3 +72,33 @@ for val in range(n):
 print(sol.as_list(sol.dummyhead))
 node = sol.reverseList(sol.dummyhead.next)
 print(sol.as_list(node))
+'''
+reverse a linked list
+p a b 
+n<0 1 2 3
+  p a
+3 2 1 0
+
+
+    b
+n<2 n
+  p a
+'''
+def reverse_ll(lis):
+    p=None
+    a=lis
+    while a:
+        b=a.next
+        a.next=p
+        p,a=a,b
+    return p
+
+class Node:
+    def __init__(self,val,next=None) -> None:
+        self.val=val
+        self.next=next
+
+lis=Node(1,Node(2,Node(3)))
+rlis=reverse_ll(lis)
+print(rlis.val) # 3
+print(rlis.next.val) # 2
