@@ -54,3 +54,19 @@ print(missing_number(arr)) # 0
 arr = [0,1]
 print(missing_number(arr)) # 2
 
+'''
+0 1 2 4 5
+0       n
+0 1 2 3 4 5
+
+3 0 1
+0 1 2
+
+x=  2
+'''
+class Solution:
+    def missingNumber(self, nums: List[int]) -> int:
+      x=n=len(nums)
+      for i in range(n):
+        x^=nums[i]^i
+      return x
