@@ -114,4 +114,16 @@ class Solution:
 
     n=len(nums)
     dp=[None for h in range(n)]
-    return rob(0)
+    return rob(0)'''
+nums 3 1 5 
+dp   8 5 5 0 0 
+
+'''
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        n=len(nums)
+        dp=[None for i in range(n+2)]
+        dp[-2:]=[0,0]
+        for i in range(n-1,-1,-1):
+          dp[i]=max(nums[i]+dp[i+2],dp[i+1])
+        return dp[0]
