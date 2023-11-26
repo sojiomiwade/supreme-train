@@ -314,4 +314,38 @@ class Solution:
 
         cache = {}
         m, n = len(s), len(p)
-        return helper(0, 0)
+        return helper(0, 0)'''
+if fm(si,pj) then move to s_i+1,p_j+1 if pj+1 is not a *
+if it is a *, then two branches: 
+    1) return ismatch(si,p_j+2) or
+    2) return fm(si,pj) and ismatch(s_i+1,pj)
+
+p=b*, s=<empty>
+p=<empty>, s=fish
+
+p: .*    b . c
+     j          
+s: aaa   b e c
+      i          
+fm=t
+'''
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        def isMatch(i, j):
+            if j==n:
+                return i==m
+            if (i,j) in dp:
+                return dp[i,j]
+
+            fm=i<m and p[j] in ('.',s[i])
+            if j+1<n and p[j+1]=='*':
+                zero=isMatch(i,j+2)
+                more=fm and isMatch(i+1,j)
+                dp[i,j]=zero or more
+                return dp[i,j]
+            dp[i,j] = fm and isMatch(i+1,j+1)
+            return dp[i,j]
+
+        m,n=len(s),len(p)
+        dp={}
+        return isMatch(0,0)
