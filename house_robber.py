@@ -59,3 +59,59 @@ class Solution:
     for h in range(n):
         m=max(rob(h),m)
     return m
+'''
+
+                    0
+           2      3     4   5   6
+          4 5 6  5  6
+
+                    1
+           3      4      5      6
+         5   6
+--
+                    0
+                1           2
+             2    3        3    4
+--
+T(n)=T(n-1) + T(n-2) + C
+     = 2T(n-2) + T(n-3) + 2c
+      =2c + 2T(n-3) + 2T(n-4) + T(n-3) + 2c
+      =3T(n-3) + 2T(n-4) + 4c
+      =...
+
+0 1 2 3 
+4 5 6 7
+
+p3=7
+p2=max(n2+p4,p3)
+r(0)
+  |
+  4 + r(2)
+      |     \
+      6+r(4)     r(3)
+          |    |      \
+          0    7+r(5)  r(6)
+                  |      |
+                  0      0
+r(1)
+  |       \
+  5+r(3)  r(2)
+    |     7
+    7
+   
+0 1 2 3
+        h
+'''
+class Solution:
+  def rob(self, nums: List[int]) -> int:
+    def rob(h):
+      if h>=n:
+        return 0
+      if dp[h] is not None:
+        return dp[h]
+      dp[h]=max(nums[h]+rob(h+2),rob(h+1))
+      return dp[h]
+
+    n=len(nums)
+    dp=[None for h in range(n)]
+    return rob(0)
