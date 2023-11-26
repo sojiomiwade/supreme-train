@@ -126,4 +126,15 @@ class Solution:
         dp[-2:]=[0,0]
         for i in range(n-1,-1,-1):
           dp[i]=max(nums[i]+dp[i+2],dp[i+1])
-        return dp[0]
+        return dp[0]'''
+nums 3 1 5 
+a 8, m(3+5,5)
+b 5
+'''
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        n=len(nums)
+        a=b=0
+        for i in range(n-1,-1,-1):
+          a,b=max(nums[i]+b,a),a
+        return a 
