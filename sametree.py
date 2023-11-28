@@ -47,4 +47,41 @@ class Solution:
         return p is q
             
 
-            
+            # Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+'''
+check pval equals qval
+stp,stq
+                   1
+                 /   \
+                2     3 
+                     / \
+                    4   5
+
+                   1
+                 /   \
+                2     3 
+                     / \
+                    4   5
+1 2 3 4 5
+'''
+class Solution:
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        pst,qst=[p],[q]
+        while pst and qst:
+            p=pst.pop()
+            q=qst.pop()
+            if not p and not q:
+                continue
+            if p and q and p.val==q.val:
+                pst.append(p.right)
+                pst.append(p.left)
+                qst.append(q.right)
+                qst.append(q.left)
+            else:
+                return False
+        return True
