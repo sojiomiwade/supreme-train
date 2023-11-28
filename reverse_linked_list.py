@@ -101,4 +101,35 @@ class Node:
 lis=Node(1,Node(2,Node(3)))
 rlis=reverse_ll(lis)
 print(rlis.val) # 3
-print(rlis.next.val) # 2
+print(rlis.next.val) # 2'''
+reverse a linked list recursively
+  1 2 3 4 n
+  p c n
+n<a b 
+
+n1
+    12
+        23
+            34
+                4n
+
+set cur to point to prev
+next = call recursively(cur,next)
+next points to curr
+'''
+class Node:
+    def __init__(self,val,next) -> None:
+        self.val=val
+        self.next=next
+
+def reverse(prev, cur):
+    if cur:
+        next=cur.next
+        cur.next=prev
+        return reverse(cur,next)
+    return prev
+
+node=Node(1,Node(2,Node(3,Node(4,None))))
+print(node.next.val, node.next.next.val) # 2 3
+node=reverse(None,node)
+print(node.next.val, node.next.next.val) # 3 2
