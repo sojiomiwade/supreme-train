@@ -176,3 +176,24 @@ print(lcs(s,t)) #ace
 
 # s,t='ace','abcde'
 # print(lcs(s,t)) #ace
+def lcstab(s:str,t:str)->str:
+    '''
+    dp[i][j]=lcs(s[:i],t[:j])
+    '''
+    m,n=len(s),len(t)
+    dp=[[0 for _ in range(n+1)] for _ in range(m+1)]
+    for i in range(1,m+1):
+        for j in range(1,n+1):
+            if s[i-1]==t[j-1]:
+                dp[i][j]=1+dp[i-1][j-1]
+            else:
+                dp[i][j]=max(dp[i][j-1],dp[i-1][j])
+    res=[]
+    for i in range(m+1):
+        for j in range(n+1):
+            print(f'{dp[i][j]:2d}',end='')
+        print()
+    for j in range(n): #0 1
+        if dp[m][j+1]>dp[m][j]:
+            res.append(t[j])
+    return ''.join(res),dp[m][n]
