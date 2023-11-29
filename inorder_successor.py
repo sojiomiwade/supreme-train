@@ -161,3 +161,25 @@ else:
 
 # Print the key of the successor node
 
+  def find_in_order_successor(self, inputNode):
+    '''
+    9 11: in right subtree, find the smallest (most left and down)
+    14 20: if no right subtree, then go up (if parent exists) until you find element bigger than you
+    25 null: no right subtree, up to root, nothing bigger
+    12: 14
+    
+    cur : 20
+    res : null
+    '''
+    cur=inputNode.right
+    res=None
+    while cur:
+      res,cur=cur,cur.left
+    if not res:
+      cur=inputNode.parent
+      while cur:
+        if cur.key>inputNode.key:
+          res=cur
+          break
+        cur=cur.parent
+    return res
