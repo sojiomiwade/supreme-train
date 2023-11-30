@@ -54,3 +54,26 @@ class Solution:
 
 x, y = 5, 6
 print(Solution().hammingDistance(x, y)) # 2
+'''
+keep shifting and getting the xors of both at the end of the numbers
+wait. just xor the two, and count the 1s
+time: O(1) since 32 times
+space: O(1) since only make one new number and no additional data structures
+1001
+   1
+3210
+----
+   1
+
+0123
+1001
+'''
+class Solution:
+    def hammingDistance(self, x: int, y: int) -> int:
+        xy=x^y
+        mask=1
+        count=0
+        for _ in range(32):
+            count+=bool(xy&mask)
+            mask<<=1
+        return count
