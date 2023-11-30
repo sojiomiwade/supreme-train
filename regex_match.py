@@ -348,4 +348,44 @@ class Solution:
 
         m,n=len(s),len(p)
         dp={}
+        return isMatch(0,0)'''
+     0 1 2 3 4
+     x a a a d e
+   x t f f f f f
+ 0 a . . . . . .
+ 1 * . . . . . .
+ 2 d . . . . . .
+ 3 e . . . . . .
+ 
+aa
+a*
+
+a
+a*
+
+00
+0==2
+fm=true
+'''
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        def isMatch(si:int,pi:int)->bool:
+            if pi==n:
+                return si==m
+            #there is pattern
+            if (si,pi) in dp:
+                return dp[si,pi]
+            fm_schar=si<m and p[pi] in (s[si],'.')
+            #star-case
+            if pi+1<n and p[pi+1]=='*':
+                none=isMatch(si,pi+2)
+                more=fm_schar and isMatch(si+1,pi)
+                dp[si,pi]=none or more
+                return dp[si,pi]
+            #no-star case
+            dp[si,pi]=fm_schar and isMatch(si+1,pi+1)
+            return dp[si,pi]
+
+        m,n=len(s),len(p)
+        dp={}
         return isMatch(0,0)
