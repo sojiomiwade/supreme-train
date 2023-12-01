@@ -41,4 +41,17 @@ class Solution:
         
 
 
-            
+            class Solution:
+    def minWindow(self, s, t):
+        need, m = collections.Counter(t), len(t)
+        i = I = J = 0
+        for j, c in enumerate(s, 1):
+            m -= need[c] > 0
+            need[c] -= 1
+            if m==0:
+                while i < j and need[s[i]] < 0:
+                    need[s[i]] += 1
+                    i += 1
+                if J==0 or j - i <= J - I:
+                    I, J = i, j
+        return s[I:J]
