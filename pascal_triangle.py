@@ -114,3 +114,25 @@ for i in range(num_rows): #i=2
         res[-1][j] = res[-2][j] + res[-2][j-1]
 print(res)
 
+'''
+n=3
+
+    c    
+  1
+  1 1
+  1 2 1
+r 1 3 3 1
+
+make five arrays such that a[0] and a[-1] is 1
+first array length is 1, and lengths increase
+so for i=[1..n-1), arr[i]=brr[i]+brr[i-1]
+'''
+class Solution:
+    def generate(self, numRows: int) -> List[List[int]]:
+        res=[]
+        for i in range(numRows):
+            res.append([1]*(i+1))
+        for r in range(2,numRows):
+            for c in range(1,r): #[1,3) 
+                res[r][c]=res[r-1][c]+res[r-1][c-1]
+        return res
