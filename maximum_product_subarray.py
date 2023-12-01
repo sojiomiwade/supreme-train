@@ -57,3 +57,27 @@ class Solution:
             pos=float('-inf')
           res=max(pos,agg,res)
         return res
+'''
+
+3 0 -2 8
+     l
+  r
+
+-4 -3
+    l
+    r
+pl,pr=-2,0
+res=8
+exp=8
+'''
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        pl,pr=nums[0],nums[-1]
+        res=max(pl,pr)
+        n=len(nums)
+        for l in range(1,n):
+            r=n-1-l
+            pl=(pl or 1)*nums[l]
+            pr=(pr or 1)*nums[r]
+            res=max(res,pl,pr)
+        return res
