@@ -52,3 +52,17 @@ print(word_count_engine(document))
 
 document = "Practice makes perfect. you'll only get Perfect by practice. just practice!"
 print(word_count_engine(document))
+from collections import Counter
+from itertools import count
+def word_count_engine(document):
+  doc=document.split()
+  for i,w in enumerate(doc):
+    doc[i]= ''.join(x for x in w.lower() if ord('a')<=ord(x)<=ord('z'))   
+  freq=Counter(doc)
+  res={}
+  counter=count()
+  for w in doc:
+    if w not in res:
+      res[w]=[freq[w],next(counter)]   
+  res_tup=sorted(res.items(),key=lambda t: (-t[1][0],t[1][1]))
+  return [[w,str(f)] for (w,(f,_)) in res_tup]
