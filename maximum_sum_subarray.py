@@ -84,3 +84,49 @@ class Solution:
             dp.append(max(dp[-1]+nums[i],nums[i]))
         return max(dp)
 
+'''
+l  h  l  h
+  
+  1.   
+-2  1 -3        4    -1 2 1 -5 4
+ 1  1 -3  inf
+max(-2,0)+msa()
+-2 1 -2  4    3 5 6  1 5
+
+[-2,1,-3,4,-1,2,1,-5,4]
+  2 4  3 6  2 3 1 -1 4 
+'''
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        def msa(mi):
+            if mi==len(nums):
+                return float('-inf')
+            msa_right=msa(mi+1)
+            msa_mi=max(nums[mi],nums[mi]+msa_right)
+
+        res=float('-inf')
+        return msa(0)'''
+l  h  l  h
+  
+  1.   
+-2  1 -3        4    -1 2 1 -5 4
+ 1  1 -3  inf
+max(-2,0)+msa()
+-2 1 -2  4    3 5 6  1 5
+
+[-2,1,-3,4,-1,2,1,-5,4]
+  2 4  3 6  2 3 1 -1 4 
+'''
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        def msa(mi):
+            nonlocal res
+            if mi==len(nums):
+                return float('-inf')
+            msa_right=msa(mi+1)
+            cur=max(nums[mi],nums[mi]+msa_right)
+            res=max(res,cur)
+            return cur
+        res=float('-inf')
+        msa(0)
+        return res
