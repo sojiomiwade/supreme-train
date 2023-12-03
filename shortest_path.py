@@ -348,4 +348,27 @@ class Solution:
                 if r[u]+vc < r[v]:
                     q.append(v)
                     r[v]=r[u]+vc
-        return max(r.values()) if len(r)==n else -1
+        return max(r.values()) if len(r)==n else -1'''
+BFS from node k. if we could reach all (hashmap for delay) then return the max in hashmap. otherwise return -1
+time: O(nm), nope every node isn't visited just once. 
+each could be visited proportional to the degree  of the node
+'''
+class Solution:
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        m=len(times)
+        d=defaultdict(dict)
+        for u,v,w in times:
+            d[u][v]=w
+        q=deque([(0,k)])
+        #d : {2:{1:1,3:1},3:{4:1}}
+        #q : [ (1,3)]
+        #cu,u : (1,1)
+        #md : {2:0,}
+        mindelay=defaultdict(lambda :float('inf'))
+        while q:
+            cu,u=q.popleft()
+            if cu<mindelay[u]:
+                mindelay[u]=cu       
+                for v,cv in d[u].items():
+                    q.append((cv+cu,v))
+        return max(mindelay.values()) if len(mindelay)==n else -1
