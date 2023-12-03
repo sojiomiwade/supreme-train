@@ -200,4 +200,39 @@ class Solution:
                         return False
             return True
 
-        solveSudoku()
+        solveSudoku()'''
+for each cell that is a ., try all 1-9, and call one cell forward
+if nothing left return True. 
+'''
+class Solution:
+    def solveSudoku(self, board: List[List[str]]) -> None:
+        def valid(ch,r,c):
+            for i in range(9):
+                if ch in (board[i][c], board[r][i]):
+                    return False
+            sr=r//3*3
+            sc=c//3*3
+            for i in range(3):
+                for j in range(3):
+                    if ch == board[sr+i][sc+j]:
+                        return False
+            return True
+
+        def solveSudoku(r,c):
+            if c==9:
+                r,c=r+1,0
+            if (r,c)==(9,0):
+                return True
+
+            if board[r][c]!='.':
+                return solveSudoku(r,c+1)
+            for i in range(1,10):
+                ch=str(i)
+                if valid(ch,r,c):
+                    board[r][c]=ch
+                    if solveSudoku(r,c+1):
+                        return True
+            board[r][c]='.'
+            return False
+
+        solveSudoku(0,0)
