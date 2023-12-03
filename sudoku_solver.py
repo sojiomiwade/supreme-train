@@ -168,4 +168,36 @@ class Solution:
             return False
 
         ss(0,0)
-        
+        '''
+for each cell that is a ., try all 1-9, and call one cell forward
+if nothing left return True. 
+'''
+class Solution:
+    def solveSudoku(self, board: List[List[str]]) -> None:
+        def valid(ch,r,c):
+            for i in range(9):
+                if ch in (board[i][c], board[r][i]):
+                    return False
+            sr=r//3*3
+            sc=c//3*3
+            for i in range(3):
+                for j in range(3):
+                    if ch == board[sr+i][sc+j]:
+                        return False
+            return True
+
+        def solveSudoku():
+            for r in range(9):
+                for c in range(9):
+                    if board[r][c]=='.':
+                        for i in range(1,10):
+                            ch=str(i)
+                            if valid(ch,r,c):
+                                board[r][c]=ch
+                                if solveSudoku():
+                                    return True
+                        board[r][c]='.'
+                        return False
+            return True
+
+        solveSudoku()
