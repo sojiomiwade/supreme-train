@@ -52,4 +52,34 @@ class Solution:
         for x in range(3,1+int(sqrt(n)),2):
             for y in range(2*x,n,x): # 6,
                 isprime.discard(y)
-        return 1+len(isprime)
+        return 1+len(isprime)'''
+10 -> 4
+15 -> 6
+2 3 5 7
+
+3 5 7 9 11 13 15
+
+n=11 -> 2,3,5,7 = 4
+x={}
+isp={3 5 7}
+5
+
+n//2 -> 25//2 - 1 = 12
+3 || 5 7 9 11 13 15 17 19 21 23 | 25
+0 || 1 2 3  4  5  6  7  8  9 10 -> 11 elements
+x maps to x//2-1
+
+[3,sqrt(25)) = [3,5) -> [3] correct
+[3,sqrt(15)) = [3,1+int(3)) -> [3]
+'''
+class Solution:
+    def countPrimes(self, n: int) -> int:
+        if n in (0,1,2):
+            return 0
+        isprime=[True for x in range(n//2-1)]
+        for x in range(3,1+int(sqrt(n)),2):
+            if isprime[x//2-1]:
+                for y in range(3*x,n,x):
+                    if y%2==1:
+                        isprime[y//2-1]=False
+        return 1+sum(isprime)
