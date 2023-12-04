@@ -32,3 +32,24 @@ def isprime(n: int) -> bool:
 print(isprime(6)) # false
 print(isprime(7)) # true
 print(isprime(25)) # false
+'''
+10 -> 4
+15 -> 6
+2 3 5 7
+
+3 5 7 9 11 13 15
+
+n=11 -> 2,3,5,7 = 4
+x={}
+isp={3 5 7}
+5
+'''
+class Solution:
+    def countPrimes(self, n: int) -> int:
+        if n in (0,1,2):
+            return 0
+        isprime=set(x for x in range(3,n,2))
+        for x in range(3,1+int(sqrt(n)),2):
+            for y in range(2*x,n,x): # 6,
+                isprime.discard(y)
+        return 1+len(isprime)
