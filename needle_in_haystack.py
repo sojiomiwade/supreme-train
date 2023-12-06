@@ -221,4 +221,39 @@ def grep(haystack: str, needle: str) -> List[str]:
     return res
 
 haystack, needle = 'abcdhiabcdjabc', 'abcd' # 0, 6
-print(grep(haystack, needle)) #
+print(grep(haystack, needle)) #'''
+get hash of first substring in haystack (and get needle as well)
+then in a loop, check the substring, if it matches needlehash return hidx
+otherwise take off the front  and add the next character (use if guard because to avoid out of range)
+hh=a*26(2) + b*26(1) + c * 26(0)
+hh=b*26(2) + c * 26(1) + d * 26(0)
+to add next char
+note if nl=1e4 => number largest is 26*1e4 give or take
+abcdsadbut
+0123456789
+hello
+i
+ll
+abc
+c
+'''
+class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        nl,hl=len(needle),len(haystack)
+        if nl>hl:
+          return -1
+        cpow=1
+        hh=nh=0
+        for i in range(nl-1,-1,-1):
+            nh+=ord(needle[i])*cpow
+            hh+=ord(haystack[i])*cpow
+            cpow*=26
+        cpow//=26
+        for i in range(nl,1+hl): # [1,3)  1->check a, 2->check b
+            if hh==nh:
+                return i-nl
+            if i<hl:
+              hh-=ord(haystack[i-nl])*cpow
+              hh*=26
+              hh+=ord(haystack[i])
+        return -1
