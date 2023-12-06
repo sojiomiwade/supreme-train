@@ -124,4 +124,33 @@ class Solution:
                     if p+vc < c[v]:
                         c[v]=p+vc
                         q.append((c[v],v,l-1))
-        return -1 if dst not in c else c[dst]
+        return -1 if dst not in c else c[dst]class Solution:
+    def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
+        '''
+        can use BFS, and allow relaxation to govern revisiting (going back to queue)
+        if q is empty, then we are done
+        k -> leaps - 1
+
+        pop [node,l]
+        if l==0, then no visiting. otherwise check if node can be relaxed.
+        if it can be, do so, and andd the neighbors with one less leap
+        f={0:{1:1, 2:5},1:{2:1},}
+        q=  (2,1,5), (2,0,2)
+        (1,1,1),
+        cost={0:0,1:1,}
+        '''
+        q=deque([(src,1+k,0)])
+        cost=defaultdict(lambda :float('inf'))
+        f=defaultdict(dict)
+        for u,v,c in flights:
+            f[u][v]=c
+        while q:
+            u,ul,cu=q.popleft()
+            if u==dst:
+                cost[u]=min(cost[u],cu)
+            elif ul>0 and cu<cost[u]:
+                cost[u]=cu
+                for v in f[u]:
+                    q.append((v,ul-1,cu+f[u][v]))
+        return cost[dst] if cost[dst] != float('inf') else -1
+
