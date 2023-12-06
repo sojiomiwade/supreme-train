@@ -154,3 +154,42 @@ class Solution:
                     q.append((v,ul-1,cu+f[u][v]))
         return cost[dst] if cost[dst] != float('inf') else -1
 
+class Solution:
+    def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
+        '''
+        with BFS approach, each node in theory can be added to the queue due to
+        relaxation from some upstream node. so we have not V+VE = VE
+        
+        alternative: 
+        dijkstra variant (heap): take out min-cost from heap,
+        there is no relaxation
+
+        a 3  b 9  c
+             2
+             d
+        (cv,)
+        l[node]=2
+        l=4
+        reconsider only if ul>ml[node]
+        can start ml[node] at -inf or just 0
+        f = {0:{1:1, 2:5}, 1:{2:1}}
+        ml = {0:2, 1:1, 2:0}
+        v,cuv=2,1
+        heap = [  (5,1,2), (inf,2,1), (inf,2,2)]
+        cu,ul,u=(2,0,2)
+        '''
+        ml=defaultdict(int)
+        f=defaultdict(dict)
+        heap=[(0,k+1,src)]
+        heapq.heapify(heap)
+        for u,v,w in flights:
+          f[u][v]=w
+        while heap:
+          (cu,ul,u)=heapq.heappop(heap)
+          if u==dst:
+            return cu
+          if ul>ml[u]:
+            ml[u]=ul
+            for v,cuv in f[u].items():
+              heapq.heappush(heap,(cu+cuv,ul-1,v))
+        return -1
