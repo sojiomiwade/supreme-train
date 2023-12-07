@@ -55,3 +55,45 @@ class Solution:
                 if J==0 or j - i <= J - I:
                     I, J = i, j
         return s[I:J]
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        m,n=len(s),len(t)
+
+        '''
+        always add the r character
+        but internally will move l until it's in violation
+
+
+        ADOBAECODEBANC, AABC
+        l     
+              r
+        brute force: iterate over all substrings and check if the contain t. m*n**2
+        for each substring, construct a counter-lookup, and compare these counts with 
+        the corresponding counts in t
+
+        better: consider everything is missing
+        when nothing is missing anymore (based on the t levels)
+        can move l (and update need[s[l]])
+        as long as there is
+
+        QBAC AB
+        missing = 4
+
+        '''
+        missing = len(t)
+        ml=l=0
+        mr=float('inf')
+        need=Counter(t)
+        for r in range(m):
+            missing -= need[s[r]] > 0
+            need[s[r]] -= 1
+            if not missing:
+                while need[s[l]] < 0:
+                    need[s[l]]+=1
+                    l+=1
+                if r-l<mr-ml:
+                    ml,mr=l,r
+                need[s[l]]=1
+                l+=1
+                missing+=1
+        return '' if mr==float('inf') else s[ml:mr+1]
