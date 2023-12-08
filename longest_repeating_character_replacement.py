@@ -99,3 +99,62 @@ s, k = 'ABAB', 2
 print(kreplace(s, k)) # 4
 
 
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        '''
+        brute force: for any string s[i:j+1] AABCD
+        the one having maximum frequency is our hope, so we have
+        mf+(j-i+1)
+        j-i+1 - mf <= k
+        5 - 1 <= 3 => bad. ABCDE
+        5 - 2 <= 3 => ok.  AABCD
+        5 - 3 <= 2 => ok.  AAABC
+        can calculate mf in O(width of substring)
+        complexity: n**2*n = n**3
+
+        can we use sliding window? 
+        sure, 
+        mf is calculated how? 
+        increase the substring
+            remove char, if that was responsible for mf, then duck mf one point
+            add a char ch, update its frequency, and update mf accordingly. 
+        now check  
+        max string itself is l to r
+
+        S Q R A B A C D
+                l       
+                    r
+        when we get good answer 
+
+        AABBQE
+        l 
+            r
+
+        a a b c d
+        l
+                r
+        opt=s[0:2]
+        f={a:1,b:2,c:1,d:1}
+        mf=2
+        3 - 2 > 1
+
+        A A A B C D
+        l
+                r      
+        Q R S A A B B D
+                l
+                    r
+        mf=2
+        f={Q:0,R:0,S:0,A:2,B:2}
+        4-3>1
+        '''
+        l=0
+        n,f=len(s),Counter()
+        mf=0
+        for r,ch in enumerate(s):
+            f[ch]+=1
+            mf=max(mf,f[ch])
+            if r-l+1 - mf > k:
+                f[s[l]]-=1
+                l+=1
+        return r-l+1
