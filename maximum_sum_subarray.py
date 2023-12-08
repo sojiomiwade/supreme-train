@@ -129,4 +129,24 @@ class Solution:
             return cur
         res=float('-inf')
         msa(0)
-        return res
+        return res'''
+l  h  l  h
+  
+  1.   
+-2  1 -3        4    -1 2 1 -5 4
+ 1  1 -3  inf
+max(-2,0)+msa()
+-2 1 -2  4    3 5 6  1 5
+
+[-2,1,-3,4,-1,2,1,-5,4]
+  2 4  3 6  2 3 1 -1 4 
+'''
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        def msa(mi):
+            if mi==len(nums):
+                return (0,float('-inf'))
+            sumip1,maxsum=msa(mi+1)
+            sumi=nums[mi]+max(0,sumip1)
+            return (sumi,max(maxsum,sumi))
+        return msa(0)[1]
