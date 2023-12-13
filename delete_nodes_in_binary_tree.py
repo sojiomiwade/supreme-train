@@ -76,3 +76,39 @@ for node in forest:
     / \   / \
    D  xE  F  G
 '''
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+'''
+if my child is in del list, mark it as null
+key approach, add me to the forest only after recursively considering
+children
+
+2.right=null
+forest=[]
+
+'''
+class Solution:
+    def delNodes(self, root: Optional[TreeNode], to_delete: List[int]) -> List[TreeNode]:
+        def delNodes(root):
+            if root:
+                delNodes(root.left)
+                delNodes(root.right)
+                if root.left and root.left.val in todel:
+                    root.left=None
+                if root.right and root.right.val in todel:
+                    root.right=None
+                if root.val in todel:
+                    if root.left:
+                        forest.append(root.left)
+                    if root.right:
+                        forest.append(root.right)
+        forest=[]
+        todel=set(to_delete)
+        delNodes(root)
+        if root and root.val not in todel:
+            forest.append(root)
+        return forest
