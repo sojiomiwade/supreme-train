@@ -96,4 +96,19 @@ class Solution:
                 need[s[l]]=1
                 l+=1
                 missing+=1
-        return '' if mr==float('inf') else s[ml:mr+1]
+        return '' if mr==float('inf') else s[ml:mr+1]class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        missing = len(t)
+        need = Counter(t)
+        i, im, jm = 0, float('-inf'), float('inf')
+        for j in range(len(s)):
+            missing -= need[s[j]] > 0
+            need[s[j]] -= 1
+            if not missing:
+                while need[s[i]] < 0:
+                    need[s[i]] += 1
+                    i += 1
+                if j-i < jm-im:
+                    im, jm = i, j
+        print(im,jm)
+        return s[im:jm+1] if jm!=float('inf') else ''
