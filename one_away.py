@@ -175,3 +175,34 @@ print(oneaway(s, t))
 
 
 
+'''
+
+johnk
+joenm
+    i
+alreadyfound = True
+upon finding another difference, if alreadyfound is true return False
+at the end of the string, can just return True
+
+af = true
+
+john
+joehn 
+--> true
+
+john
+jqehn 
+--> False
+'''
+def oneaway(s: str, t: str) -> bool:
+    def 
+    def same_len_oneaway():
+        alreadyfound = False
+        for sch, tch in zip(s, t):
+            if sch != tch:
+                if alreadyfound:
+                    return False
+                alreadyfound = True
+        return True
+
+    return same_len_oneaway() or diff_len_oneaway()
