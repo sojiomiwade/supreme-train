@@ -174,7 +174,6 @@ s, t = 'pale', 'bake' #-- false
 print(oneaway(s, t))
 
 
-
 '''
 
 johnk
@@ -186,17 +185,36 @@ at the end of the string, can just return True
 
 af = true
 
-john
-joehn 
+  j
+john      s
+joehn     t
+   i
+if alreadyfound, then we compare s[i] to t[i+1]. otherwise s[i] to t[i]
 --> true
 
 john
-jqehn 
+jqehn
+af = t 
 --> False
 '''
 def oneaway(s: str, t: str) -> bool:
-    def 
+    def diff_len_oneaway():
+        nonlocal s, t
+        if abs(len(s) - len(t)) > 1:
+            return False
+        if len(s) > len(t):
+            s, t = t, s
+        alreadyfound = False
+        for i in range(len(t)):
+            if s[i-alreadyfound] != t[i]:
+                if alreadyfound:
+                    return False
+                alreadyfound = True
+        return True
+         
     def same_len_oneaway():
+        if len(s) != len(t):
+            return False
         alreadyfound = False
         for sch, tch in zip(s, t):
             if sch != tch:
@@ -206,3 +224,19 @@ def oneaway(s: str, t: str) -> bool:
         return True
 
     return same_len_oneaway() or diff_len_oneaway()
+
+
+s, t = 'john', 'john'
+print(oneaway(s, t)) # true
+s, t = 'john', 'johen'
+print(oneaway(s, t)) # true
+s, t = 'john', 'qohen'
+print(oneaway(s, t)) # false
+s, t = '', ''
+print(oneaway(s, t)) # true
+s, t = 'abcdefgh', 'qohen'
+print(oneaway(s, t)) # false
+s, t = 'john', 'fish'
+print(oneaway(s, t)) # false
+
+
