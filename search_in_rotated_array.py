@@ -63,3 +63,46 @@ class Solution:
                 else:
                     r=m-1
         return -1
+'''
+search for 4
+11 12 13 14 15 0 1 2 3 4 5 6 7 8 9 10
+                   l
+                 
+                                   h
+
+if nums[m] == target
+    return m
+if nums[m]
+repeat
+    first find the sorted as a place to check. both may be sorted; this doesnt matter.
+    use the sorted to pick the half that has target
+    check nums[m] if it's your element to break early and exclude it too
+
+2 0 1
+l 
+  m 
+    h
+
+1 3
+l
+m 
+  h
+'''
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        lo, hi = 0, len(nums) - 1
+        while lo <= hi:
+            mi = lo + (hi - lo)//2
+            if nums[mi] == target:
+                return mi
+            if nums[lo] <= nums[mi]:
+                if nums[lo] <= target < nums[mi]:
+                    hi = mi-1
+                else:
+                    lo = mi+1
+            else:
+                if nums[mi] < target <= nums[hi]:
+                    lo = mi+1
+                else:
+                    hi = mi-1
+        return -1
