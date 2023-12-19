@@ -47,3 +47,25 @@ class Solution:
             if l == r:
                 return nums
             nums[l], nums[r] = nums[r], nums[l]
+'''
+2 4 0 1 5 3
+      l
+          r
+2 4 6 5
+      l
+      r
+l and r start from 0
+for r, if it lands on even, swap it with l, and advance l
+
+2 1
+  l
+    r
+'''
+class Solution:
+    def sortArrayByParity(self, nums: List[int]) -> List[int]:
+      l = 0
+      for r in range(len(nums)):
+          if nums[r]%2 == 0:
+              nums[l], nums[r] = nums[r], nums[l]
+              l += 1
+      return nums
