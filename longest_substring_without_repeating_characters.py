@@ -126,3 +126,36 @@ print(longest_substring(s)) # 1
 s = "pwwkew"
 print(longest_substring(s)) # 3, wke or kew
 
+'''
+        r    
+bcaab1234
+   l
+ {a:1,b:1,c:1}
+-----
+  w
+counter.length == r-l+1
+5     -  2   == 4
+==> maxf must be 1
+
+   l
+pwwkew
+     r
+count={w:1,k:1,e:1}
+ml,mr=2,4
+
+'''
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        maxleft=left=0
+        n=len(s)
+        maxright=-1
+     
+        count=Counter()
+        for right in range(n):
+            count[s[right]]+=1
+            if len(count)<right-left+1:
+                count[s[left]]-=1
+                if count[s[left]]==0:
+                    del count[s[left]]
+                left+=1
+        return n-left
