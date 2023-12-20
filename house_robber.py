@@ -137,4 +137,14 @@ class Solution:
         a=b=0
         for i in range(n-1,-1,-1):
           a,b=max(nums[i]+b,a),a
-        return a 
+        return a class Solution:
+    def rob(self, nums: List[int]) -> int:
+        def rob(i: int) -> int:
+            if i >= len(nums):
+                return 0
+            if i in dp:
+                return dp[i]
+            dp[i] = max(nums[i]+rob(i+2),rob(i+1))
+            return dp[i]
+        dp={}
+        return rob(0)
