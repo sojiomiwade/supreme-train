@@ -54,4 +54,22 @@ def decodeVariations(s):
   decode(s)
   return count
 s='1262'
-print(decodeVariations(s))
+print(decodeVariations(s))def decodeVariations(s):
+  def decode(s, i):
+    if i == n:
+      return 1
+    if i in dp:
+      return dp[i]
+    res = 0
+    for k in range(i,n):
+      res += int(1<=int(s[i:1+k])<=26) * decode(s, k + 1)
+    dp[i]=res
+    return res
+  dp,n={},len(s)
+  
+  return decode(s, 0) if s else 0
+
+s='1262'
+print(decodeVariations(s)) # 1
+s='1'
+print(decodeVariations(s)) # 0
