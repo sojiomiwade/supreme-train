@@ -157,4 +157,24 @@ class Solution:
             if r-l+1 - mf > k:
                 f[s[l]]-=1
                 l+=1
-        return r-l+1
+        return r-l+1class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        '''
+          l
+        aababbab
+               r
+        k=2
+        r-l+1
+        3 + 2 = 5
+        r-l+1 - maxf <= k ==> ok ==> more than k is unacceptable
+        '''
+        count=Counter()
+        left=0
+        maxf=0
+        for right in range(len(s)):
+            count[s[right]] += 1
+            maxf=max(maxf,count[s[right]])
+            if right-left+1-maxf > k:
+                count[s[left]] -= 1
+                left += 1
+        return len(s)-left
