@@ -51,4 +51,44 @@ def find_and_replace(sentence: str, src: str, dest: str) -> str:
 sentence = 'mouseA' #dogA ... 
 sentence = 'I gave a mouse a good mouse.'
 src, dest = 'mouse', 'dog'
-print(find_and_replace(sentence, src, dest)) # "dogA"
+print(find_and_replace(sentence, src, dest)) # "dogA"'''
+In a given string, replace all strings mouse with a string dog
+
+my_name_mouse_fish_mouse
+my_name_mouse_fish_mouse
+new string: my_name_dog --then move two over... and keep going
+keep copying until find mouse
+on mouse, copy dog. then advance i by 2
+bruteforce: because space is O(n)
+
+inplace: we do it from the left since dog is smaller than mouse
+
+dog_se
+      i
+    j
+dog_
+i moves 5
+j copies dog 
+'''
+
+from typing import List
+
+
+def replace(arr: List[str]) -> List[str]:
+    i=j=0
+    dog='dog'
+    mouse=list('mouse')
+    while i<len(arr):
+        if arr[i:i+5]==mouse:
+            for k in range(3):
+                arr[k+j]=dog[k]
+            i+=5
+            j+=3
+        else:
+            arr[j]=arr[i]
+            i+=1
+            j+=1
+    return arr[:j]
+
+s=list('my_name_mouse_fish_mouse')
+print(''.join(replace(s)))
