@@ -105,4 +105,15 @@ print(decodeVariations(s)) # 1def decodeVariations(s):
 s='1262'
 print(decodeVariations(s)) # 3
 s='1'
+print(decodeVariations(s)) # 1def decodeVariations(s):
+  n=len(s)
+  dp=[0 for _ in range(1+n)]
+  dp[0]=dp[1]=1
+  for i in range(2,1+n):
+    dp[i]=(1<=int(s[i-1])<=9)*dp[i-1]
+    dp[i]+=(10<=int(s[i-2:i])<=26)*dp[i-2]
+  return dp[n]
+s='1262'
+print(decodeVariations(s)) # 3
+s='1'
 print(decodeVariations(s)) # 1
