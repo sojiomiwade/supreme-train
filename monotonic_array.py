@@ -64,3 +64,16 @@ class Solution:
             ne += int(nums[i - 1] != nums[i])
         return lt == 0 or lt == ne
         
+'''
+le
+ge 
+'''
+class Solution:
+    def isMonotonic(self, nums: List[int]) -> bool:
+        le=ge=0
+        for i in range(1,len(nums)):
+            if nums[i-1]<=nums[i]:
+                le+=1
+            if nums[i-1]>=nums[i]:
+                ge+=1
+        return (len(nums)-1) in (le,ge)
