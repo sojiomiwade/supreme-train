@@ -72,4 +72,17 @@ print(decodeVariations(s))def decodeVariations(s):
 s='1262'
 print(decodeVariations(s)) # 1
 s='1'
-print(decodeVariations(s)) # 0
+print(decodeVariations(s)) # 0def decodeVariations(s):
+  if not s:
+    return 1
+  first=0
+  if 1<=int(s[0])<=9:
+    first=decodeVariations(s[1:])
+  second=0
+  if 10<=int(s[:2])<=26:
+    second=decodeVariations(s[2:])
+  return first+second
+s='1262'
+print(decodeVariations(s)) # 3
+s='1'
+print(decodeVariations(s)) # 1
