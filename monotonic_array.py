@@ -76,4 +76,15 @@ class Solution:
                 le+=1
             if nums[i-1]>=nums[i]:
                 ge+=1
-        return (len(nums)-1) in (le,ge)
+        return (len(nums)-1) in (le,ge)'''
+2 3 5 5 2
+ t t t f = f
+ f f f t = f
+'''
+class Solution:
+    def isMonotonic(self, nums: List[int]) -> bool:
+        le=ge=True
+        for i in range(1,len(nums)):
+            le=le and nums[i-1]<=nums[i]
+            ge=ge and nums[i-1]>=nums[i]
+        return le or ge
