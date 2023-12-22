@@ -149,4 +149,21 @@ class Solution:
             sumip1,maxsum=msa(mi+1)
             sumi=nums[mi]+max(0,sumip1)
             return (sumi,max(maxsum,sumi))
-        return msa(0)[1]
+        return msa(0)[1]class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        def msa(l: int, r: int) -> int:
+            if l>r: 
+                return float('-inf')
+            mid=l+(r-l)//2
+            ml=msa(l,mid-1)
+            mr=msa(mid+1,r)
+            mml=suml=0
+            for i in range(mid-1,l-1,-1):
+                suml+=nums[i]
+                mml=max(mml,suml)
+            mmr=sumr=0
+            for i in range(mid+1,r+1):
+                sumr+=nums[i]
+                mmr=max(mmr,sumr)
+            return max(ml,mr,mml+mmr+nums[mid])
+        return msa(0, len(nums)-1)
