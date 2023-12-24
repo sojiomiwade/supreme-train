@@ -34,7 +34,6 @@ class Solution:
         find_nodes(root, None, 0, res)
         parx, pary, depthx, depthy = res
         return depthx == depthy and parx is not pary
-
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -46,11 +45,12 @@ class Solution:
         def iscousins(cur: Optional[TreeNode]):
             if cur:
                 if cur.val==x:
-                    return (0,y)
+                    return (0,INT_MAX)
                 if cur.val==y:
-                    return (x,0)
-                iscousins(cur.left)
-                return 1+min(,iscousins(cur.right))
+                    return (INT_MAX,0)
+                xleft,yleft=iscousins(cur.left)
+                xright,yright=iscousins(cur.right)
+                return (1+min(xleft,xright),1+min(yleft,yright))
             return INT_MAX
 
         INT_MAX=2**31-1
