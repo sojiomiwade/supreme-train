@@ -35,3 +35,23 @@ class Solution:
         parx, pary, depthx, depthy = res
         return depthx == depthy and parx is not pary
 
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isCousins(self, root: Optional[TreeNode], x: int, y: int) -> bool:
+        def iscousins(cur: Optional[TreeNode]):
+            if cur:
+                if cur.val==x:
+                    return (0,y)
+                if cur.val==y:
+                    return (x,0)
+                iscousins(cur.left)
+                return 1+min(,iscousins(cur.right))
+            return INT_MAX
+
+        INT_MAX=2**31-1
+        return iscousins(root)
