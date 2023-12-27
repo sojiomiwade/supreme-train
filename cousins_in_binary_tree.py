@@ -5,26 +5,27 @@
 #         self.left = left
 #         self.right = right
 '''
-            1
-        2       3
-      4        5
-
+                1 [0,null]
+             /     \
+            2       3           (,)
+             \     /
+              4   5
+same depth => true, but if same parent => false
+res=(xpar,ypar,xdep,ydep)
 '''
 class Solution:
     def isCousins(self, root: Optional[TreeNode], x: int, y: int) -> bool:
-        def iscousins(cur: Optional[TreeNode]):
-            if cur:
-                if cur.val==x:
-                    return 0,INT_MAX
-                if cur.val==y:
-                    return INT_MAX,0
-                if cur.left and cur.right and set([x,y])==set([cur.left.val,cur.right.val]):
-                    return INT_MAX,INT_MAX
-                xleft,yleft=iscousins(cur.left)
-                xright,yright=iscousins(cur.right)
-                return 1+min(xleft,xright),1+min(yleft,yright)
-            return INT_MAX, INT_MAX
+        def isCousins(cur,dep,par):
+            nonlocal xpar,ypar,xdep,ydep
+            if (xpar and ypar) or not cur:
+                return
+            if cur.val==x:
+                xpar,xdep=par,dep #2,2
+            elif cur.val==y:
+                ypar,ydep=par,dep
+            isCousins(cur.left,dep+1,cur)
+            isCousins(cur.right,dep+1,cur)
 
-        INT_MAX=2**31-1
-        xdep,ydep=iscousins(root)
-        return xdep<INT_MAX and ydep<INT_MAX and xdep==ydep
+        xpar,ypar,xdep,ydep=None,None,-1,-1
+        isCousins(root,0,None)
+        return xpar is not ypar and xdep==ydep
