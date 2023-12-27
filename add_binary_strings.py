@@ -1,37 +1,30 @@
 '''
-  1
- 1010
-   11
- 1101
 
-1 1
-1 0
-0 1 
-iterate from back
-get a char and b char (set them to zero if they don't exist)
-on next iteration have carry ready
-return string from the list
+1011010 -- 7
+   1011 -- 4
 
-0 + 1 + 1  
-11
+aval, bval, carry
+res=a[:n-m]
+zip out tuple from the reverse and do the carry thing!
  11
   1
- 00
+ --
+100
+
+0
 '''
 class Solution:
     def addBinary(self, a: str, b: str) -> str:
-        res = []
-        carry = 0
-        ai = len(a)-1
-        bi = len(b)-1
-        while carry or ai >= 0 or bi >= 0:
-            aval = bval = 0
-            if ai >= 0:
-                aval = int(a[ai])
-                ai -= 1
-            if bi >= 0:
-                bval = int(b[bi])
-                bi -= 1
-            res += [((carry+aval+bval)%2)] # 3 // 2 = 1
-            carry = (carry+aval+bval)//2
-        return ''.join(['1' if res[i] else '0' for i in range(len(res)-1,-1,-1)])
+        n,m=len(a),len(b)
+        if n<m:
+            a,b=b,a
+            n,m=m,n
+        carry=0
+        res=[]
+        
+        for ach,bch in zip(reversed(a),reversed('0'*(n-m)+b)):
+            aval,bval=int(ach),int(bch)
+            res.append(str((aval+bval+carry)%2))
+            carry=(aval+bval+carry)//2
+        return ('1' if carry else '') + ''.join(reversed(res))
+        
