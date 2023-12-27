@@ -10,31 +10,36 @@
 #         self.left = left
 #         self.right = right
 '''
-arr=list_to_arr()
-1 2 3 4 5 6 7 8
-            4
-        1,3->2      5-8 -> 6
-      1  3
-time: O(n)
-space: O(n)
+0 1 2 3 4 5 6 7 n
+            f
+      s
+0 1 2 3 4 5 6 n
+            f
+      s
+0 1 2 3 [4]
+         f
+    s
+
+func l2bst(lo,exhi) <---exclusive
+    terminate: lo==exhi...yes
+    return None
+    otherwise get mid and make it the head
+    then call (for tree-left and tree-right) ll2bst(lo,mid) and ll2bst(mid.next,exhi)
+    return root
+time: n lg n
+space: 1
 '''
 class Solution:
     def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
-        def ll2arr(head):
-            arr=[]
-            while head:
-                arr.append(head.val)
-                head=head.next
-            return arr
-
-        def arr_to_bst(lo,hi):
-            if lo>hi:
+        def ll2bst(lo,exhi):
+            if lo is exhi:
                 return None
-            mi=lo+(hi-lo)//2
-            root=TreeNode(arr[mi])
-            root.left=arr_to_bst(lo,mi-1)
-            root.right=arr_to_bst(mi+1,hi)
+            slow=fast=lo
+            while fast and fast.next and exhi not in (fast,fast.next):
+                fast=fast.next.next
+                slow=slow.next
+            root=TreeNode(slow.val)
+            root.left=ll2bst(lo,slow)
+            root.right=ll2bst(slow.next,exhi)
             return root
-
-        arr=ll2arr(head)
-        return arr_to_bst(0,len(arr)-1)
+        return ll2bst(head,None)
