@@ -29,23 +29,17 @@ def find_prefix_pairs(words: List[str]) -> List[Tuple[str, str]]:
                 res.append((cur['.'],parent_word))
             parent_words.append(cur['.'])
         for child_trie in cur.values():
-            find_prefix_pairs(child_trie)
+            if type(child_trie) is dict:
+                find_prefix_pairs(child_trie)
+        if '.' in cur:
+            parent_words.pop()
+
     trie=build_trie(words)
     parent_words=[]
     res=[]
     find_prefix_pairs(trie)
     return res
     
-
-'''
-                     .
-                    /
-                  a
-                 /
-                b
-               /
-              s
-'''
 def build_trie(words: List[str]) -> Dict:
     trie=root={}
     for word in words:
@@ -68,4 +62,4 @@ def print_trie(trie):
 words = ["abs", "app", "be", "apple", "bee", "better", "bet", "absolute"]    
 trie=build_trie(words)
 print_trie(trie)
-print(trie.keys())
+print(find_prefix_pairs(words))
