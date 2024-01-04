@@ -12,10 +12,12 @@ class Solution:
     def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
         def level_order(root,rootlevel):
             if root:
+                if rootlevel==len(level):
+                    level.append([])
                 level[rootlevel].append(root.val)
                 level_order(root.left,rootlevel+1)
                 level_order(root.right,rootlevel+1)
 
-        level=defaultdict(list)
+        level=[]
         level_order(root,0)
-        return level.values()
+        return level
