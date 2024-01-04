@@ -1,37 +1,27 @@
-'''
-find all k-length strings alphabetically sorted, lower case only
 
-aaaa
-aaab
-aaac
-   ^
-at each idx, pass 
-each child idx, can only do parent idx or greater   
-i.e., parent passes the start idx
-'''
-from typing import List
-
-
-def ak(k: int) -> List[str]:
-    def ak(cur_buf_idx: int, start_ascii_idx: int) -> None:
-        if cur_buf_idx==k:
-            res.append(''.join(buf))
-        else:
-            for i in range(start_ascii_idx,MAX_ASCII_IDX):
-                buf[cur_buf_idx]=chr(ord('a')+i)
-                ak(cur_buf_idx+1,i)
-    buf=['' for _ in range(k)]
-    MAX_ASCII_IDX=26
+def filter_for_sorted(slist: List[str]) -> List[str]:
     res=[]
-    ak(0,0)
+    for s in slist:
+        for i in range(1, len(s)):
+            if s[i-1] > s[i]:
+                break
+        else:
+            res.append(s)
     return res
 
-ans=ak(3)
+def get_k_len_sorted_strings(k: int) -> List[str]:
+    dp=[[] for _ in range(1+k)]
+    dp[0]=['']
+    for i in range(k + 1):
+        for s in dp[i - 1]: # a b
+            for ksi in range(26):
+                ch=chr(ksi + 97)
+                dp[i].append(s+ch)
+        dp[i]=filter_for_sorted(dp[i])
+    return dp[k]
+
+# print(get_k_len_sorted_strings(2))
+
+ans=get_k_len_sorted_strings(3)
 assert len(ans)==len(set(ans))
-for s in ans:
-    for cha,chb in zip(s,s[1:]):
-        assert ord(cha)<=ord(chb)
-#print(ans) # [aaa,aab,...,aaz,...,zzz]
-for x in ans:
-    print(x)
 print(len(ans))
