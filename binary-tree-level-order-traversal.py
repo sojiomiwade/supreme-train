@@ -5,25 +5,17 @@
 #         self.left = left
 #         self.right = right
 '''
-new buf for each level, use queue to track each level
-level : [15 7]
-cur: 20
-buf : []
-res : [[3],[9 20]]
+0 : 3
+1 : 9,
 '''
 class Solution:
     def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
-        if not root:
-            return []
-        level,res=deque([root]),[]
-        while level:
-            buf=[]
-            for i in range(len(level)):
-                cur=level.popleft()
-                buf.append(cur.val)
-                if cur.left:
-                    level.append(cur.left)
-                if cur.right:
-                    level.append(cur.right)
-            res.append(buf[:])
-        return res
+        def level_order(root,rootlevel):
+            if root:
+                level[rootlevel].append(root.val)
+                level_order(root.left,rootlevel+1)
+                level_order(root.right,rootlevel+1)
+
+        level=defaultdict(list)
+        level_order(root,0)
+        return level.values()
