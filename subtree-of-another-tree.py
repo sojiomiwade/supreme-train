@@ -16,12 +16,9 @@ class Solution:
                 return False
             return x.val==y.val and issimilar(x.left,y.left) and issimilar(x.right,y.right)
 
-        def preorder(cur):
-            if cur:
-                ans=issimilar(cur, subRoot)
-                ans=ans or preorder(cur.left)
-                ans=ans or preorder(cur.right)
-                return ans
-            return False
-
-        return preorder(root)
+        if root:
+            ans=issimilar(root, subRoot)
+            ans=ans or self.isSubtree(root.left, subRoot)
+            ans=ans or self.isSubtree(root.right, subRoot)
+            return ans
+        return False
