@@ -1,95 +1,83 @@
 '''
-6:35 -- 7:01 = 26
+      D F F
+      0 1 2 | 3
+---------------
+C 0 | 4 5 4 | 3   
+D 1 | 3 4 3 | 2   
+E 2 | 4 3 2 | 1
+---------------
+  3 | 3 2 1 | 0   
+  4 | i i i |
+-C D -E +F +F = 4
 
+move in j implies deleting from destination (+ dst character)
+move in i implies deleting from source (+ source chractor) -- l
+move in both implies keep that char
 
-horse
-ros
-replace -> advance on both strings, 
-insert -> advance on only word2
-delete -> advance on word1
+first check if the two are the same:
+if so, then add just the char (i,j)
+if 
 
-now consider all possibilities. such branching->expo
-hence, we can memo the branching
+dd(i,j)=min(dd(i,))
+move in j implies deleting from destination (+ dst character)
+move in i implies deleting from source (+ source chractor) -- l
+move in both implies keep that char
 
-delet 
-01234
-oh
- t
- b
-o
-1 + 1
-'''
-class Solution:
-    def minDistance(self, word1: str, word2: str) -> int:
-        def branch(oneloc: int, twoloc: int) -> int:
-            if oneloc==len(word1):
-                return len(word2)-twoloc
-            if twoloc==len(word2):
-                return len(word1)-oneloc
-            if (oneloc,twoloc) in memo:
-                return memo[oneloc,twoloc]
-
-            if word1[oneloc] == word2[twoloc]:
-                res = branch(oneloc+1, twoloc+1)
-            else:
-                replace = branch(oneloc+1, twoloc+1)
-                insert = branch(oneloc, twoloc+1)
-                delete = branch(oneloc+1, twoloc)
-                res = 1+min(replace,insert,delete)
-            memo[oneloc,twoloc] = res
-            return res
-        memo = {}
-        return branch(0, 0)
-
-
-
-'''
-So far the impl is top-down to get the bestres. 
-To build the cache, this has to be bottom up (because to
-the left is different for different i,j)... so stay tuned
- s
-dog
-frog
-  t
-res = -d +f +r o g
-all others will be less
-put d before f and r because that's the question ask. 
-
-delete from source => increment sidx
-add from target => increment tidx
-
-takes exponential => use memo or tab
-dog
+D F
+D F F
 '''
 def diffBetweenTwoStrings(source, target):
-    def helper(sidx, tidx, candres, bestres):
-        if sidx == m or tidx == n:
-            rest = max(n - tidx, m - sidx)
-            if not bestres or rest + len(candres) < len(bestres):
-                bestres = candres[:]
-                for i in range(sidx, m):
-                    bestres.append('-' + source[i])
-                for i in range(tidx, n):
-                    bestres.append('+' + target[i])
-            return bestres, rest
+  def dd(i, j):
+    if (i,j) in dp:
+      return dp[i,j]
+    eqval=float('inf')
+    if source[i]==target[j]:
+      eqval=dd(i+1,j+1)
+    dp[i,j]=min(eqval,1+dd(i+1,j),1+dd(i,j+1))
+    return dp[i,j]
+  
+  dp={}
+  m, n = len(source), len(target)
+  for i in range(m):
+    dp[i,n]=m-i
+  for j in range(n):
+    dp[m,j]=n-j
+  dp[m,n]=0
+  dd(0,0)
+  ans=[]
+  i=j=0
+  
+  while i<=m and j<n:
+    if i<m and source[i]==target[j]:
+      ans.append(source[i])
+      i+=1
+      j+=1
+    else:
+      if i==m or dp[i,j+1]<dp[i+1,j]:
+        print(j,'j')
+        ans.append('+'+target[j])
+        j+=1
+      else:
+        ans.append('-'+source[i])
+        i+=1        
+  return ans
 
-        if source[sidx] == target[tidx]:
-            bestres, bu_dist = helper(sidx + 1, tidx + 1, candres + [source[sidx]], bestres)
-            cache[sidx, tidx] = bu_dist
-        else:
-            bestres, bu_dist1 = helper(sidx + 1, tidx, candres + ['-' + source[sidx]], bestres)
-            bestres, bu_dist2 = helper(sidx, tidx + 1, candres + ['+' + target[tidx]], bestres)
-            cache[sidx, tidx] = 1 + min(bu_dist1 + bu_dist2)
-        return bestres, cache[sidx, tidx]
+'''
+  print(len(dp),m*n)
+  assert len(dp) == m * n
+  for i in range(m):
+    for j in range(n):
+      print (dp[i,j],end=' ')
+    print()
+'''
 
-    m, n = len(source), len(target)
-    cache = {}
-    return helper(0, 0, [], None)
-
-source, target = 's', 't'
-source, target = 'dog', 'frog'
-source, target = "ABCDEFG", "ABDFFGH"  # A B -C D -E F +F G +H
-print(diffBetweenTwoStrings(source, target))
-# ["A", "B", "-C", "D", "-E", "F", "+F", "G", "+H"
-# AB C D E   FG
-# AB   D   F FGH
+source, target = 'CDE','DFF'
+'''
+A B C D E F G
+A B D F F G H
+A A -C D -E F +F G +H
+'''
+source, target = 'G','FGH'
+source, target = 'ABCDEFG','ABDFFGH'
+#print(source, target)
+#print(diffBetweenTwoStrings(source, target))
