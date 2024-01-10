@@ -1,31 +1,3 @@
-'''
-      D F F
-      0 1 2 | 3
----------------
-C 0 | 4 5 4 | 3   
-D 1 | 3 4 3 | 2   
-E 2 | 4 3 2 | 1
----------------
-  3 | 3 2 1 | 0   
-  4 | i i i |
--C D -E +F +F = 4
-
-move in j implies deleting from destination (+ dst character)
-move in i implies deleting from source (+ source chractor) -- l
-move in both implies keep that char
-
-first check if the two are the same:
-if so, then add just the char (i,j)
-if 
-
-dd(i,j)=min(dd(i,))
-move in j implies deleting from destination (+ dst character)
-move in i implies deleting from source (+ source chractor) -- l
-move in both implies keep that char
-
-D F
-D F F
-'''
 def diffBetweenTwoStrings(source, target):
   def dd(i, j):
     if (i,j) in dp:
@@ -47,19 +19,28 @@ def diffBetweenTwoStrings(source, target):
   ans=[]
   i=j=0
   
-  while i<=m and j<n:
-    if i<m and source[i]==target[j]:
+  '''
+      i
+  1 Q 2 3 E 1 2 3 
+  Q 
+    j
+  '''
+  while i<m and j<n:
+    if source[i]==target[j]:
       ans.append(source[i])
       i+=1
       j+=1
     else:
-      if i==m or dp[i,j+1]<dp[i+1,j]:
-        print(j,'j')
+      if dp[i,j+1]<dp[i+1,j]:
         ans.append('+'+target[j])
         j+=1
       else:
         ans.append('-'+source[i])
-        i+=1        
+        i+=1
+  for ri in range(i,m):
+    ans.append(f'-{source[ri]}')
+  for rj in range(j,n):
+    ans.append(f'+{target[rj]}')
   return ans
 
 '''
@@ -78,6 +59,12 @@ A B D F F G H
 A A -C D -E F +F G +H
 '''
 source, target = 'G','FGH'
+res=diffBetweenTwoStrings(source, target)
+exp=['+F', 'G', '+H']
+assert exp==res
+# print(diffBetweenTwoStrings(source, target))
 source, target = 'ABCDEFG','ABDFFGH'
-#print(source, target)
-#print(diffBetweenTwoStrings(source, target))
+exp=['A', 'B', '-C', 'D', '-E', 'F', '+F', 'G', '+H']
+res=diffBetweenTwoStrings(source, target)
+assert exp==res
+# print(res)
