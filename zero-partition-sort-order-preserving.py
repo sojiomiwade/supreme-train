@@ -21,15 +21,16 @@ def partition(arr: List[int]) -> None:
     if all(arr):
         return
     n=len(arr)
-    lastzeroloc=-1
+    lastzeroloc=None
     for i in range(n-1,-1,-1):
         if arr[i]==0:
             lastzeroloc=i
             break
-    for i in range(lastzeroloc-1,-1,-1):
-        if arr[i]!=0:
-            arr[i],arr[lastzeroloc]=0,arr[i]
-            lastzeroloc-=1
+    if lastzeroloc:
+        for i in range(lastzeroloc-1,-1,-1):
+            if arr[i]!=0:
+                arr[i],arr[lastzeroloc]=0,arr[i]
+                lastzeroloc-=1
 
 arr=[3,0,5,0,0,1]
 partition(arr)
