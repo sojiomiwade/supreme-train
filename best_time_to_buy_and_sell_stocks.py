@@ -1,26 +1,18 @@
 '''
-  -------
-7,1,5,3,6,4
-  l     r 
-
-brute force of course at O(n**2) by considering all i,j i < j
-sliding window:
-move r unconditionally through array
-if price at anytime is lowest it could be update l to that
-always calculate maxprofit as the better of current max and profit(l,r)
-
-7,1,5,3
-  l
-      r
-max=0,4
-
+first: for all i,j i<j, maxprofit is the max of pj-pi: O(n**2)
+2nd: sliding window for O(n)?
+    a guy behind cannot have potential for max profit (against some future)
+    if something in between is lower.
+    so update left when lower than left is seen.
+    meanwhile all the while increment right
 '''
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        maxprofit = -1
-        left = 0
+        left=0
+        maxprofit=profit=0
         for right in range(len(prices)):
-            if prices[right] < prices[left]:
-                left = right
-            maxprofit = max(maxprofit, prices[right] - prices[left])
+            if prices[right]<prices[left]:
+                left=right
+            profit=prices[right]-prices[left]
+            maxprofit=max(maxprofit,profit)
         return maxprofit
