@@ -5,141 +5,51 @@ Example 1:
 
 Input: n = 5, and edges = [[0,1], [0,2], [0,3], [1,4]]
 Output: true
-Example 2:
 
+Example 2:
 Input: n = 5, and edges = [[0,1], [1,2], [2,3], [1,3], [1,4]]
 Output: false
-
 Note: you can assume that no duplicate edges will appear in edges. Since all edges are undirected, [0,1] is the same as [1,0] and thus will not appear together in edges.
 
-0 -- 1 -- 2 -- 3
-     \________/
-     \___________ 4
-time: 8:16 -- 
-is there a cycle in the graph? 
-for each node: 
-    DFS such that if you ever about to color a colored node, return F
-'''
-
-from collections import defaultdict
-
-
-def is_valid_tree(n, edges):
-    def dfs_cycle(node) -> bool:
-        visit.add(node)
-        for nb in nbs[node]:
-            if nb in visit:
-                 if parent[node] != nb:
-                    return True
-            else:
-                parent[nb] = node
-                print('dfs cycle', node, nb)
-                if dfs_cycle(nb):
-                    return True
-        return False
-
-    nbs = defaultdict(set)
-    for (u,v) in edges:
-        nbs[u].add(v)
-        nbs[v].add(u)
-    visit = set()
-    parent = {}
-    is_cycle = dfs_cycle(edges[0][0])
-    print('is cycle', is_cycle)
-    print('visit', visit)
-    print('nbs', nbs)
-    if is_cycle or len(visit) != n:
-        return False
-    return True
-
-n = 5
-edges = [[0,1], [1,2], [2,3], [1,3], [1,4]]
-print(is_valid_tree(n, edges)) # false, cycle
-
-n = 5
-edges = [[0,1], [0,2], [0,3], [1,4]]
-print(is_valid_tree(n, edges)) # true
-
-n = 3
-edges = [[0,1],[2,3]]
-print(is_valid_tree(n, edges)) # false, disconnected
+first approach: tree has V-1 edges, so we can just return true if E=V-1 and false otherwise. this assumes no self edges in list. but even then, we can filter those out
+second approach: count number of connected components. true only if count is 1, and all nodes are in that components. no this won't suffice. you have to look at E count or in addition ensure no node in a visit call encounters a visited node that isn't its parent
 
 '''
-n = 5, and edges = [[0,1], [0,2], [0,3], [1,4]]
-1. could do a DFS at any node. nodes encountered should equal n
-2. ???
 
-        0           4
-      /   \
-     1-----2
-= False
-
-        0
-      /   \
-     1-----2
-= False
-
-        0   
-      /   
-     1-----2
-= True
-
-disconnected components or cycle = False
-otherwise True
-
-cycle => you have a child who has been visited
-multiple components => the number of nodes in current component < n
-
-'''
-from collections import defaultdict
-from typing import Dict, List, Tuple
+from typing import List, Optional, Set
 
 
-def is_graph_valid_tree(n: int, edges: List[List[int]]) -> bool:
-    def build_graph() -> Dict[int, List[int]]:
-        nbs = defaultdict(list)
-        for (u, v) in edges:
-            nbs[u].append(v)
-            nbs[v].append(u)
-        return nbs
-
-    def dfs(node: int, anc: int) -> Tuple[int, bool]:
-        count = 1
-        for nb in nbs[node]:
-            if nb == anc:
-                continue
-            if nb in visited:
-                return (0, False)
-            visited.add(nb)
-            (nbcount, tree) = dfs(nb, node)
-            if not tree:
-                return (0, False)
-            count += nbcount
-        return (count, True)
-
-    source = 0
-    nbs = build_graph()
-    visited = set([source])
-    count = 1
-    for nb in nbs[source]:
-        if nb in visited:
+def istree(nbs: List[List[int]]) -> bool:
+    def hasscycle(v: int,parent:Optional[int]) -> bool:
+        if visited[v]:
             return False
-        visited.add(nb)
-        (source_nb_count, tree) = dfs(nb, source)
-        if not tree:
-            return False
-        count += source_nb_count
-    return count == n
+        visited[v]=True
+        cycle=False
+        for w in nbs[v]:
+            if visited[w] and parent is not None and w!=parent:
+                return True
+            cycle=cycle or hasscycle(w,v)
+        return cycle
 
-#1--2--3
-edges = [[0,1], [0,2], [0,3], [1,4]]
-n = 5
-print(is_graph_valid_tree(n, edges)) # true
+    n=len(nbs)
+    compcount=0
+    visited=[False for _ in range(n)]
+    cycle=hasscycle(0,None)
+    return all(visited) and not cycle
 
-edges = [[0,1], [0,2], [0,3], [1,4], [1,3],]
-n = 5
-print(is_graph_valid_tree(n, edges)) # false
+def get_graph(n: int, edges: List[List[int]]) -> List[List[int]]:
+    nbs=[[] for _ in range(n)]
+    for v,w in edges:
+        nbs[v].append(w)
+        nbs[w].append(v)
+    print(nbs)
+    return nbs
 
-edges = [[0,1], [0,2], [0,3]]
-n = 5
-print(is_graph_valid_tree(n, edges)) # false
+def graph_valid_tree(n: int, edges: List[List[int]]) -> bool:
+    nbs=get_graph(n,edges)
+    return (istree(nbs))
+
+n,edges = 5,[[0,1], [1,2], [2,3], [1,3], [1,4]]
+print(graph_valid_tree(n,edges)) # false
+n,edges = 5,[[0,1], [0,2], [0,3], [1,4]]
+print(graph_valid_tree(n,edges)) # true
