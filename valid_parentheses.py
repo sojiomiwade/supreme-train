@@ -1,35 +1,25 @@
 '''
-{} {[()]} -> true
-    ^
-))(( -> false
-^
-count=2
-
-3 variables one for each bracket can use hashmap, type_count that maps either the left or the right of a type
-that counter can't go negative which helps catch out of order but same number of brackets pattern
-time and space: O(n), O(1)
-{[()]}
-
-brace 1
-brack
-paren
-
-{}([)]
-  ^
-st=([)]
-
-
+invalid: {(})
+valid: {()}
+=>same number of brackets won't suffice
+first: just use a stack: push for left, pop for right, 
+pop fails if the left of the cur is not on the top
+if at the end, stack still has elements, fail
+second: use 3 variables instead of stack
+{([( )])}
+}{}
+0123
+hmm.. still need to track locations it seems
 '''
 class Solution:
     def isValid(self, s: str) -> bool:
-        st = []
-        left = {'}':'{', ')':'(', ']':'['}
-        for ch in s:
-            if st and ch in left and left[ch] == st[-1]:
-                st.pop()
+        left={']':'[','}':'{',')':'('}
+        st=[]
+        for x in s:
+            if x in '([{':
+                st.append(x)
             else:
-                #below if is only to break early, not necessary
-                if ch in left:
+                if not st or st[-1]!=left[x]:
                     return False
-                st.append(ch)
+                st.pop()
         return not st
