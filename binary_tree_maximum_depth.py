@@ -4,31 +4,25 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+'''
+          1
+        /   \
+             2
+dep : 1
+q : [2]
+'''
 class Solution:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
-        '''
-        when you get to leaf, update max, so pass max
-        also, back track for various branches
-        can avoid stack and use BFS
-                 1
-                /\
-               2  3
-              /\  /\
-             4  ..  5
-        '''
         if not root:
             return 0
-        q = deque([root])
-        maxdepth = 0
+        q=deque([(1,root)])
         while q:
-            for _ in range(len(q)):
-                node = q.popleft()
-                if node.left:
-                    q.append(node.left)
-                if node.right:
-                    q.append(node.right)
-            maxdepth += 1
-        return maxdepth
+            dep,x=q.popleft()
+            if x.left:
+                q.append((1+dep,x.left))
+            if x.right:
+                q.append((1+dep,x.right))
+        return dep
         # if not root:
         #     return 0
-        # return 1 + max(self.maxDepth(root.left),self.maxDepth(root.right))
+        # return 1+max(self.maxDepth(root.left),self.maxDepth(root.right))
