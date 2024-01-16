@@ -1,74 +1,33 @@
 '''
-list all strings of length k, having letters a - e only that are sorted
-k=3
-abc
-aaa
-cab <--no
-
-each recursive call: 
-base case: if string is k in length, we are done
-loop through a - e, add that to prefix.
-
-a -> a
+list all sorted strings of length n (alphabetic lowercase)
 '''
 from typing import List
 
+def issorted(lis: List[str]) -> bool:
+    for ch1,ch2 in zip(lis,lis[1:]):
+        if ord(ch1)>ord(ch2):
+            return False
+    return True
 
-def list_sorted(k: int) -> None:
-    def helper(prefix: List[str]) -> None:
-        if len(prefix) == k:
-            for i in range(1,len(prefix)):
-                if ord(prefix[i-1]) > ord(prefix[i]):
-                    break
-            else:
-                print(''.join(prefix))
-            return
-        for i in range(5):
-            ch = chr(97+i)
-            prefix.append(ch)
-            helper(prefix)
-            prefix.pop()
-    helper([])
-
-list_sorted(2) # a, b, c,d,e
-'''
-print all strings of length k where the characters are in sorted order.
-
-generate each string of length k, then check if it is sorted
-'''
-def print_sorted_strings(k: int) -> None:
-    '''
-    aaaa
-    aaab
-    prefix method
-    abcd,
-        bcd,a
-
-        acd,b
-        abc,d
-    
-    4,.
-        3,a
-           2,aa 
-        3,b
-            2,ba
-            2,bb
-        3,c
-        ...
-    '''
-    def _sorted(s: str) -> bool:
-        for i in range(1, len(s)-1):
-            if ord(s[i-1]) > ord(s[i]):
-                return False
-            return True
-
-    def _print_sorted_strings(rem: int, prefix: str) -> None:
-        if rem == 0:
-            if _sorted(prefix):
-                print(prefix)
+def listsortedperms(n: int) -> List[str]:
+    def listsortedperms(idx: int) -> None:
+        if idx==n:
+            if issorted(buf):
+                ans.append(''.join(buf))
             return
         for i in range(26):
-            _print_sorted_strings(rem - 1, prefix + chr(i+ord('a')))
-    _print_sorted_strings(k, '')
+            buf[idx]=chr(97+i)
+            listsortedperms(idx+1)
+    '''
+    T(n)=ksi * T(n-1) -> n * (ksi)!
+    3
+    use buf to build out each perm with DFS approach; at end filter out unsorted
+    later, can build into sol always starting next char from the prev one
+    '''
+    buf=['' for _ in range(n)]
+    ans=[]
+    listsortedperms(0)
+    return ans
 
-print_sorted_strings(5) #aaaa, aaab, ...
+sp=listsortedperms(3)
+print(sp)
