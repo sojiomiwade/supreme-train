@@ -1,10 +1,11 @@
+KSI=3
 '''
 list all sorted strings of length n (alphabetic lowercase)
 '''
 from typing import List
 
-def issorted(lis: List[str]) -> bool:
-    for ch1,ch2 in zip(lis,lis[1:]):
+def issorted(seq) -> bool:
+    for ch1,ch2 in zip(seq,seq[1:]):
         if ord(ch1)>ord(ch2):
             return False
     return True
@@ -15,7 +16,7 @@ def listsortedperms(n: int) -> List[str]:
             if issorted(buf):
                 ans.append(''.join(buf))
             return
-        for i in range(26):
+        for i in range(KSI):
             buf[idx]=chr(97+i)
             listsortedperms(idx+1)
     '''
@@ -29,5 +30,34 @@ def listsortedperms(n: int) -> List[str]:
     listsortedperms(0)
     return ans
 
-sp=listsortedperms(3)
+def listsortedperms(n: int) -> List[str]:
+    '''
+    abc
+    ab ba ac ca bc cb
+
+
+    aaa aab bac
+    aa cc ab ba ac ca
+    cab acb abc
+
+    duplicates
+    ba -> (a) + ba
+    aa -> a + (b) + a  
+
+    a b c
+    on each bigger iteration, put all the ksi alphabets in the previous results
+    '''
+    prev_results=['']
+    cur_results=[]
+    for _ in range(n):
+        cur_results=[]
+        for pres in prev_results:
+            for i in range(KSI):
+                res=chr(i+97)+pres
+                if issorted(res):
+                    cur_results.append(res)
+        prev_results=cur_results
+    return cur_results
+
+sp=listsortedperms(2)
 print(sp)
