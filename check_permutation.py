@@ -1,35 +1,32 @@
 '''
 Given 2 strings write a method to decide if one is a permutation of the other
-carb
-barc
-for each char, get it's frequency into a hash map
-can use the same hash table, one string increments the counter of ch, the other decrements it. at the end, if the map has all zeros in it, then true; else false
-time: O(n), space: O(n) for one counter map
 
-alternatively, sort both strings. and return true if they're equal
-time: O(n lg n), space: O(1)
+abcde
+edcab
+zeroth: sort both -> t,s: n lg n, n
+first: hashmap counter increment the counter for a key if from s, decrement if from t. the counter must be all zeros for true. otherwise false.
 '''
 from collections import Counter
-def is_perm_equal(s: str, t: str) -> bool:
-    counter = Counter()
 
-    for sch, tch in zip(s, t):
-        counter[sch] += 1
-        counter[tch] -= 1
-        if counter[sch] == 0:
-            del counter[sch]
-        if counter[tch] == 0:
-            del counter[tch]
-    return len(s) == len(t) and len(counter) == 0
 
-s, t = 'barc', 'carb'
-print(is_perm_equal(s, t)) # true
-s, t = 'barc', 'carbb'
-print(is_perm_equal(s, t)) # false
-s, t = 'barcb', 'carbb'
-print(is_perm_equal(s, t)) # true
-s, t = '', ''
-print(is_perm_equal(s, t)) # true
-s, t = 'B', ''
-print(is_perm_equal(s, t)) # false
+def checkperm(s: str, t: str) -> bool:
+    assert None not in (s,t)
+    if len(s)!=len(t):
+        return False
+    counter=Counter()
+    for chs,cht in zip(s,t):
+        counter[chs]+=1
+        counter[cht]-=1
+    return not any(counter.values())
+
+s,t='abcde','edcab'
+print(checkperm(s,t)) #true
+s,t='abcde','edcab1'
+print(checkperm(s,t)) #f
+s,t='cde','edcab1'
+print(checkperm(s,t)) #f
+s,t='111','111'
+print(checkperm(s,t)) #t
+s,t=None,None
+print(checkperm(s,t)) #exception
 
