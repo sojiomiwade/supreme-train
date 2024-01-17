@@ -1,4 +1,12 @@
-# can just use x>0 for 2nd tuple item
+"""
+2 ->2,1
+-2->2,0
+-7->7,0
+0 ->0,0
+"""
+
 def absSort(arr):
-  arr.sort(key=lambda x:(abs(x), 0 if x < 0 else 1))
-  return arr
+  return sorted(arr,key=lambda x: (abs(x),x>0))
+
+arr = [2, -7, -2, -2, 0]
+print(absSort(arr))
