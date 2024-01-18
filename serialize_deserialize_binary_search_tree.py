@@ -1,110 +1,18 @@
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
+'''
+serialize and deserialize BST
+            5
+        3       8
+      n   4        9
+53489
 
-class Codec:
+deser_bst(que,lb,ub)
+    if not lb<que[0]<ub:
+        return None
+    x=que.popleft
+    root=node(x)
+    root.left=deser_bst(que,lb,x)
+    root.right=deser_bst(que,x,ub)
+    return root
 
-    def serialize(self, root: Optional[TreeNode]) -> str:
-        '''
-             2
-            / \
-           1   3
-        pre [213]
-        ino []
-        '''
-        def preorder(root, pre):
-            if root:
-                pre.append(str(root.val))
-                preorder(root.left,pre)
-                preorder(root.right,pre)
-            return pre
-
-        def inorder(root,ino):
-            if root:
-                inorder(root.left,ino)
-                ino.append(str(root.val))
-                inorder(root.right,ino)
-            return ino
-
-        pre=preorder(root,[])
-        ino=inorder(root,[])
-        return ','.join(pre) + '-' + ','.join(ino)
-
-    def deserialize(self, data: str) -> Optional[TreeNode]:
-        '''
-        pre [2, 1] 
-        ino [1, 2] 
-        iil {1: 0, 2: 1}
-        lo hi 01, 11, 11 
-        TN(2, TN(1,n,))
-        mi 0
-        '''
-        def _deserialize(lo,hi,nextpre):
-            if lo > hi:
-                return None,nextpre
-            print(lo, hi, nextpre)
-            root = TreeNode(pre[nextpre])
-            nextpre += 1
-            mi = iil[root.val]
-            root.left,nextpre = _deserialize(lo,mi-1,nextpre)
-            root.right,nextpre = _deserialize(mi+1,hi,nextpre)
-            return root,nextpre
-
-        if data == '-':
-            return None
-        pres, inos = data.split('-')
-        print(data)
-        pre = [int(x) for x in pres.split(',')]
-        ino = [int(x) for x in inos.split(',')]
-        iil = {ino[i]:i for i in range(len(ino))}
-        print(pre,ino,iil)
-        return _deserialize(0, len(pre)-1, 0)[0]
-
-# Your Codec object will be instantiated and called as such:
-# Your Codec object will be instantiated and called as such:
-# ser = Codec()
-# deser = Codec()
-# tree = ser.serialize(root)
-# ans = deser.deserialize(tree)
-# return ans# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
-
-class Codec:
-
-    def serialize(self, root: Optional[TreeNode]) -> str:
-        def serialize(root):
-            if root:
-                s.append(str(root.val))
-                serialize(root.left)
-                serialize(root.right)
-        s=[]
-        serialize(root)
-        return ' '.join(s)
-
-
-    def deserialize(self, data: str) -> Optional[TreeNode]:
-        def deserialize(lo,hi):
-            r=None
-            if q and lo<q[0]<hi:
-                r=TreeNode(q.popleft())
-                r.left=deserialize(lo,r.val)
-                r.right=deserialize(r.val,hi)
-            return r
-
-        q=deque(int(x) for x in data.split())
-        return deserialize(float('-inf'),float('inf'))
-
-# Your Codec object will be instantiated and called as such:
-# Your Codec object will be instantiated and called as such:
-# ser = Codec()
-# deser = Codec()
-# tree = ser.serialize(root)
-# ans = deser.deserialize(tree)
-# return ans
+deser_bst(que,-inf,inf)
+'''
