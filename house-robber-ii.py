@@ -5,43 +5,51 @@
 # 0  0     1    2   3  4
 '''
 5 7 3
-            fu2   fu1
-   0    0    2    3   2   5
-             0    1   2   3
-fu1=fu2=None
-repeat for all i in 0..n-1
+
+rob[1]=max(nums[1],nums[2])
+if n==1:
+    return 1
+if n==2
+    retrun max(nums[0],nums[1])
+fu2=False
+fu1=true if nums[0]>nums[1] else false
+rob[0]=nums[0]
+
+repeat for all i in 2..n-1
     numsi=0 if i==n-1 and fu2. otherwise, it's just nums[i]
     prof_with_i=numsi+rob[i-2]
     prof_without_i=rob[i-1]
-    if i==0
-        cur=true
-    elif i==1
-    if prof_with_i > prof_without_i
-        cur=false if i==0 else (true if i==1 else fu2)
-    else
-        cur=fu1
-        fu1=fu1 if i!=0 else fu1=
     rob[i]=max(prof_with_i,prof_without_i)
+    cur=fu2 if prof_with_i>prof_without_i else fu1
+    fu2,fu1=fu1,cur
 
-    if i==n-1, 
-    numsi=0, but if fu2 is false, then numsi=nums[i]
+does the cur robbery i make involve the first house
+fu      t   f   t   f  f
+rob     0   0   2   3   (0+2,3)
+nums            2   3   2
+hidx            0   1   2
 
-    fu1_old=fu1
-    fu1=if we use i,      then {fu1=fu2 if fu2 else if i==0 then f, if i==1 then t},
-        if we don't use i then {fu1=fu1 if i!=0 else fu1=}
-    fu2=fu1_old
-    
-    rob[i]=max(numsi+rob[i-2],rob[i-1])
+fu      t   f   
+rob     0   0   
+nums            1   2   3
+hidx            0   1   2
+ans should be 3
 '''
-# if hidx==n-1 and firstused then numsi = 0
 class Solution:
-def rob(self, nums: List[int]) -> int:
-    n=len(nums)
-    fu1=fu2=F
-    for i in range(n):
-        if i==0:
-            firstused=
-        rob[i]=max(nums[i]+rob[i-2],rob[i-1])
+    def rob(self, nums: List[int]) -> int:
+        n=len(nums)
+        fu2,fu1=True,False
+        rob=rob1=rob2=0
+        for i in range(n):
+            if i==n-1 and fu2:
+                rob_with_i=max(nums[i],rob2)
+            else:
+                rob_with_i=nums[i]+rob2
+            rob=max(rob_with_i,rob1)
+            cur=fu2 if rob_with_i>rob1 else fu1
+            rob2,rob1=rob1,rob
+            fu2,fu1=fu1,cur
+        return rob
 
     # def rob(hasfirst: bool, hidx) -> int:
     #     if hidx>n-1 or (hidx==n-1 and hasfirst):
