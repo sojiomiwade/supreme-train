@@ -1,2 +1,2 @@
 # supreme-train
-Algorithms, data structures, system design
+Algorithms and data structures
