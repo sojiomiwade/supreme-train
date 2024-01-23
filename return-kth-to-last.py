@@ -61,6 +61,9 @@ def k2last(head: Optional[Node], k: int) -> Node:
         return n+bool(fast.next),mi,slow
 
     ''''
+    0 1 2 3 4 5 6 7 8 
+            m=4     k=1
+                    n-k=9-1=8 => 8-4
     0 1 2 3 4 5 6 7 8 9 
             m=4     k=2
                     n-k=8 moves from head
@@ -82,14 +85,14 @@ otherwise just use n-k
     assert head
     n,mi,midnode=findmid()
     assert 1<=k<=n
-    moves=n-1-mi-k
-    if moves>0:
-        for _ in range(moves):
+    if n-k>=mi:
+        for _ in range(n-k-mi):
             midnode=midnode.next
         assert midnode
-        return midnode.next
-    for _ in range(-moves):
+        return midnode
+    for _ in range(n-k):
         head=head.next
+    assert head
     return head
 
 #even count
@@ -117,6 +120,6 @@ head=makenode(0,[8,1,5,3,0,2,9,11,12,13])
 printnodes(head)
 print(k2last(head,k=6).val) # 3
 
-# head=makenode(0,[8,1,5,3,0,2,9,2])
-# printnodes(head)
-# print(k2last(head,k=6).val) # 5
+head=makenode(0,[8,1,5,3,0,2,9,2])
+printnodes(head)
+print(k2last(head,k=6).val) # 5
