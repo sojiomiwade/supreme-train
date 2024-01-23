@@ -1,5 +1,11 @@
 '''
 DFS from every cell
+T(n)=4*T(n-1) + 1
+=4*(4*T(n-2)+1)+1
+=4*(4*(4(T(n-3)+1))+1) + 1
+=4**2
+=4**n +   +4**3 ..4**2.4 + 1
+=4**n + 4**n
 '''
 class Solution:
     def exist(self, board: List[List[str]], word: str) -> bool:
@@ -22,9 +28,9 @@ class Solution:
             return doesexist
 
         m,n=len(board),len(board[0])
+        visited=set()
         for r in range(m):
             for c in range(n):
-                visited=set()
                 if exist(r,c,0):
                     return True
         return False

@@ -42,8 +42,8 @@ class Solution:
         m,n,W=len(board),len(board[0]),len(words)
         words,res=set(words),set()
         root=build_trie()
+        visited=set()
         for r in range(m):
             for c in range(n):
-                visited=set()
                 findWords(r,c,root)
         return list(res)
