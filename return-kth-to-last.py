@@ -97,16 +97,30 @@ otherwise just use n-k
 
 #even count
 #8 1 5 3 0 2 (9) 2 n, k=2
-def makenode(idx: int, arr: List[int]) -> Optional[Node]:
-    if idx==len(arr):
-        return None
-    return Node(arr[idx],makenode(idx+1,arr))
+def makenode_iter(arr: List[int]) -> Optional[Node]:
+    '''
+    next=None
+    then iteratively make new node going back on the arr
+    return next
+    '''
+    next=None
+    for x in reversed(arr):
+        next=Node(x,next)
+    return next
 
 def printnodes(head: Optional[Node]) -> None:
     while head:
         print(head.val,end=',')
         head=head.next
     print()
+
+printnodes(makenode_iter([i for i in range(0,9,2)]))
+
+def makenode(idx: int, arr: List[int]) -> Optional[Node]:
+    if idx==len(arr):
+        return None
+    return Node(arr[idx],makenode(idx+1,arr))
+
 
 head=makenode(0,[8,1,5,3,0,2,9,2])
 printnodes(head)
