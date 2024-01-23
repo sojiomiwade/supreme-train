@@ -6,52 +6,51 @@ x
    x
     xxxxy
 
-11111111111
+s          
+          
+  x       
+      f    
+  f
+step in the row and col dir until we are in the row or col.
+then (i) march to the row and (ii) then to the col
+3 loops in all
+''' 
+from typing import List
 
-            s
-           s
-          s
-         s
-fssssssss
+SET=1
+CLEAR=0
+def draw(sr: int, sc: int, fr: int, fc: int, canvas: List[List[int]]) -> None:
+    m,n=len(canvas),len(canvas[0])
+    for x in sr,sc:
+        assert x>=0
+    for r,c in zip((sr,sc),(fr,fc)):
+        for x,ub in zip((r,c),(m,n)):
+            assert x<ub, f'need {x} < {ub}'
+    r,c=sr,sc
+    rowadvance=coladvance=1
+    if sr>fr:
+        rowadvance=-1
+    if sc>fc:
+        coladvance=-1
+    while True:
+        canvas[r][c]=SET
+        if r==fr or c==fc:
+            break
+        r+=rowadvance
+        c+=coladvance
+    sr,sc=r,c
+    for r in range(sr,fr+rowadvance,rowadvance):
+        canvas[r][sc]=SET
+    for c in range(sc,fc+coladvance,coladvance):
+        canvas[sr][c]=SET
 
-f=(fx,fy)
-s=(sx,sy)
+m,n=10,20
+canvas=[[CLEAR for _ in range(n)] for _ in range(m)]
+draw(1,1,5,5,canvas)
+draw(0,3,2,10,canvas)
+draw(5,5,0,5,canvas)
+draw(9,0,5,3,canvas)
+# draw(20,20,0,5,canvas)
 
-1)move in x and y dir until either sx equals fx or sy=fy
-
-now 2 can be unnecessary if we let 1 have a zero dir and we don't stop until (sx,fx)==(sy,fy)
-2)then move in the not equal to dir till you get there
-    two while loops, one for each axis
-'''
-
-#time,space: n**2,1
-def print_canvas(canvas):
-    for r in canvas:
-        print(''.join(str(val) for val in r))
-    print()
-
-#time,space: n,1
-def link(sx,sy,fx,fy,canvas):
-    while (sx,sy) != (fx,fy):
-        canvas[sy][sx]=1
-        xdir=0
-        if sx<fx:
-            xdir=1
-        elif sx>fx:
-            xdir=-1
-        ydir=0
-        if sy<fy:
-            ydir=1
-        elif sy>fy:
-            ydir=-1
-        sx+=xdir
-        sy+=ydir
-    canvas[sy][sx]=1
-
-n=10
-canvas=[[0 for _ in range(n)] for _ in range(n)]
-print_canvas(canvas)
-link(0,0,5,5,canvas)
-link(0,0,0,5,canvas)
-link(5,5,0,5,canvas)
-print_canvas(canvas)
+for r in range(m):
+    print(''.join(str(canvas[r][c]) for c in range(n)))
