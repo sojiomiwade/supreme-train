@@ -4,36 +4,24 @@ class Node:
     def __init__(self, val = 0, neighbors = None):
         self.val = val
         self.neighbors = neighbors if neighbors is not None else []
+
+like in DFS, still need a lookup
+only nodes that aren't in lookup go in queue
 """
-'''
-def cg(node)
-    if node
-        clonenode=Node()
-        for all children of node
-            clonenode.neighbors.append(cg(child))
-
-how to handle already created nodes?
-everyone does their pointing
-clookup={1:c1,2:c2}
-c1 -- c2
-|      |
-        c3
-
-if node is not in lookup, 
-    add it, then make a copy and add it to lookup.
-    then use the copy to recursively add neighbors (directly from the
-    lookup if you like)
-otherwise jjust return it
-'''
 
 from typing import Optional
 class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
-        def clonegraph(node):
-            if node not in clookup:
-                clookup[node]=Node(node.val)
-                for nb in node.neighbors:
-                    clookup[node].neighbors.append(clonegraph(nb))
-            return clookup[node]
-        clookup={}
-        return clonegraph(node) if node else None
+        if not node:
+            return None
+        clookup={node:Node(node.val)}
+        q=deque([node])
+        while q:
+            x=q.popleft()
+            cx=clookup[x]
+            for nb in x.neighbors:
+                if nb not in clookup:
+                    q.append(nb)
+                    clookup[nb]=Node(nb.val)
+                cx.neighbors.append(clookup[nb])
+        return clookup[node]
