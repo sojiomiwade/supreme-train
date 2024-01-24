@@ -18,6 +18,12 @@ clookup={1:c1,2:c2}
 c1 -- c2
 |      |
         c3
+
+if node is not in lookup, 
+    add it, then make a copy and add it to lookup.
+    then use the copy to recursively add neighbors (directly from the
+    lookup if you like)
+otherwise jjust return it
 '''
 
 from typing import Optional
