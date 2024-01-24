@@ -24,13 +24,10 @@ from typing import Optional
 class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
         def clonegraph(node):
-            if node in clookup:
-                return clookup[node]
-            cnode=Node(node.val)
-            clookup[node]=cnode
-            for nb in node.neighbors:
-                cnb=clonegraph(nb)
-                cnode.neighbors.append(cnb)
-            return cnode
+            if node not in clookup:
+                clookup[node]=Node(node.val)
+                for nb in node.neighbors:
+                    clookup[node].neighbors.append(clonegraph(nb))
+            return clookup[node]
         clookup={}
         return clonegraph(node) if node else None
