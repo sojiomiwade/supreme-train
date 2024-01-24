@@ -14,7 +14,7 @@ ans should be 1 5
 '''
 class Solution:
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
-        cur=head=ListNode()
+        head=cur=None
         carry=0
         while l1 or l2 or carry:
             l1val=0
@@ -27,6 +27,9 @@ class Solution:
                 l2=l2.next
             digit=(l1val+l2val+carry)%10
             carry=(l1val+l2val+carry)//10
-            cur.next=ListNode(digit)
-            cur=cur.next
-        return head.next
+            if not cur:
+                head=cur=ListNode(digit)
+            else:
+                cur.next=ListNode(digit)
+                cur=cur.next
+        return head
