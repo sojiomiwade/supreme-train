@@ -1,6 +1,9 @@
 import random
 from typing import List, Set, Tuple
 
+class BattleshipGame:
+    def __init__(board_size: int, num_ships: int) -> None:
+        pass
 def get_one_guess():
     # Get user input for a guess
     guess=input('guess row and col: ').split()
@@ -60,6 +63,30 @@ def play_battleship(board_size,num_ships):
     print(f"You made {attempts} attempts.")
 
 if __name__ == "__main__":
+    bgame = BattleshipGame(boa)
     board_size = 2
     num_ships = 2
+    bgame.play()
     play_battleship(board_size,num_ships)
+
+'''
+methods: 
+1) save -- serialize board
+2) process_guess
+3) get_guess per input
+4) print_board
+5) 
+Battle ship game:
+1) Board m x n
+2) Guesses per input 
+2) number of players
+3) K ship classes
+    name: Destroyer, etc
+    Line count: int 
+    Line direction: h,v,du,dd <-- enum
+'''
+if line_dir == enum.diag_up:
+    rowdelta = -1
+    coldelta = 1
+elif line_dir==enum.diag_down:
+    rowdelta = coldelta = 1
