@@ -29,3 +29,10 @@ s=list(ostring+''.join(str(i) for i in range(10)))
 print(f"{''.join(s)}")
 urlify(s,len(ostring))
 print(f"{''.join(s)}") #oldstring + 456789
+
+ostring='   '
+s=list(ostring+''.join(str(i) for i in range(10)))
+print(f"{''.join(s)}")
+urlify(s,len(ostring))
+print(f"{''.join(s)}") #oldstring with %20s + 6789
+#3+2*3
