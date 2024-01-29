@@ -1,49 +1,55 @@
-'''
-3sum equal to s
-c=arr[i]
-a+b+c=s
-a+b+(c-s)
-for i in range(s):
-  twosum(i)
-
-
-find 3sum equal to s
-  a+b=s-arr[i]
-  a+b+arr[i]=s
-  for each idx i
-    if 2sum(i,s)
-  2sum(i,s): 
-    excluding idx i
-    can find two numbers equal to s-arr[i]
-  
-find 4sum equal to s
-  a+b=s-arr[i]-arr[j]
-  
-[0 2 4 7 9]
-2 4 4 4
-  i j k
-'''
 def find_array_quadruplet(arr, s):
-  def twosum(i,j):
-    have=set()
-    for k in range(n):
-      if j<k:
-        if s-arr[i]-arr[j]-arr[k] in have:
-          return s-arr[i]-arr[j]-arr[k],arr[k]
-        have.add(arr[k])
-    return None,None
-  
-  n=len(arr)
-  if n<4: 
-    return []
+  '''
+  sort the array
+  1 4 5 8 9 ...
+  x+y+z1+z2=20
+  target=20-(x+y)
+  z2= target  - z1
+  x, y, 
+    for z1, find z2 with twosum against 20
+  for i
+  order should come without any additional ops because we sorted  
+  '''
   arr.sort()
+  n=len(arr)
   for i in range(n):
-    for j in range(n):
-        if i<j:
-          c,d=twosum(i,j)
-          if c is not None:
-            return [arr[i],arr[j],c,d]
+    for j in range(i+1,n):
+      x,y=arr[i],arr[j]
+      target=s-(x+y)
+      left,right=j+1,n-1
+      while left<right:
+        a,b=arr[left],arr[right]
+        if a+b==target:
+          return [x,y,a,b]
+        if a+b<target:
+          left+=1
+        else:
+          right-=1
   return []
+'''
+0,1,2,3,4,6,7,8,9
+i       j l     r 
+target=20-4=16
+15==16 good.
+'''        
 arr = [2, 7, 4, 0, 9, 5, 1, 3]
 s = 20
-print(find_array_quadruplet(arr, s)) # [0479]
+output=[0,4,7,9]
+print(find_array_quadruplet(arr, s))
+assert find_array_quadruplet(arr, s)==output
+
+arr = [2, 7, 4, 0, 9, 5, 1, 3]
+s = -1
+output=[]
+print(find_array_quadruplet(arr, s))
+assert find_array_quadruplet(arr, s)==output
+
+arr = [1,1,1,1,0,0,0,4]
+s = 4
+output=[0,0,0,4]
+assert find_array_quadruplet(arr, s)==output
+
+arr = [0,0,0,4]
+s = 4
+output=[0,0,0,4]
+assert find_array_quadruplet(arr, s)==output
