@@ -1,83 +1,28 @@
 '''
-2 3  -2 44
-2 6 -24 44
-  6.    44
+2 3 -2   5  2  3   4   4   0 1 5
+2 6 -12           -99 -99  0 1 5
+array a: go forward aggregating, if you see 0, set that to 0                            
+array b: go backward, same thing
+return the max in a+b
 
-2 3  -2    2   2   -1  -2
-2 6 -12  -24 -48   48  -96
-  6                48. 
-
--2 | 0 -1
--2 | 0 0
-
-summary: always aggregate the product, but always update the best
-0 2
-
-3 | -1 4
-       ^
-agg=-12
-pos=4
-res=3
-
-2 3 -2 4
-    ^
-agg -48 
-pos 4
-res 6
-
--2 0 -1
-
-0 2
-  ^
-agg 0
-pos -inf
-res 0
-
-2,-5,-2,-4,3
-agg
-pos
-res
-
-output=20
-exp=.  24
+-6  6  3  0  1 
+-1  2  3  0  1
+-1 -2 -6  0  1       
 '''
 class Solution:
     def maxProduct(self, nums: List[int]) -> int:
-        agg=nums[0]
-        pos=float('-inf') if agg <= 0 else nums[0]
-        res=max(pos,agg)
         n=len(nums)
+        forward=[0 for _ in range(n)]
+        backward=[0 for _ in range(n)]
+        forward[0],backward[-1]=nums[0],nums[-1]
         for i in range(1,n):
-          agg*=nums[i]
-          if nums[i]>0:
-            if pos == float('-inf'):
-              pos=1
-            pos*=nums[i]
-          else:
-            pos=float('-inf')
-          res=max(pos,agg,res)
-        return res
-'''
-
-3 0 -2 8
-     l
-  r
-
--4 -3
-    l
-    r
-pl,pr=-2,0
-res=8
-exp=8
-'''
-class Solution:
-    def maxProduct(self, nums: List[int]) -> int:
-        pl,pr=nums[0],nums[-1]
-        res=max(pl,pr)
-        n=len(nums)
-        for l in range(1,n):
-            r=n-1-l
-            pl=(pl or 1)*nums[l]
-            pr=(pr or 1)*nums[r]
-            res=max(res,pl,pr)
-        return res
+            if forward[i-1]:
+                forward[i]=forward[i-1]*nums[i]
+            else:
+                forward[i]=nums[i]
+            j=n-i-1
+            if backward[j+1]:
+                backward[j]=backward[j+1]*nums[j]
+            else:
+                backward[j]=nums[j]
+        return max(itertools.chain(forward,backward))
