@@ -31,4 +31,9 @@ class Solution:
                 left+=1
         if ans==1+n:
             return 0
-        return ans
+        return ansquote> 2 1 -4 4 7
+quote> 2 3 -1 4 11
+quote> l resets when prev is rejected
+quote> when nums[i] is negative or nums[i] or , update minsize_maxl and minsize_maxr with l and r-1
+quote> prev is rejected when nums[i-1] is <=0 
+quote> minsize_maxr and minsize_maxl are changed only if cursum is bigger than maxsum
