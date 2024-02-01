@@ -1,6 +1,8 @@
 '''
+
+
 shortest path from node k to all nodes, return the maximum
-can use queue or BFS:
+can use BFS (queue) or heap:
 queue starts with (0,2)
 11 13 
 {2:0 1:1}
@@ -20,36 +22,27 @@ spath[k]=
 '''
 class Solution:
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
-        #now use BFS
-        #do not further process if a node cannot be made cheaper
-        #if can be, make it cheaper, and then add the corresponding neighbors
-        #if edges trigger adding other edges, complexity is E**2
-        friend=defaultdict(dict)
-        #{2:{0:1,1:2},3:{}}
-        for u,v,w in times:
-            friend[u][v]=w
-        q=deque([(0,k)])
+        '''
+        heap:
+        heap need not be exhausted? if so, then can use the len(ans)?
+        no cause we will never reach e, so let's exhaust heap. just 
+        deny something popped if it's too big.
+        time,space: O(E lg E), O(E)
+                a --- b
+                |  9  |     e
+                c --- d
+        '''
+        arr=[(0,k)]
+        f=defaultdict(dict)
         ans=defaultdict(lambda :float('inf'))
-        while q:
-            cu,u=q.popleft()
-            if cu<ans[u]:
+        for u,v,w in times:
+            f[u][v]=w
+        while arr:
+            cu,u=heapq.heappop(arr)
+            if u in ans:
+                assert ans[u]<=cu
+            else:
                 ans[u]=cu
-                for v,cuv in friend[u].items():
-                    q.append((cuv+cu,v))
-        return max(ans.values()) if len(ans)==n else -1
-
-
-
-
-        # ans=defaultdict(lambda :float('inf'))
-        # q=deque([(0,k)])
-        # friends,cost=defaultdict(list),{}
-        # for (u,v,cuv) in times:
-        #     friends[u].append((v,cuv))
-        # while q:
-        #     cx,nx=q.popleft()
-        #     if cx<ans[nx]:
-        #         ans[nx]=cx
-        #         for ny,cxy in friends[nx]:
-        #             q.append((cx+cxy,ny))
-        # return max(ans.values()) if len(ans)==n else -1
+                for v,cuv in f[u].items():
+                    heapq.heappush(arr,(cuv+cu,v))
+        return -1 if len(ans)!=n else max(ans.values())
