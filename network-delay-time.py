@@ -24,13 +24,11 @@ class Solution:
         q=deque([(0,k)])
         friends,cost=defaultdict(list),{}
         for (u,v,cuv) in times:
-            friends[u].append(v)
-            cost[u,v]=cuv
+            friends[u].append((v,cuv))
         while q:
             cx,nx=q.popleft()
-            for ny in friends[nx]:
-                trycost=cx+cost[nx,ny]
-                if trycost<ans[ny]:
-                    q.append((trycost,ny))
-            ans[nx]=min(ans[nx],cx)
+            if cx<ans[nx]:
+                ans[nx]=cx
+                for ny,cxy in friends[nx]:
+                    q.append((cx+cxy,ny))
         return max(ans.values()) if len(ans)==n else -1
