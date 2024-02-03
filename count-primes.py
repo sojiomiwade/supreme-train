@@ -1,85 +1,26 @@
 '''
-sieve of eratosthenes
-thinking: if you cancel all multiples of a prime, for some i, then the next number you run into is also prime.
+10
+let each prime wipe out multiples
+2 3 4 5 6 7 8 9 10 11 12 13 14 | 15
+    -   -   -   --    --    --
+       -     -       --
 
-(2) 3 4 5 6 7 8 9 10 11 12 13 14 15
-2 (3) 5 7 9 11 13 15
-2 3 5 7 11 13
-now check if n is canceled off! can check early too
-time: O(n), since we did at least half the least initially
+# ans=[2,3,5,7]
+have a map a[x]=T/F
+at the end count everything that's true in a
+iterate from x*2, and x=2*x, for each x
+x in range(2*x,n,x)
 
-repeat from x = 2 to sqrt(n) [inclusive]
-run to next number, and scratch off multiples upto n
-
-
-func sieve(n
-'''
-def isprime(n: int) -> bool:
-    isprime = [True for _ in range(n+1)]
-    x = 2
-    while x <= 1 + int(n**0.5): #  3 <= 3
-        for y in range(x**2, n+1, x):
-            isprime[y] = False
-        x += 1
-        while not isprime[x]:
-            x += 1
-    return isprime[-1]
-'''
-0123456
-  ttftf
-  x
-'''
-print(isprime(6)) # false
-print(isprime(7)) # true
-print(isprime(25)) # false
-'''
-10 -> 4
-15 -> 6
-2 3 5 7
-
-3 5 7 9 11 13 15
-
-n=11 -> 2,3,5,7 = 4
-x={}
-isp={3 5 7}
-5
+n=7
+0 1 2 3 4 5 6 
+f f t t f t f 
 '''
 class Solution:
     def countPrimes(self, n: int) -> int:
-        if n in (0,1,2):
-            return 0
-        isprime=set(x for x in range(3,n,2))
-        for x in range(3,1+int(sqrt(n)),2):
-            for y in range(2*x,n,x): # 6,
-                isprime.discard(y)
-        return 1+len(isprime)'''
-10 -> 4
-15 -> 6
-2 3 5 7
-
-3 5 7 9 11 13 15
-
-n=11 -> 2,3,5,7 = 4
-x={}
-isp={3 5 7}
-5
-
-n//2 -> 25//2 - 1 = 12
-3 || 5 7 9 11 13 15 17 19 21 23 | 25
-0 || 1 2 3  4  5  6  7  8  9 10 -> 11 elements
-x maps to x//2-1
-
-[3,sqrt(25)) = [3,5) -> [3] correct
-[3,sqrt(15)) = [3,1+int(3)) -> [3]
-'''
-class Solution:
-    def countPrimes(self, n: int) -> int:
-        if n in (0,1,2):
-            return 0
-        isprime=[True for x in range(n//2-1)]
-        for x in range(3,1+int(sqrt(n)),2):
-            if isprime[x//2-1]:
-                for y in range(3*x,n,x):
-                    if y%2==1:
-                        isprime[y//2-1]=False
-        return 1+sum(isprime)
+        isprime=[True for _ in range(n)]
+        isprime[0:2]=[False,False]
+        for num in range(2,n):
+            if isprime[num]:
+                for x in range(2*num,n,num):
+                    isprime[x]=False
+        return sum(isprime)
