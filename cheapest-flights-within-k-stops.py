@@ -36,12 +36,11 @@ class Solution:
             cu,u,remleaps=heapq.heappop(heap)
             if u==dst:
                 return cu
-            if remleaps==0:
+            if remleaps==0 or remleaps<minremleaps[u]:
                 continue
-            if remleaps>=minremleaps[u]:
-                minremleaps[u]=remleaps
-                for v,cuv in f[u].items():
-                    heapq.heappush(heap,(cu+cuv,v,remleaps-1))
+            minremleaps[u]=remleaps
+            for v,cuv in f[u].items():
+                heapq.heappush(heap,(cu+cuv,v,remleaps-1))
         return -1 # once i hit the destination i am done
 
         # q=deque([(0,src,L)])
