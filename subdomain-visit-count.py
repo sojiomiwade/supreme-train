@@ -13,15 +13,7 @@ class Solution:
         count=Counter()
         for cpdomain in cpdomains:
             rep,doms=cpdomain.split()
-            irep=int(rep)
-            doms_l=cpdomain.split('.')
-            if len(doms_l)==3:
-                a,b,c=doms_l
-                count[doms]+=irep
-                count[f'{b}.{c}']+=irep
-                count[c]+=irep
-            else:
-                b,c=doms_l
-                count[doms]+=irep
-                count[c]+=irep
+            doms_l=doms.split('.')
+            for i in range(len(doms_l)):
+                count['.'.join(doms_l[i:])]+=int(rep)
         return [f'{countval} {irep}' for irep,countval in count.items()]
