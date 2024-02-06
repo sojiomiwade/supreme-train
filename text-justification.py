@@ -1,63 +1,56 @@
 '''
-start a buf: for every word thrown in, add that word.len plus a space to buflen
-but if next word will be more than buflen, reset buf and buflen after first
-putting buf into res
+["This", "is", "an", "example", "of", "text", "justification."], 
+maxWidth = 16
+[
+    0123456789012345
+    This is an .....
+    give each word spaces/word
 
-01234567890123456
-012   34   56  78
-012 34 56 78 90123          
-example  of  text
+    20spaces 3words
+    55//8 = 6
+    55%8 = 7 --extra. give every word 1 from the extra as long as there's extra
+    say extra is 5 then 0...4 get an extra => add (idx<extra)
+    example of text.
+    justification.
+    0123456789012345
+   "This    is   and", spaces=16-(4+2+3)=7, 7
+   (16-3)-(4+2)=13-6=7
+   ah wait distribution is actually based on one less word
 
-8 blanks => 17 - 9
-8 // (4-1) = 2  => each of the 3 regions gets 2 spaces
-8 %  (4-1) = 2 => first 2 regions gets an extra space
+   "example  of text",
+   "justification.  "
+]
+1. getting the strings: use a buffer, and reset it when string will overflow
+2. justification: 
+    ignore last line
+    spaces=(maxWidth-len(last)) - sum(all words len except last)
+    to each words_except_last, pad in front spaces//wordcount + bool(idx<extra)
+    'ab cd '
+                spaces=(maxWidth-len(last)) - sum(all words len except last)
+                to each words_except_last, pad in front spaces//wordcount + bool(idx<extra)
+                16-4 - (7-4)
+      01234567
+["This        is        an","example        of        text","justification.  "]
+["This    is    an","example  of text","justification.  "]
 
-if [at the end] wordsbuffer has stuff, then flush it
+012345678901234 = 
+aa bb cc d .... = total of 8 spaces
+0  1  2  3
+wordslist[i%(n-1 or 1)] <-- or 1 in case there's only 1
+collect all the spaces
+maxWidth-len(letters) <--that's how many we need to distribute
+need to do so in front of each word in wordslist
 '''
 class Solution:
     def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
-        wordsbuffer, buflen = [], 0
-        res = []
+        wordslist,letterslen=[],0
+        ans=[]
         for word in words:
-            if len(word) + buflen > maxWidth:
-                res.append(wordsbuffer[:])
-                wordsbuffer, buflen = [], 0
-            buflen += 1 + len(word)
-            wordsbuffer.append(word)
-        res.append(wordsbuffer[:])
-        
-        '''
-        string=[012,34,56,78],slen=9,wc=4,bc=17-9=8,sp1=8//3=2,sp=8%3=1
-            01234567890123456
-            '012   34   56  78'
-        s2= [012   34   56  78  ]
-        string=[012345678], slen=9, wc=1, bc=16-9=7, sp1=7, sp2=0
-        string2=[]
-        '''
-        res2=[]
-        for i,string in enumerate(res):
-            slen=len(''.join(string))
-            word_count=len(string)
-            blanks_count=maxWidth-slen
-            sp1,sp2=blanks_count,0
-            if i==len(res)-1:
-                sp1,sp2=1,0
-            elif word_count>1:
-                sp1=blanks_count//(word_count-1)
-                sp2=blanks_count%(word_count-1)
-            string2=[]
-            for word in string:
-                string2.append(word)
-                string2.append(' '*sp1)
-                string2.append(' '*(sp2>0))
-                sp2-=1
-            res2.append(''.join(string2)[:maxWidth])
-        res2[-1]+=(maxWidth-len(res2[-1])) * ' '
-        return res2
-
-
-
-
-
-        print(res)
-        return []
+            if letterslen+len(wordslist)+len(word)>maxWidth:
+                for i in range(maxWidth-letterslen):
+                    wordslist[i%(len(wordslist)-1 or 1)]+=' '
+                ans.append(''.join(wordslist))
+                wordslist,letterslen=[],0
+            wordslist.append(word)
+            letterslen+=len(word)
+        return ans+[' '.join(wordslist).ljust(maxWidth)]
