@@ -23,14 +23,19 @@ class Solution:
         210 -1 xxx 
         l
             r
+        aa
+        l
+        r
+        need={a:0}; minl,minr=-INF,INF
+        missing=2; m,n=2,2
         '''
         m,n=len(s),len(t)
         need=Counter(t)
-        missing=len(t)
+        missing=len(need)
         INF=float('inf')
         minl,minr=-INF,INF
         left=0
-        for right in range(len(s)):
+        for right in range(m):
             need[s[right]]-=1
             if need[s[right]]==0:
                 missing-=1
