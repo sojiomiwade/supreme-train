@@ -1,3 +1,4 @@
+key note is that with only append_to_tail, we cant iterate the list. so we should probably implement append_to_head_for hash table. also ensure there are n/m slots so that each list size is m which is constant' >> hashmap_implementation.py
 
 '''
 approach 1
