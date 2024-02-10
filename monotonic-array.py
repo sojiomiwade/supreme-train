@@ -24,4 +24,6 @@ class Solution:
                 val=curdiff
             elif curdiff!=0 and curdiff*val<0:
                 return False
-        return True
+        return Trueaggregate into two flags mono_inc and mono_dec; 1st checks we are always monotonically increasing, and similar for second. and just check that either flag is set
+
+
