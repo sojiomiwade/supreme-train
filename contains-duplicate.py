@@ -13,4 +13,4 @@ class Solution:
             if x in count:
                 return True
             count.add(x)
-        return False
+        return Falsecan also use sorting
