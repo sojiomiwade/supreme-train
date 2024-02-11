@@ -1,4 +1,11 @@
 '''
+loop idx=0..n-1
+    deduct nums[idx] from sumright
+    compare sumright to sumleft and return idx if it works
+    add nums[idx] to sumleft
+return -1
+
+
 1 7 3 6 5 6
           x
 suml is 0 and sumr is the sum of all except the 1st. idx starts at 0
