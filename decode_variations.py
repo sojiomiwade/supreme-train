@@ -1,119 +1,43 @@
-'''
-            1262
-          1 262     
-          a bfb
-0      1:
-1262
-x
+"""
+@param S: str
+@return: int
 
-1 262
-a ...
+          1262
+       1       12
+   2      26
+ 6   62x
+2  x
+ 2
 
-
-1 26 2
-a z  b
-
-12 6 2
-l  f b
-
-126 2
-x   b
-
-1 2 6 2
-a b f b
-
-0:0  1:n
-0:1  2:n
-0:2  3:n
-
-'' + 1262
-'1' + 262
-       26 2 
-
-1262
-decode(12 62) 
-decode(262) 
-decode(62) 
-decode(2)
-decode() -> count = 3
-2
-62 
-count = 0
-'''
-def decodeVariations(s):
-  global count
-  def decode(s):
-    global count
-    if not s:
-      count += 1
-      return 
-    for i in range(len(s)):
-      if 1 <= int(s[:i+1]) <= 26:
-        decode(s[i+1:])
-  count = 0
-  decode(s)
-  return count
-s='1262'
-print(decodeVariations(s))def decodeVariations(s):
-  def decode(s, i):
-    if i == n:
+1         12
+12 126    126 1262
+           1262
+    1      262
+  2       2 62
+  6 
+  2
+          /
+    1262 --> 3
+      i
+    1 2 6 2 
+    gc=1
+"""
+def decodeVariations(S):
+  def decode(idx):
+    if idx==n:
       return 1
-    if i in dp:
-      return dp[i]
-    res = 0
-    for k in range(i,n):
-      res += int(1<=int(s[i:1+k])<=26) * decode(s, k + 1)
-    dp[i]=res
-    return res
-  dp,n={},len(s)
+    if idx in dp:
+      return dp[idx]
+    count=0
+    val1=int(S[idx])
+    if val1!=0:
+      count=decode(idx+1)
+    val2=int(S[idx:idx+2])
+    if 10<=val2<=26:
+      count+=decode(idx+2)
+    dp[idx]=count
+    return dp[idx]
   
-  return decode(s, 0) if s else 0
-
-s='1262'
-print(decodeVariations(s)) # 1
-s='1'
-print(decodeVariations(s)) # 0def decodeVariations(s):
-  if not s:
-    return 1
-  first=0
-  if 1<=int(s[0])<=9:
-    first=decodeVariations(s[1:])
-  second=0
-  if 10<=int(s[:2])<=26:
-    second=decodeVariations(s[2:])
-  return first+second
-s='1262'
-print(decodeVariations(s)) # 3
-s='1'
-print(decodeVariations(s)) # 1def decodeVariations(s):
-  def decodeVariations(k):
-    if k==n:
-      return 1
-    if k in dp:
-      return dp[k]
-    first=0
-    if 1<=int(s[k])<=9:
-      first=decodeVariations(1+k)
-    second=0
-    if 10<=int(s[k:2+k])<=26:
-      second=decodeVariations(2+k)
-    dp[k]=first+second
-    return dp[k]
-  dp,n={},len(s)
-  return decodeVariations(0)
-
-s='1262'
-print(decodeVariations(s)) # 3
-s='1'
-print(decodeVariations(s)) # 1def decodeVariations(s):
-  n=len(s)
-  dp=[0 for _ in range(1+n)]
-  dp[0]=dp[1]=1
-  for i in range(2,1+n):
-    dp[i]=(1<=int(s[i-1])<=9)*dp[i-1]
-    dp[i]+=(10<=int(s[i-2:i])<=26)*dp[i-2]
-  return dp[n]
-s='1262'
-print(decodeVariations(s)) # 3
-s='1'
-print(decodeVariations(s)) # 1
+  dp={}
+  n=len(S)
+  return decode(0)
