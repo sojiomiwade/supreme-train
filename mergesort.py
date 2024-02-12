@@ -28,6 +28,7 @@ def mergesort(a: List[int]) -> None:
                 top+=1
             else:
                 bot+=1
+            assert type(topval) is int and type(botval) is int
             a[idx]=min(topval,botval)
             idx+=1
 
@@ -49,3 +50,4 @@ shuffle(a)
 print(a)
 mergesort(a)
 print(a)
+
