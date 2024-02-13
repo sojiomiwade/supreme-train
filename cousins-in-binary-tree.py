@@ -5,27 +5,19 @@
 #         self.left = left
 #         self.right = right
 '''
-                1 [0,null]
-             /     \
-            2       3           (,)
-             \     /
-              4   5
-same depth => true, but if same parent => false
-res=(xpar,ypar,xdep,ydep)
+can use BFS inserting (x,depth)
+or just DFS, and when we find either recall the depth
 '''
 class Solution:
     def isCousins(self, root: Optional[TreeNode], x: int, y: int) -> bool:
-        def isCousins(cur,dep,par):
-            nonlocal xpar,ypar,xdep,ydep
-            if (xpar and ypar) or not cur:
-                return
-            if cur.val==x:
-                xpar,xdep=par,dep #2,2
-            elif cur.val==y:
-                ypar,ydep=par,dep
-            isCousins(cur.left,dep+1,cur)
-            isCousins(cur.right,dep+1,cur)
-
-        xpar,ypar,xdep,ydep=None,None,-1,-1
-        isCousins(root,0,None)
-        return xpar is not ypar and xdep==ydep
+        xdep=ydep=None
+        q=deque([(root,0,None)])
+        while q:
+            u,udep,upar=q.popleft()
+            if u.val==x:
+                xdep,xpar=udep,upar
+            elif u.val==y:
+                ydep,ypar=udep,upar
+            q.extend([(v,udep+1,u) for v in (u.left,u.right) if v])
+        assert None not in (xdep,ydep)
+        return xdep==ydep and xpar is not ypar
