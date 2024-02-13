@@ -1,41 +1,45 @@
 '''
-1  0
-lm h
+0123|456
+7012|456
+1245|670
 
-0  1
-lm h
-h=m
+12|3
+23|1
+32|1
 
-0 1 7
-l m h
-h=m
+0124|567
+l
 
-1 7 0
-l m h
+      r
+0..9
+9..0
 
-so always check the right, so iin a sorted array if the right is ok, you move to the left towoard the 0
 
-6 7 8 0 1 2 3 4 5
-      l
-      m   
-      h
-
-high jumps on mid
-but lo must go to mid+1 to avoid not moving
-terminate when l=h => loop as long as l<h
-
-8 0 1
-  l 
-  m 
-  h
+l
+m
+ h
+if left is sorted 
+as long as the range is defined, if both left and right 
+arrays are sorted, the min is the min of the two left ends
+otherwise:
+01
+90
+ l
+m
+ r
 '''
 class Solution:
     def findMin(self, nums: List[int]) -> int:
-        lo,hi=0,len(nums)-1
-        while lo<hi:
-            mi=lo+(hi-lo)//2
-            if nums[mi]<nums[hi]:
-                hi=mi
+        '''
+        discard the right (will keep mid) if mid to right is sorted.
+        otherwise, use the right (won't keep mid)
+        note we then search on l<r, and return nums[l]
+        '''
+        l,r=0,len(nums)-1
+        while l<r:
+            mid=l+(r-l)//2
+            if nums[mid]<=nums[r]:
+                r=mid
             else:
-                lo=mi+1
-        return nums[lo]
+                l=mid+1
+        return nums[l]
