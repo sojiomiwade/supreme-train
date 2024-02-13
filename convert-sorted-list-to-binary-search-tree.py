@@ -10,36 +10,35 @@
 #         self.left = left
 #         self.right = right
 '''
-0 1 2 3 4 5 6 7 n
-            f
-      s
-0 1 2 3 4 5 6 n
-            f
-      s
-0 1 2 3 [4]
-         f
-    s
+1 2 3 4 5
+  s
+    f
+return slow
+mid find the mid (not prev)
+make it root.
+call convert to (head,mid) and (mid.next,tail) <--tail is exclusive
+return root
 
-func l2bst(lo,exhi) <---exclusive
-    terminate: lo==exhi...yes
-    return None
-    otherwise get mid and make it the head
-    then call (for tree-left and tree-right) ll2bst(lo,mid) and ll2bst(mid.next,exhi)
-    return root
-time: n lg n
-space: 1
+1 t
+s
+f
+
+h t
+h,h -- t,t
 '''
 class Solution:
     def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
-        def ll2bst(lo,exhi):
-            if lo is exhi:
-                return None
-            slow=fast=lo
-            while fast and fast.next and exhi not in (fast,fast.next):
+        def findmid(head,tail):
+            slow=fast=head
+            while fast.next is not tail and fast.next.next is not tail:
                 fast=fast.next.next
                 slow=slow.next
-            root=TreeNode(slow.val)
-            root.left=ll2bst(lo,slow)
-            root.right=ll2bst(slow.next,exhi)
-            return root
-        return ll2bst(head,None)
+            return slow
+
+        def convert(head,tail):
+            if head is tail:
+                return None
+            mid=findmid(head,tail)
+            return TreeNode(mid.val,convert(head,mid),convert(mid.next,tail))
+
+        return convert(head,None)
