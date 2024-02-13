@@ -1,30 +1,31 @@
 '''
+1010
+1011
 
-1011010 -- 7
-   1011 -- 4
+0101
+110
 
-aval, bval, carry
-res=a[:n-m]
-zip out tuple from the reverse and do the carry thing!
- 11
-  1
- --
-100
 
-0
+tval,bval,cval
+come from the back, and always get a val!
 '''
 class Solution:
     def addBinary(self, a: str, b: str) -> str:
-        n,m=len(a),len(b)
-        if n<m:
-            a,b=b,a
-            n,m=m,n
-        carry=0
-        res=[]
-        
-        for ach,bch in zip(reversed(a),reversed('0'*(n-m)+b)):
-            aval,bval=int(ach),int(bch)
-            res.append(str((aval+bval+carry)%2))
-            carry=(aval+bval+carry)//2
-        return ('1' if carry else '') + ''.join(reversed(res))
-        
+        cval=0
+        m,n=len(a),len(b)
+        maxmn=max(m,n)
+        ans=[]
+        for i in range(maxmn):
+            aval=0
+            if m-1-i>=0:
+                aval=int(a[m-1-i])
+            bval=0
+            if n-1-i>=0:
+                bval=int(b[n-1-i])
+            valsum=cval+aval+bval
+            ans.append(str(valsum%2))
+            cval=valsum//2
+            
+        finalans='1' if cval else '' 
+        finalans+=''.join(reversed(ans))
+        return finalans
