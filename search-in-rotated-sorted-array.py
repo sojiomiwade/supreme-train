@@ -21,8 +21,8 @@ if right inclusive of mid is unsorted keep [mididx+1..right]
 otherwise  keep [left...mididx]
 
 target = 0
-0 1 2 3 4 5 6 | 7 8 9 10      
-4,5,6,7,0,1,2 | 4,5,6,7
+0 1 2 3 4 5 6 | 7 8 9 10 11 12 13 14      
+4,5,6,7,0,1,2 | 4,5,6,7      X
           l r
 
 '''
@@ -37,16 +37,12 @@ class Solution:
             else:
                 right=mid
         minidx=left
-        if minidx-1>=0 and nums[0]<=target<=nums[minidx-1]:
-            left,right=0,minidx-1
-        else:
-            left,right=minidx,n-1
-        print(left,right)
+        left,right=minidx,minidx-1+n
         while left<=right:
             mid=left+(right-left)//2
-            if nums[mid]==target:
-                return mid
-            elif nums[mid]<target:
+            if nums[mid%n]==target:
+                return mid%n
+            elif nums[mid%n]<target:
                 left=mid+1
             else:
                 right=mid-1
