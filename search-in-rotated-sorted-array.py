@@ -1,56 +1,56 @@
 '''
-search 8
-6 7 8 0 1 2 3 4 5
-l
-        m     
-                h
+4560
 
-1 7 0
-l
-  m
-h
+4,5,6,7,0,1,2
+            m 
+0           n-1
 
+1. find the min 
+2. now set l,r depending on if target is between [0..minidx-1] [minidx..n-1]
+3. do a bfs on l,r for target
 
-0 8
-l
-m
-  h
+findmin:
+-2|1|2|3
+midx
+l  r
+2|3|1
+3(1)2
+min 
+breakage: 
+if right inclusive of mid is unsorted keep [mididx+1..right]
+otherwise  keep [left...mididx]
 
-8 0
-l
-m
-  h
+target = 0
+0 1 2 3 4 5 6 | 7 8 9 10      
+4,5,6,7,0,1,2 | 4,5,6,7
+          l r
 
-check mid and return if it is key
-otherwise, check mi+1 to h is sorted. 
-if it isn't, then we must look for key in [lo,mid-1]
-    if it isn't there, set lo to mid + 1
-    else, set hi to mid -1
-if [mi+1,hi] is sorted
-    if it is here, set lo to mi+1
-    else set hi to mi-1
-return -1
-
-    0 7 
-    l
-    m
-   h
 '''
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
-        lo,hi=0,len(nums)-1
-        while lo<hi:
-            mi=lo+(hi-lo)//2
-            if nums[mi]==target:
-                return mi
-            if nums[mi+1]<=nums[hi]:
-                if nums[mi+1]<=target<=nums[hi]:
-                    lo=mi+1
-                else:
-                    hi=mi-1
+        n=len(nums)
+        left,right=0,len(nums)-1
+        while left<right:
+            mid=left+(right-left)//2
+            if not nums[mid]<nums[right]:
+                left=mid+1
             else:
-                if nums[lo]<=target<=nums[mi]:
-                    hi=mi-1
-                else:
-                    lo=mi+1
-        return -1 if nums[lo]!=target else lo
+                right=mid
+        minidx=left
+        if minidx-1>=0 and nums[0]<=target<=nums[minidx-1]:
+            left,right=0,minidx-1
+        else:
+            left,right=minidx,n-1
+        print(left,right)
+        while left<=right:
+            mid=left+(right-left)//2
+            if nums[mid]==target:
+                return mid
+            elif nums[mid]<target:
+                left=mid+1
+            else:
+                right=mid-1
+        return -1
+
+
+
