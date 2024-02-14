@@ -13,15 +13,10 @@ nn : 9**2 + 1**2
 class Solution:
     def isHappy(self, n: int) -> bool:
         seen=set()
-        while True:
-            nn=0
-            while n:
-                nn+=(n%10)**2
-                n//=10
-            n=nn
-            if n in seen:
-                return 1 in seen
+        while n not in seen:
             seen.add(n)
+            n=sum(int(digit)**2 for digit in str(n))
+        return n==1
 
 
             
