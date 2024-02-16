@@ -1,25 +1,24 @@
 '''
-make a graph of nodes. then do a DFS. return true if you can get there
-1 - 2      3
-
-0v 1
- 2
+n=5
+0 1 ... 4
+bidirectional
 '''
 class Solution:
     def validPath(self, n: int, edges: List[List[int]], source: int, destination: int) -> bool:
-        def get_validpath(node: int) -> bool:
-            visited.add(node)
-            if node==destination:
+        def validpath(v: int):
+            if v==destination:
                 return True
-            found=False
-            for nb in nbs[node]:
-                if nb not in visited:
-                    found=found or get_validpath(nb)
-            return found
+            
+            visited[v]=True
+            for w in nbs[v]:
+                if not visited[w] and validpath(w):
+                    return True
+            return False
 
         nbs=defaultdict(list)
-        visited=set()
         for u,v in edges:
             nbs[u].append(v)
             nbs[v].append(u)
-        return get_validpath(source)
+
+        visited=[False]*n
+        return validpath(source)
