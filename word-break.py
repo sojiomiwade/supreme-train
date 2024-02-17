@@ -1,11 +1,36 @@
+'''
+all possibilities: 
+loop through s
+applepenapple
+
+                 .
+            a/     p\
+        penapple     x
+        p/    a\
+       apple    x
+       a/  p\
+      .      x 
+
+      now can track dp[i], if we know that, no need to do it further
+      -imagine taking a p p l e, but if we had apple we already did it
+        when e gets there!
+      wb at i is the aggregate of using each word if possible
+'''
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
-        n,m=len(s),len(wordDict)
-        dp=[False for _ in range(n+1)]
-        dp[0]=True
-        for i in range(1,n+1):
-            for j in range(m):
-                wdj=wordDict[j]
-                mj=len(wdj)
-                dp[i]=dp[i] or (s[i-mj:i]==wdj and dp[i-mj])
-        return dp[n]
+        def wb(i: int) -> bool:
+            if i==n:
+                return True
+            if i in dp:
+                return dp[i]
+            for word in wordDict:
+                m=len(word)
+                if s[i:i+m]==word and wb(i+m):
+                    dp[i]=True
+                    return True
+            dp[i]=False
+            return False
+
+        dp={}
+        n=len(s)
+        return wb(0)
