@@ -1,29 +1,18 @@
-class MinStack:
+-2 0 -3
+(-2 -2) (0 -2) (0 -3)
 
-    def __init__(self):
-        self.minstack=[]
-        self.stack=[]
+g p t g : -3 n 0 -2
+on push: if stack empty, can just push (el,el)
+    otherwise, push (el,min(el,stack[-1]))
+on pop: remove top of stack 
+top: return top of stack's first arg
+getMin : return top of stack's 2nd arg
+time comp of all ops is O(1)
 
-    def push(self, val: int) -> None:
-        self.stack.append(val)
-        if not self.minstack or val<=self.minstack[-1]:
-            self.minstack.append(val)
-
-    def pop(self) -> None:
-        val=self.stack.pop()
-        if val==self.minstack[-1]:
-            self.minstack.pop()
-
-    def top(self) -> int:
-        return self.stack[-1]
-
-    def getMin(self) -> int:
-        return self.minstack[-1]
-
-
-# Your MinStack object will be instantiated and called as such:
-# obj = MinStack()
-# obj.push(val)
-# obj.pop()
-# param_3 = obj.top()
-# param_4 = obj.getMin()
+2nd way: use 2nd stack to track only the mins
+-2 0 -3
+-2 -3
+key, 
+push: push onto minstack only if no minst or cur less than minst[-1]
+    otherwise dont
+pop: pop from minst if st[-1] equals minst[-1]
