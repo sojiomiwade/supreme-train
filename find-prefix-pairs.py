@@ -1,65 +1,81 @@
-# Given a list of words, match all words with other words from the list that are a prefix for the word.
-
-# Example Input and Output
-# Example
-# Input: words = ["abs", "app", "be", "apple", "bee", "better", "bet", "absolute"]
-# Output: [('app', 'apple'), ('be', 'bee'), ('be', 'better'), ('be', 'bet'), ('abs', 'absolute')]
-
-
+from typing import Dict, List,Tuple
+from collections import defaultdict
 '''
- .
-   \
-     a
-      \
-       p
-      / \
-     .   p
-          \
-           .
-'''
-from typing import Dict, List, Tuple
+need to ensure apple and its descendants shore up to app
+but not to ack. this is the problem.
+hmm. shoring up and removing sieems hard. 
 
-'''
-cur[.]
-'''
-def find_prefix_pairs(words: List[str]) -> List[Tuple[str, str]]:
-    def find_prefix_pairs(cur: Dict) -> None:
-        if '.' in cur:
-            for parent_word in parent_words:
-                res.append((cur['.'],parent_word))
-            parent_words.append(cur['.'])
-        for child_trie in cur.values():
-            if type(child_trie) is dict:
-                find_prefix_pairs(child_trie)
-        if '.' in cur:
-            parent_words.pop()
+how about top-down: as we traverse trie, just put words in 
+pairs list, and any downstream must add all words in pairs
+when a list is going back up, remove your word. simple
 
-    trie=build_trie(words)
-    parent_words=[]
-    res=[]
-    find_prefix_pairs(trie)
-    return res
-    
+ok, let's solve three problems
+1. build trie
+2. traverse trie 
+3. print (in a structured manner) <--no, do this later
+3. use pairs in traversal
+
+Input: words = ["abs", "app", "be", "apple", "bee", "better", "bet", "absolute"]
+Output: [('app', 'apple'), ('be', 'bee'), ('be', 'better'), ('be', 'bet'), ('abs', 'absolute')]
+
+a:{p:{}}
+'''
 def build_trie(words: List[str]) -> Dict:
-    trie=root={}
+    root={}
     for word in words:
-        root=trie
-        for ch in word:
-            if ch not in root:
-                root[ch] = {}
-            root = root[ch]
-        root['.'] = word
-    return trie
+        cur=root
+        for let in word:
+            if let not in cur:
+                cur[let]={}
+            cur=cur[let]
+        cur[None]=word
+    return root
 
-def print_trie(trie):
-    for ch in trie:
-        if ch=='.':
-            print(trie['.'])
-        else:
-            print_trie(trie[ch])
+def printtrie(root: Dict, count: int=0):
+    if None in root:
+        print(count*' '+root[None])
+        count+=1
+    for let in root:
+        if let is not None:
+            printtrie(root[let],count)
 
+'''
+          root
+      /          \
+   a              b  
+  /  \              \
+ c     p             .
+ |    |  \ 
+ k    .   e 
+ |         \
+ .          l
+             \
+              .
+root={a:{c:{}, p:{None:"ap", e:{ l: {None} } } }}
+asclist [ap]
+desclist_map {ap:[apel]}
+'''
+def findpairs(root: Dict, asclist: List[str],desclist_map):
+    if None in root:
+        curword=root[None]
+        for asc in asclist:
+            desclist_map[asc].append(curword)
+        asclist.append(curword)
+    for let in root:
+        if let is not None:
+            findpairs(root[let],asclist,desclist_map)
+    if None in root:
+        asclist.pop()
 
-words = ["abs", "app", "be", "apple", "bee", "better", "bet", "absolute"]    
-trie=build_trie(words)
-print_trie(trie)
+def find_prefix_pairs(words: List[str]) -> List[Tuple[str,str]]:
+    root=build_trie(words)
+    # printtrie(root)
+    desc=defaultdict(list)
+    ans=[]
+    findpairs(root,[],desc)
+    for word,desclist in desc.items():
+        ans.extend([(word,descword) for descword in desclist])
+    return ans
+
+words = ["abs", "app", "be", "apple", "bee", "better", "bet", "absolute"]
 print(find_prefix_pairs(words))
