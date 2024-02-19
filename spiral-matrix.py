@@ -1,33 +1,37 @@
-class Solution:
-    '''
-    left,right=1,2
-    top,bottom=2,1
-    row in [2]
-    col in [1..2]
-    m[1][1..2]
-    res=[1 2 3 4 8 12 11 10 9 5 6 7]
+'''
+walls left,right,top,bottom provide the start and end for 4 directions
+when there's no space between the walls we are done
+for a run in any dir, bring the wall in that dir down
+1 2
+4 5
 
-    7 
-    9 
-    6
-    '''
+left,right,top,bottom=01,0,1,0
+res=[1 2 5 4]
+c in r(0,-1,-1)
+'''
+class Solution:
     def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
         m,n=len(matrix),len(matrix[0])
-        left,right,top,bot=0,n-1,0,m-1
+        left,right,top,bottom=0,n-1,0,m-1
         res=[]
-        while left<=right and top<=bot:
-            for col in range(left,1+right):
-                res.append(matrix[top][col])
+        while left<=right and top<=bottom:
+            for c in range(left,1+right):
+                res.append(matrix[top][c])
             top+=1
-            for row in range(top,1+bot):
-                res.append(matrix[row][right])
+            for r in range(top,1+bottom):
+                res.append(matrix[r][right])
             right-=1
-
-            if left<=right and top<=bot:
-                for col in range(right,left-1,-1):
-                    res.append(matrix[bot][col])
-                bot-=1
-                for row in range(bot,top-1,-1):
-                    res.append(matrix[row][left])
+            if left<=right and top<=bottom:
+                for c in range(right,left-1,-1):
+                    res.append(matrix[bottom][c])
+                bottom-=1
+                for r in range(bottom,top-1,-1):
+                    res.append(matrix[r][left])
                 left+=1
         return res
+'''
+2
+3
+4
+l,r,t,b=0,-1,1,1
+'''
