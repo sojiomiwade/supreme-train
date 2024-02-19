@@ -55,4 +55,8 @@ ct -- -1, no number of users could do this
 '''
 ss=['chatchat','chCaHtAT','chatcCHAhTat','tahc','ct']
 for s in ss: 
-    print(f'{s}:{count_users(s.lower())}')
+    print(f'{s}:{count_users(s.lower())}')chCaHtAT -- ans is 2
+c h a t
+2 1 0 0
+if t isn't done, and we want to increase c, add one to ans
+if right equals left, when we want to increase right, ret -1
