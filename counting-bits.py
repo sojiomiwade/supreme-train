@@ -1,25 +1,27 @@
 '''
-bruteforce: for each i, just count the bits with modulo and div => n lg n
-better: 
-0 --> 0   
-1 --> 1
-2 --> 10
-3 --> 11
-4 --> 100
-5 --> 101
-6 --> 110
-7 --> 111
-8 --> 1000
-9 --> 1001
-10 -> 1010
-11 -> 1011
-12 -> 1100
+0
+2
+3 011
+4 100 1 more bit than arr[2]
+5 101 1 more bit than ceil(5/2) ==> res[if n odd take floor then add 1]
+6 110 1 more bit than arr[3]
+8 special case? n&(n-1)==0? => bit count is 1
+    or if arr[4] has 1 bit, then i also have 1
 
-dp[i]=dp[i//2] + (i%2==1)
+
+6 110
+7 111 --> 7/2 = 3
+8 1000
+9 1001
+0 1010 
+
+2 4 8 16 same number
+5 10 20 40 <-- same number
+7 same number as 7//3 but add 1 since you lost 1
 '''
 class Solution:
     def countBits(self, n: int) -> List[int]:
-        dp=[0 for i in range(1+n)]
-        for i in range(1,1+n):
-            dp[i]=dp[i//2] + (i%2==1)
-        return dp
+        ans=[0 for _ in range(1+n)]
+        for x in range(1+n):
+            ans[x]=ans[x//2]+x%2
+        return ans
