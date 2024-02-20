@@ -5,19 +5,24 @@
 #         self.left = left
 #         self.right = right
 '''
-0 : 3
-1 : 9,
+root 3
+res [[3] [15 7]]
+level [9 20]
+q  | 15 7
+node 20
 '''
 class Solution:
     def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
-        def level_order(root,rootlevel):
-            if root:
-                if rootlevel==len(level):
-                    level.append([])
-                level[rootlevel].append(root.val)
-                level_order(root.left,rootlevel+1)
-                level_order(root.right,rootlevel+1)
+        # if not root: return []
+        # q=deque([root])
+        # res=[]
+        # while q:
+        #     level=[]
+        #     for _ in range(len(q)):
+        #         node=q.popleft()
+        #         level.append(node.val)
+        #         q.extend([child for child in (node.left,node.right) if child])
+        #     res.append(level)
+        # return res
 
-        level=[]
-        level_order(root,0)
-        return level
+
