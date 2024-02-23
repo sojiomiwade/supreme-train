@@ -1,20 +1,25 @@
 '''
-))) ((()()))
+LLLL RRRR ) (
+bal 4 -> 0 -> 1
+right= 1
+return bal + right
+
+RRRR L
+if R comes in and there is bal, remove from bal. otherwise add to right
+if L comes in, just add to bal
+
+()( --> 1
+bal 1
+right 0
 '''
 def bracket_match(text):
-  uright = 0
-  left = 0
-  for bracket in text:
-    if bracket == ')':
-      if left == 0:
-        uright += 1
-      else:
-        left -= 1
+  bal=right=0
+  for ch in text:
+    if ch=='(':
+      bal+=1
     else:
-      left += 1
-  return uright + left
-
-print(bracket_match(')))')) # 3
-print(bracket_match('((()))')) # 0
-print(bracket_match(')))((((')) # 7
-
+      if bal>0:
+        bal-=1
+      else:
+        right+=1
+  return bal+right
