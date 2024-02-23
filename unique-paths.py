@@ -1,22 +1,19 @@
 '''
-s .
-. .  
-. f 
-DFS gives all possibilities, need backtracking
-if we make it to finish line, add to count
-dont think we need visited since we cant go back
+6 3 1 0 
+3 2 1 0  
+1 1 1 0
+0 0 1 0
+gp(r,c)=gp(r+1,c) + gp(r,c+1)
+
+2 1 0 
+1 1 0
+0 1  
 '''
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
-        def getpaths(r: int, c: int) -> int:
-            if (r,c) in dp:
-                return dp[r,c]
-            if (r,c)==(m-1,n-1):
-                return 1
-            if r>=m or c>=n:
-                return 0
-            dp[r,c]=getpaths(r,c+1)+getpaths(r+1,c)
-            return dp[r,c]
-
-        dp={}
-        return getpaths(0,0)
+        dp=[[0 for c in range(n+1)] for r in range(1+m)]
+        dp[m][n-1]=1
+        for r in range(m-1,-1,-1):
+            for c in range(n-1,-1,-1):
+                dp[r][c]=dp[r][c+1]+dp[r+1][c]
+        return dp[0][0]
