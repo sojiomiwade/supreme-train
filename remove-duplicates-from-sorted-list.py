@@ -4,18 +4,15 @@
 #         self.val = val
 #         self.next = next
 '''
-one loop to advance the linked list, 
-another on the inside to remove duplicates
-    inner loop will 'remove' next as long as it is the same as cur
-    ensure to check if next is null (no removal)
-1 1 1 n
-c--->        
+oh
+1 2 3
+    h
 '''
 class Solution:
     def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        cur = head
-        while cur:
-            while cur.next and cur.next.val == cur.val:
-                cur.next = cur.next.next
-            cur = cur.next
-        return head
+        orighead=head
+        while head:
+            while head.next and head.next.val==head.val:
+                head.next=head.next.next
+            head=head.next
+        return orighead
