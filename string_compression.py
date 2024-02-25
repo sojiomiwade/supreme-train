@@ -1,28 +1,52 @@
 '''
 string compression
 implement a method to perform basic string compression using the counts of repeated characters. For example, the string aabcccccaaa would become a2b1c5a3. if the 'compressed' string would not become smaller than the original string, your method should return the original string. You can assume the string has only uppercase and lowercase letters (a-z)
+aabcccccaaa
+          i
+a2b1c5a3
+could use a new string. 
+with one pass can know whether to bother. and also how much space to preallocate: (1+number of differences) times 2
+if that many is greater than string length, don't bother
 
-a a b c c c c c a a a
+count starts at 1, 
+clear buf when difference is seen
+at the end, we still need to add the last count
+abbc
+aaaaabcccccaaa
+     i
 
-first approach: on new letter: put the old one down with count, reset the count
-2nd if input is string buffer: hmm we could overwrite, especially if output is longer than input
-
+s: a b b b b b c
+                 j
+m,n 6,7
+ans a 1 b 5 . . 
+            i
+count 1 
 '''
 def compress(s: str) -> str:
-    if not s:
-        return ''
-    ans=[]
-    count=1
-    for i in range(1,len(s)):
+    n=len(s)
+    count=0
+    for i in range(1,n):
         if s[i]!=s[i-1]:
-            ans.extend([f'{s[i-1]}{count}'])
-            count=1
-        else:
             count+=1
-    ans.extend([f'{s[-1]}{count}'])
-    t=''.join(ans)
-    return t if len(t)<len(s) else s
+    m=(1+count)*2
+    if m>=n:
+        return s
+    ans=['' for _ in range(m)]
+    j=1
+    for i in range(0,m,2):
+        count=1
+        while j<n and s[j]==s[j-1]:
+            count+=1
+            j+=1
+        ans[i:i+2]=[s[j-1],str(count)]
+        j+=1
+    return ''.join(ans)
 
-print(compress('aabcccccaaa')) #a2b1c5a3
-print(compress('aabcccccaaQ')) #a2b1c5a3Q1
-print(compress('abcde')) #abcde
+s='aabcccccaaa'
+print(compress(s))
+s='aabccccca'
+print(compress(s))
+s='abca'
+print(compress(s))
+
+
