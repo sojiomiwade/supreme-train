@@ -1,70 +1,85 @@
+'''
+ABCDEFG
+  i
+ABDFFGH
+  j
+
+AB -C D -E
+
+train : 00 -> 11 -> 22 -> 32 -> ... -> mn
+
+once it comes back: next(22)=32
+
+if (i+1) j, then '-s[i]'
+else +t[j]
+
+A
+A
+00 -> 11
+a
+ i
+ab
+ j
+ 
+ 
+'''
 def diffBetweenTwoStrings(source, target):
-  def dd(i, j):
+  def diff(i, j):
+    if i==m or j==n:
+      return max(n-j,m-i)
     if (i,j) in dp:
       return dp[i,j]
-    eqval=float('inf')
     if source[i]==target[j]:
-      eqval=dd(i+1,j+1)
-    dp[i,j]=min(eqval,1+dd(i+1,j),1+dd(i,j+1))
-    return dp[i,j]
-  
-  dp={}
-  m, n = len(source), len(target)
-  for i in range(m):
-    dp[i,n]=m-i
-  for j in range(n):
-    dp[m,j]=n-j
-  dp[m,n]=0
-  dd(0,0)
-  ans=[]
-  i=j=0
-  
-  '''
-      i
-  1 Q 2 3 E 1 2 3 
-  Q 
-    j
-  '''
-  while i<m and j<n:
-    if source[i]==target[j]:
-      ans.append(source[i])
-      i+=1
-      j+=1
+      dp[i,j]=diff(i+1,j+1)
+      nexttup[i,j]=(i+1,j+1)
     else:
-      if dp[i,j+1]<dp[i+1,j]:
-        ans.append('+'+target[j])
-        j+=1
+      delsourcedist=diff(i+1,j)
+      addtargetdist=diff(i,j+1)
+      if delsourcedist<=addtargetdist:
+        dp[i,j]=1+delsourcedist
+        nexttup[i,j]=(i+1,j)
       else:
-        ans.append('-'+source[i])
-        i+=1
-  for ri in range(i,m):
-    ans.append(f'-{source[ri]}')
-  for rj in range(j,n):
-    ans.append(f'+{target[rj]}')
+        dp[i,j]=1+addtargetdist
+        nexttup[i,j]=(i,j+1)
+    return dp[i,j]
+
+  '''
+  actually do have to finish out the i and the j
+  ABCDEFG
+   i
+   j
+  A
+  -b -c -d -e ...
+  
+  AC
+   i
+   j
+  ABQ
+  00 
+  ans=[A -C +B +Q +R +S]
+  '''
+  m,n=len(source),len(target) 
+  dp={}
+  nexttup={}
+  diff(0,0)
+  i=j=0
+  ans=[]
+  while i<m and j<n:
+    ni,nj=nexttup[i,j]
+    if (ni,nj)==(i+1,j+1):
+      ans.append(source[i])
+      i,j=i+1,j+1
+    elif (ni,nj)==(i+1,j):
+      ans.append('-'+source[i])
+      i+=1
+    else:
+      ans.append('+'+target[j])
+      j+=1
+  for k in range(i,m):
+    ans.append('-'+source[k])
+  for k in range(j,n):
+    ans.append('+'+target[k])
   return ans
 
-'''
-  print(len(dp),m*n)
-  assert len(dp) == m * n
-  for i in range(m):
-    for j in range(n):
-      print (dp[i,j],end=' ')
-    print()
-'''
-
-source, target = 'CDE','DFF'
-'''
-A B C D E F G
-A B D F F G H
-A A -C D -E F +F G +H
-'''
-source, target = 'G','FGH'
-res=diffBetweenTwoStrings(source, target)
-exp=['+F', 'G', '+H']
-assert exp==res
-# print(diffBetweenTwoStrings(source, target))
-source, target = 'ABCDEFG','ABDFFGH'
-exp=['A', 'B', '-C', 'D', '-E', 'F', '+F', 'G', '+H']
-res=diffBetweenTwoStrings(source, target)
-assert exp==res
-# print(res)
+source,target='AC','ABQ'
+print(diffBetweenTwoStrings(source, target))
