@@ -1,25 +1,36 @@
+'''
+use first row to mark when a column has zero
+use first col to denote when a row has a zero
+    but then how to know when the col itself had a zero
+
+1 1 0 3 ...
+2.  0
+3 . y . 
+0.  x
+1
+
+if colone haszero set the flag so we can zero it out 
+must go backward. to set the vals. otherwise setting col1 early will 
+overrite whehter to set the whole row or not 
+1 0 1
+0 0 0
+1 0 1
+col1 F
+'''
 class Solution:
     def setZeroes(self, matrix: List[List[int]]) -> None:
-        '''
-        since we modify inplace, can use the 1st row and col as flags
-        that there is a zero. then come back from the southeast corner
-        to zerofy any cell. from nr
-
-        flag will tell us whether we ever set colone_haszero to true
-        False, and we don't set that
-        '''
+        col1=False
         m,n=len(matrix),len(matrix[0])
-        colone_haszero=False
         for i in range(m):
-            if matrix[i][0]==0:
-                colone_haszero=True
+            col1=col1 or matrix[i][0]==0
             for j in range(1,n):
                 if matrix[i][j]==0:
-                    matrix[0][j]=matrix[i][0]=0
+                    matrix[i][0]=0
+                    matrix[0][j]=0
 
         for i in range(m-1,-1,-1):
             for j in range(n-1,0,-1):
                 if 0 in (matrix[i][0],matrix[0][j]):
                     matrix[i][j]=0
-            if colone_haszero:
+            if col1:
                 matrix[i][0]=0
