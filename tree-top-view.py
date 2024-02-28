@@ -40,55 +40,59 @@ self.left (the left child of the node)
 self.right (the right child of the node)
 self.info (the value of the node)
 
-            5
-           /  \
-          6
-           \
-            7
-            /
-           2
-          /
-         3
-        /
+root can be seen
+root calls right and left  with seen=true
+if i am a left (i pass true to left and false to right)
+if i am a right(vice versa)
 
-recursive func          
-    if not node, return 
-    if my idx is not in lookup:
-        lookup[myidx]=node.val
-        if my idx is smaller than parent's
-            appendleft
-        else (it is greater)
-            appendright
-    recurse(me.right,myidx,myidx+1)
-    recurse(me.left,myidx,myidx+1)    
+     1
+  /    \
+ 5      2
+  \    /  \
+  8    1  5
+  /      /  \
+ 1      3    6
+      \
+       4- ...    - 7
 
-then just iterate the deque from the start
-            5
-          6
-            7
-lookup {50 -16}
-ans [6 5]
-root,rootidx,paridx=7,0,-1
+if curidx > ridx then append to ans, the value of root. set ll[curidx]=curlevel
+elif curidx < lidx then append left to ans, the value of root. set ll[curidx]=curlevel
+elif cur_level is higher than ll[curidx], ignore
+else (cur level is lower than ll[curidx]), ans[curidx]=root.val
+   1
+ /   \
+4    2
+    /
+   3
+expected ans 4 1 2
+          v
+ ans [0 4 1 2 0 0] offset = 2
+      0 1 2 3 4 5
+ll {00 -11}
+lidx,ridx -1,1
+root,idx,level 3 0 2
 """
-from collections import deque
 def topView(root):
-    def topview(root,rootidx,paridx):
-        if root:
-            if rootidx not in lookup:
-                lookup[rootidx]=root.info
-                if rootidx<paridx:
-                    a.appendleft(root.info)
-                else:
-                    a.append(root.info)
-            topview(root.left,rootidx-1,rootidx)
-            topview(root.right,rootidx+1,rootidx)
-        
-    lookup={root:0}
-    a=deque([root.info])
-    topview(root.left,-1,0)
-    topview(root.right,1,0)
-    print(' '.join(str(val) for val in a))
-
+    def topview(root,idx,level) -> None:
+        nonlocal lidx,ridx
+        if not root:
+            return
+        if not lidx<=idx<=ridx or level<ll[idx]:
+            ans[idx+offset]=root.info
+            ll[idx]=level
+            ridx=max(ridx,idx)
+            lidx=min(lidx,idx)
+        topview(root.left,idx-1,1+level)
+        topview(root.right,idx+1,1+level)
+                        
+    ll={}
+    MAX=1000; INF=MAX; lidx,ridx=INF,-INF; offset=499
+    ans=[0 for _ in range(MAX)]
+    topview(root,0,0)
+    for idx in range(lidx,ridx+1):
+        print(ans[idx+offset],end=' ')
+    print()
+    
 
 
 tree = BinarySearchTree()
