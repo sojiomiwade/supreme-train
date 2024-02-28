@@ -1,18 +1,20 @@
 '''
-first: consider all a and b: O(n**2) time
-second: slide but not from left, but both sides
+8 3 7
+0 1 2
+l
+  r
+ans=2*7=14
+candans=3
 '''
 class Solution:
     def maxArea(self, height: List[int]) -> int:
-        n=len(height)
-        l,r=0,n-1
-        ans=-1
-        while l<r:
-            hl,hr=height[l],height[r]
-            cur=min(hl,hr)*(r-l)
-            ans=max(cur,ans)
-            if hl<hr:
-                l+=1
+        left,right=0,len(height)-1
+        ans=0
+        while left<right:
+            candans=min(height[left],height[right])*(right-left)
+            ans=max(ans,candans)
+            if height[left]<height[right]:
+                left+=1
             else:
-                r-=1
+                right-=1
         return ans
