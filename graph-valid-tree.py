@@ -49,3 +49,6 @@ def graph_valid_tree(edges: List[List[int]], n: int) -> bool:
     nbs=buildgraph()
     visited=set()
     return validate(0, None)
+quote> key: check all nbs, if any is visited and not your parent, then we have a cycle
+quote> ok we good. now recurse only on neighbors not visited, after visiting yourself
+quote> can all be done in one loop. but two loops make it a bit simpler
