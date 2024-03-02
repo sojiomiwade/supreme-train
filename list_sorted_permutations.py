@@ -1,63 +1,48 @@
-KSI=3
 '''
 list all sorted strings of length n (alphabetic lowercase)
+
+3
+aaa
+aab
+aac
+caa <--wrong
+aca <--also wrong
+approach: find all strings of length n and eliminate it if its not 
+    sorted
+
+. . . 
+for any idx, set all possible values while calling recursively forward for next
+
 '''
 from typing import List
 
-def issorted(seq) -> bool:
-    for ch1,ch2 in zip(seq,seq[1:]):
-        if ord(ch1)>ord(ch2):
-            return False
-    return True
+'''
+alen,n 3 2
 
-def listsortedperms(n: int) -> List[str]:
-    def listsortedperms(idx: int) -> None:
-        if idx==n:
+buf . . . . 
+widx 0
+i 0
+'''
+def list_sorted_permutations(n: int) -> List[str]:
+    def issorted(buf: List[str]) -> bool:
+        for i in range(n-1):
+            if buf[i]>buf[i+1]:
+                return False
+        return True
+
+    def lsp(widx: int) -> None:
+        if widx==n:
             if issorted(buf):
                 ans.append(''.join(buf))
-            return
-        for i in range(KSI):
-            buf[idx]=chr(97+i)
-            listsortedperms(idx+1)
-    '''
-    T(n)=ksi * T(n-1) -> n * (ksi)!
-    3
-    use buf to build out each perm with DFS approach; at end filter out unsorted
-    later, can build into sol always starting next char from the prev one
-    '''
+        else:
+            for i in range(alen):
+                buf[widx]=chr(97+i)
+                lsp(widx+1)
+
+    alen=3
     buf=['' for _ in range(n)]
     ans=[]
-    listsortedperms(0)
+    lsp(0)
     return ans
 
-def listsortedperms(n: int) -> List[str]:
-    '''
-    abc
-    ab ba ac ca bc cb
-
-
-    aaa aab bac
-    aa cc ab ba ac ca
-    cab acb abc
-
-    duplicates
-    ba -> (a) + ba
-    aa -> a + (b) + a  
-
-    a b c
-    on each bigger iteration, put all the ksi alphabets in the previous results
-    '''
-    prev_results=['']
-    cur_results=[]
-    for _ in range(n):
-        cur_results=[]
-        for pres in prev_results:
-            for i in range(KSI):
-                res=chr(i+97)+pres
-                if issorted(res):
-                    cur_results.append(res)
-        prev_results=cur_results
-    return cur_results
-
-sp=listsortedperms(2)
-print(sp)
+print(list_sorted_permutations(4))
