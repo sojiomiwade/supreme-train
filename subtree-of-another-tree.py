@@ -1,31 +1,28 @@
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
 '''
-for each node in root with value equal to subRoot.val (via DFS), do a DFS to see if similar, and break early
-instead of DFS could use BFS for both
+               3
+            /     \
+           4       5
+         /   \
+        1     2
+
+
+3      4
+
+time O(nm)
+space O(h1*h2)
+traverse first tree and inside that one traverse the second
 '''
 class Solution:
     def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
-        def issubtree(node,subnode):
-            if not node and not subnode:
+        def issame(root, subroot):
+            if not root and not subroot:
                 return True
-            if not node or not subnode: 
+            if not root or not subroot:
                 return False
-            assert node and subnode
-            ans=node.val==subnode.val
-            ans=ans and issubtree(node.left,subnode.left)
-            ans=ans and issubtree(node.right,subnode.right)
-            return ans
+            return root.val==subroot.val and issame(root.left,subroot.left) and issame(root.right,subroot.right)
+        
+        def trav(root):
+            return (issame(root,subRoot) or 
+                (root and (trav(root.left) or trav(root.right))))
 
-        def issubtree_filter(node):
-            if not node:
-                return False
-            if issubtree(node,subRoot):
-                return True
-            return issubtree_filter(node.left) or issubtree_filter(node.right)
-
-        return issubtree_filter(root)
+        return trav(root)
