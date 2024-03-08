@@ -1,14 +1,30 @@
 '''
-get the maximum frequency. then iterate through the array counting elements having that frequency
-1 pass over nums to get max
-another pass over count to get result
-1 1 3 2 2
-count {12 31 22}
-maxf 4
-return  
+1 2 2 3 1 4
+count {12 22 31 41}
+maxf 2
+count 2
+if freq is equal to maxf increment count, 
+else if it is more reset count to 1, and increment maxf
+return maxf * count
+
+1 2 2 3 1
+        ^
+count {12 22 31}
+maxf 2
+maxcount 2
+count 
 '''
 class Solution:
     def maxFrequencyElements(self, nums: List[int]) -> int:
-        count=Counter(nums)
-        maxf=max(count.values())
-        return sum(maxf for num,freq in count.items() if freq==maxf)
+        count=Counter()
+        maxf=0
+        maxcount=0
+        for num in nums:
+            count[num]+=1
+            if count[num]==maxf:
+                maxcount+=1
+            elif count[num]>maxf:
+                maxcount=1
+                maxf+=1
+        return maxf*maxcount
+            
