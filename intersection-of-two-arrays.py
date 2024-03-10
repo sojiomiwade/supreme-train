@@ -13,18 +13,40 @@ idx [0 1 2 3 4]
 n1  [f f f f f]
 n2  [f f f f f]
 runtime is constant. next we do a sort approach
+
+4 9 5
+9 4 9 8 4
+
+2
+1 2 3
+
+4 5 9
+t
+b
+4 4 8 9 9
+if match add it to ans, but only if ans[-1] is not it. advance both ptrs
+else advance the smaller
+stop. when any array is exhausted
+0 1
+    t
+  b
+1 2 3
+ans [1]
 '''
 class Solution:
     def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:
-        ARRMAX=1001
-        n1=[False for _ in range(ARRMAX)]
-        n2=[False for _ in range(ARRMAX)]
-        for x in nums1:
-            n1[x]=True
-        for y in nums2:
-            n2[y]=True
+        nums1.sort()
+        nums2.sort()
+        m,n=len(nums1),len(nums2)
+        top=bot=0
         ans=[]
-        for i,(x,y) in enumerate(zip(n1,n2)):
-            if x and y:
-                ans.append(i)
+        while top<m and bot<n:
+            topel,botel=nums1[top],nums2[bot]
+            if topel==botel and (not ans or ans[-1]!=topel):
+                ans.append(topel)
+                top,bot=top+1,bot+1
+            elif topel<botel:
+                top+=1
+            else:
+                bot+=1
         return ans
