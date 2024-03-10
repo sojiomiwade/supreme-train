@@ -5,26 +5,20 @@
 #         self.left = left
 #         self.right = right
 '''
-1 2 3 4 5
-        3
-    2       4
-  1            5
-approach: 
-def maketree(lo,hi)
-    ...
-return maketree(0,n-1)
-1 2 3
-    2
-  1    3
+1 2 3 4 5 6
+call recursively passing the range of elements 
+if range is defined, can create a node. otherwise return false
 '''
 class Solution:
     def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
-        def maketree(lo: int, hi: int) -> Optional[TreeNode]:
-            if lo>hi:
+        def satb(left: int, right: int) -> Optional[TreeNode]:
+            if left>right:
                 return None
-            mi=lo+(hi-lo)//2
-            root=TreeNode(nums[mi])
-            root.left=maketree(lo,mi-1)
-            root.right=maketree(mi+1,hi)
+            mid=left+(right-left)//2
+            root=TreeNode(nums[mid])
+            root.left=satb(left,mid-1)
+            root.right=satb(mid+1,right)
             return root
-        return maketree(0,len(nums)-1)
+            
+        n=len(nums)
+        return satb(0,n-1)
