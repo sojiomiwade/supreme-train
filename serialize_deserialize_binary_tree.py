@@ -1,44 +1,64 @@
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
 '''
-        5
-    2      3
-  1  n   9   n
- n x    n n
-ans:521#x#39###
-        ^ 
-deserialize from ans:
-        5
-     2
-  1
-
-this is it:
-deser(arr)
-    x=arr.popleft()
-    if x=='#'
-        return None
-    root=node()
-    root.left=deser(arr)
-    root.right=deser(arr)
-    return root
-if arr
-    return deser(arr)
-return None
-
-root=cur=null
-as long as next != #, 
-    cur=node(next) 
-    if prev prev.left=cur
-    prev=cur
-otherwise 
-    prev.right=next.next
-
-
-not a # cur.left gets node(next) and cur = cur.left,
-if # cur.left=null and stop, and cur.right=next (or null)
-rinse and repeat
-return root
+12nn34nn5nn
+        1
+     /     \
+    2
+do()
+    if top is null return that
+    otherwise. 
+    pop and make root
+    root.left = do()
+    root.right=do()
 '''
-class Node:
-    ...
+class Codec:
 
-def deser(arr) -> Node:
-    
+    def serialize(self, root):
+        def ser(root):
+            if not root:
+                ans.append('N')
+            else:
+                ans.append(str(root.val))
+                ser(root.left)
+                ser(root.right)
+        ans=[]
+        ser(root)
+        return ' '.join(ans)
+
+    '''
+     3 
+      5
+       6
+    ans1 3n5n6nn
+    ans2: nn
+       3
+    /     \
+   n       5
+         /   \
+        n     6
+              n n
+    '''
+    def deserialize(self, data):
+        def deser():
+            val=vals.popleft()
+            if val=='N':
+                return None
+            root=TreeNode(val)
+            root.left=deser()
+            root.right=deser()
+            return root
+
+        vals=deque([item for item in data.split()])
+        ans=deser()
+        assert not vals
+        return ans
+
+# Your Codec object will be instantiated and called as such:
+# ser = Codec()
+# deser = Codec()
+# ans = deser.deserialize(ser.serialize(root))
