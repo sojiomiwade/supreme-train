@@ -5,27 +5,47 @@
 #         self.left = left
 #         self.right = right
 '''
-md5 hash
-      2
-    3.   n
-  3.  n
-3.  n
-3n3n3n2
+can make a code of each root, with counter to count duplicates. 
+at the end return all nodes with count value > 1
+    2
+  /   \
+ 4     3
+2: 2 + hash(4) + hash(3)
+if null, no hash. 
+now pre vs in vs post
+      1
+    /   \ 
+   0     0
+0|1|0 vs 100
+      0
+     /
+    1
+   /
+  0
+0|1|0 vs 010
+0|1|0|
+0|1|0|31
+3
+count {02:}
+
+            0
+         /     \
+        0       0
+       /         \
+      0           0
+                   \
+                    0
+nodes 0||
 '''
 class Solution:
     def findDuplicateSubtrees(self, root: Optional[TreeNode]) -> List[Optional[TreeNode]]:
-        def finddups(node):
-            if not node:
-                return '#'
-            s=finddups(node.left)
-            s+=finddups(node.right)
-            s+=f'{node.val}|'
-            lookup[s].append(node)
-            return s
+        def find_dups(root: Optional[TreeNode]) -> str:
+            if not root:
+                return 'X'
+            code=f'{str(root.val)}|{find_dups(root.left)}|{find_dups(root.right)}|'
+            nodes[code].append(root)
+            return code
 
-        ans,lookup=[],defaultdict(list)
-        finddups(root)
-        for nodes in lookup.values():
-            if len(nodes)>1:
-                ans.append(nodes[0])
-        return ans
+        nodes=defaultdict(list)
+        find_dups(root)
+        return [nodes_[0] for nodes_ in nodes.values() if len(nodes_)>1]
