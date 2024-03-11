@@ -1,29 +1,33 @@
 '''
-100    26
-ascii: 97 - 123
+lowercase latin characters only
 
-Step 2:	100	214	319	428	529
+ans[i]=w[i]-w[i-1]
+ans[0] is just ans[0]-1
+then do the 26 thing to get it to ascii for each one
+  add 26 until we have 97<=x<=123
+113-116=-3
+-3
+26
+23
+26
+49
+26
+75
+26
+101 --> convert to ascii
 
-Step 1:	99	114	105	109	101
-Step 3:	100	110	111	116	113
+94+
 
-113 - 116 = -3
--3 + 26
-ans for that row
-go to the next one and do the same
-
-so first pass awesome!!!!! i did it!@!!!!Q YESSS
-
-get residue (from the back)
 '''
 def decrypt(word):
+  ans=[]
   n=len(word)
-  res=[0 for _ in range(n)]
+  ALPHALEN=26
+  FIRST,LAST=97,122 #0 26
   for i in range(n-1,-1,-1):
-    res[i]=ord(word[i])-(ord(word[i-1]) if i>0 else 1)
-    while not 97<=res[i]<=123:
-      res[i]+=26
-  return ''.join([chr(num) for num in res])
-
-word='dnotq' #expect crime
-print(decrypt(word))
+    op2=ord(word[i-1]) if i-1>=0 else 1
+    x=ord(word[i])-op2
+    while not FIRST<=x<=LAST:
+      x+=ALPHALEN
+    ans.append(chr(x))
+  return ''.join(reversed(ans))
