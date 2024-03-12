@@ -1,38 +1,34 @@
-from collections import deque
+'''
+can use BFS to reach target, and count along the way
+neighbor(word) --> change each letter and see if it is in set(words)
+  mark it visited!
+
+source     target
+bit    but cut
+q [bit but cut]
+count 2
+visited {bit but cut}
+word bit
+     j
+count exp is 2
+'''
+import collections
 def shortestWordEditPath(source, target, words):
-  '''
-  BFS  to guarantee shortest path, with count variable
-  oneaway means every let the same except one
-  bit
-  but bat
-  dont forget marked
-  for each neighbor that isn't in the queue, mark it upon putting it there
-  '''
-  def oneaway(w,ow):
-    if len(w)!=len(ow):
-      return False
-    count=0
-    for x,y in zip(w,ow):
-      if x!=y:
-        count+=1
-    return count==1
-  
+  wlen=len(source)
   count=0
-  q=deque([source])
-  marked=set([source])
+  q=collections.deque([source])
+  visited=set([source])
+  swords=set(words)
   while q:
     for i in range(len(q)):
       word=q.popleft()
       if word==target:
         return count
-      for otherword in words:
-        if otherword not in marked and oneaway(word,otherword):
-          marked.add(otherword)
-          q.append(otherword)
+      for j in range(wlen):
+        for k in range(26):
+          oword=word[:j]+chr(97+k)+word[j+1:]
+          if oword not in visited and oword in swords:
+            visited.add(oword)
+            q.append(oword)
     count+=1
   return -1
-
-source = "bit"
-target = "dog"
-words = ["but", "put", "big", "pot", "pog", "dog", "lot"]
-print(shortestWordEditPath(source, target, words)) # 5
