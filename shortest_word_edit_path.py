@@ -17,7 +17,6 @@ def shortestWordEditPath(source, target, words):
   wlen=len(source)
   count=0
   q=collections.deque([source])
-  visited=set([source])
   swords=set(words)
   while q:
     for i in range(len(q)):
@@ -27,8 +26,8 @@ def shortestWordEditPath(source, target, words):
       for j in range(wlen):
         for k in range(26):
           oword=word[:j]+chr(97+k)+word[j+1:]
-          if oword not in visited and oword in swords:
-            visited.add(oword)
+          if oword in swords:
+            swords.remove(oword)
             q.append(oword)
     count+=1
   return -1
