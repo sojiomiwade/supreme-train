@@ -1,21 +1,19 @@
 '''
-        root
-        |   \
-        a    c
-        |     \  
-        p      a
-      / |       \
-     .  e        .           
-        |         
-        .        
-words in it: {ape,ca,apa}
-use a dict, and its keys are the next letters from the 
-prefix up till now: ap-> a:{p:{a:{.}, e:{.}},<nothing>}
+         .
+    r
+   a 
+   t c
+      k
+rack
+   l
+cur {r:{a:{c:{k:{}}, t:{None:None}}}}      
+                ^
 '''
 class Trie:
 
     def __init__(self):
         self.root={}
+        
 
     def insert(self, word: str) -> None:
         cur=self.root
@@ -23,15 +21,26 @@ class Trie:
             if let not in cur:
                 cur[let]={}
             cur=cur[let]
-        cur['.']=''
+        cur[None]=None
 
+    '''
+            .
+        r
+    a 
+    t c
+        k
+    rat
+       l
+    cur {r:{a:{c:{k:{}}, t:{None:None}}}}
+                           ^
+    '''
     def search(self, word: str) -> bool:
         cur=self.root
         for let in word:
             if let not in cur:
                 return False
             cur=cur[let]
-        return '.' in cur
+        return None in cur
 
     def startsWith(self, prefix: str) -> bool:
         cur=self.root
