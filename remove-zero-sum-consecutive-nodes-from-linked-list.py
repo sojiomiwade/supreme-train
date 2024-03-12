@@ -12,15 +12,19 @@ prefix 6
 0, 1
 lin {0:d 4:3 3:-3 1:-2 106:100 6:-100 7:1}
 lipn means last (including this node) identity node having same prefix
-0 3 1 -1 n
-  3 4  3
-0:d 3:-1
+
+d           h
+-->--------->
+0  3  1  -1  n
+  
+prefix 3
+last {0:d,4:4,3:-1}
 '''
 class Solution:
     def removeZeroSumSublists(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        dummy=ListNode(0,head)
+        head=dummy=ListNode(0,head)
         prefix=0
-        lipn={0:dummy}
+        lipn={}
         while head:
             prefix+=head.val
             lipn[prefix]=head
