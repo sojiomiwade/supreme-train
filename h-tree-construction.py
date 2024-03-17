@@ -1,31 +1,36 @@
 '''
-
+all three line segments are the same length
+can be an input parameter, SEGLEN
+at any depth, just draw four h-trees
+recursive terminal condition will stop fturue trees
+term cond: if dep==0 return
+d(1)
 '''
-def drawline(x1,y1,x2,y2):
-  print((x1,y1),(x2,y2))
-def draw(x,y,length,depth):
-  if depth==0:
-    return
-  # 3 lines
-  half_l=length/2
-  xleft,xright=x-half_l,x+half_l
-  ytop,ybot=y+half_l,y-half_l
-  drawline(xleft,y,xright,y)
-  drawline(xleft,ytop,xleft,ybot)
-  drawline(xright,ytop,xright,ybot)
-    
-  #call 4 draws
-  sqrt2=2**(.5)
-  nl=length/sqrt2
-  draw(xleft,ytop,nl,depth-1)
-  draw(xleft,ybot,nl,depth-1)
-  draw(xright,ytop,nl,depth-1)
-  draw(xright,ybot,nl,depth-1)
 
-draw(100,100,100,2)
-#(50,100),(150,100)
-#(50,50),(50,150)
-#(150,50),(150,150)
+def drawHTree(x, y, length, depth):
+  def drawLine(*args):
+    assert len(args)==3
+    print(depth-args[-1])
+    print((depth-args[-1])*' '+'-'.join(str(tup) for tup in args[:-1]))
 
-nl=100/(2**.5)
-print(50-nl/2)
+  def drawtree(x, y, length, dep):
+    if dep:
+      halfl=length/2
+      xl,xr=x-halfl,x+halfl
+      yb,yt=y-halfl,y+halfl
+      drawLine((xl,y),(xr,y),dep)
+      drawLine((xl,yt),(xl,yb),dep)
+      drawLine((xr,yt),(xr,yb),dep)
+      
+      dep-=1
+      length/=pow(2,.5)
+      drawtree(xl,yt,length,dep)
+      drawtree(xl,yb,length,dep)
+      drawtree(xr,yt,length,dep)
+      drawtree(xr,yb,length,dep)
+
+  drawtree(x,y,length,depth)
+
+s=3*' '
+print len(s),s+'hello'
+#drawHTree(0,0,100,2)
