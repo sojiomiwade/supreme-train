@@ -4,35 +4,43 @@
 #         self.val = val
 #         self.next = next
 '''
-d                                 h
-.-->---------------->------------->
-0  1, 3, 2, -3, -2, 5, 100, -100, 1
-   1  4  6   3,  1, 6, 106,    6, 7
-prefix 6
-0, 1
-lin {0:d 4:3 3:-3 1:-2 106:100 6:-100 7:1}
-lipn means last (including this node) identity node having same prefix
+0 1 2 ... 3 4
+1,2,3,...-3,4
+1 3 6 ... 3 7
 
-d           h
--->--------->
-0  3  1  -1  n
-  
-prefix 3
-last {0:d,4:4,3:-1}
+have[3] is the head, and it will point to the next of this 3 if 3 exists. 
+    otherwise have[3]=this node
+then just return the head. 
+can use a prehead and can do everything in one iteration
+
+     d 0  1 2
+lis  0 1 -1 2
+psum 0 1  0 2
+     .------>
+            c  
+have {0:0, 1:1, }
+0  1 3 2 -3 -2  5  5 -5 1
+0  1 4 6  3  1  6 11  6 7
+   ----------c-->
+   n          
+0  1 2 3. 4. 5. 7  8
+                      c
+lis  d 01 02
+psum 0  0  0 
+           c
+     ------>   
+have {0:d}
 '''
 class Solution:
     def removeZeroSumSublists(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        head=dummy=ListNode(0,head)
-        prefix=0
-        lipn={}
-        while head:
-            prefix+=head.val
-            lipn[prefix]=head
-            head=head.next
-        head=dummy
-        prefix=0
-        while head:
-            prefix+=head.val
-            head.next=lipn[prefix].next
-            head=head.next
+        have={}
+        cur=dummy=ListNode(0,head)
+        psum=0
+        while cur:
+            psum+=cur.val
+            node=have.get(psum,cur)
+            while psum in have:
+                have.popitem()
+            have[psum]=node
+            node.next=cur=cur.next
         return dummy.next
