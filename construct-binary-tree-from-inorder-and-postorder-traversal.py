@@ -5,27 +5,34 @@
 #         self.left = left
 #         self.right = right
 '''
-                                5
-                                                    3
-                                            8
-
-po=
-ill={50,81,32}
-                                02(5,0)
-                      0-1(null)                          12(3,2)
-                                                 11(8,1)                   32
-                                            10            21
+inorder [9352], postorder [9253]
+expected
+           3
+        /     \
+       9       5
+                \
+                 2
+postorder [92]
+lloc {90 31 52 23}
+lo,hi 03 --> 00 --> 01 --> 0
+root,rootloc 31 --> 52 --> 23
+           3
+        /     \ 
+               5
+                \
+                 2
+        
 '''
 class Solution:
     def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
-        def buildTree(lo,hi):
-            r=None
-            if lo<=hi:
-                r=TreeNode(po.pop())
-                mi=ill[r.val]
-                r.right=buildTree(mi+1,hi)
-                r.left=buildTree(lo,mi-1)
-            return r
-        ill={ival:i for i,ival in enumerate(inorder)}
-        po=postorder[:]
-        return buildTree(0,len(inorder)-1)
+        def buildtree(lo: int, hi: int) -> Optional[TreeNode]:
+            if lo>hi:
+                return None
+            root=TreeNode(postorder.pop())
+            rootloc=lloc[root.val]
+            root.right=buildtree(rootloc+1,hi)
+            root.left=buildtree(lo,rootloc-1)
+            return root
+
+        lloc={x:idx for idx,x in enumerate(inorder)}
+        return buildtree(0,len(postorder)-1)
