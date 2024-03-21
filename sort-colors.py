@@ -18,7 +18,7 @@ class Solution:
         n=len(nums)
         l=i=0
         r=n-1
-        while i<n and i<=r:
+        while i<=r:
             if nums[i]==2:
                 nums[i],nums[r]=nums[r],nums[i]
                 r-=1
