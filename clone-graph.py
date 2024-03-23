@@ -4,24 +4,31 @@ class Node:
     def __init__(self, val = 0, neighbors = None):
         self.val = val
         self.neighbors = neighbors if neighbors is not None else []
-
-like in DFS, still need a lookup
-only nodes that aren't in lookup go in queue
 """
-
+'''
+a - b   a <- b
+|   |   ^    ^
+d - e   d  > e   
+clone {aa bb}
+b on looping through cloned neighbors: b.append(clone[a])
+b on looping through not cloned nbs: call clone to get the node, 
+    then append
+'''
 from typing import Optional
 class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
+        def cloneGraph(node):
+            cnode=Node(node.val)
+            clone[node]=cnode
+            for nb in node.neighbors:
+                if nb in clone:
+                    cnode.neighbors.append(clone[nb])
+                else:
+                    cnb=cloneGraph(nb)
+                    cnode.neighbors.append(clone[nb])
+            return cnode
+
         if not node:
             return None
-        clookup={node:Node(node.val)}
-        q=deque([node])
-        while q:
-            x=q.popleft()
-            cx=clookup[x]
-            for nb in x.neighbors:
-                if nb not in clookup:
-                    q.append(nb)
-                    clookup[nb]=Node(nb.val)
-                cx.neighbors.append(clookup[nb])
-        return clookup[node]
+        clone={}
+        return cloneGraph(node)
