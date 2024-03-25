@@ -1,48 +1,29 @@
+'''
+cs(21) = one 2 one 1 = 12 11
+cs(n) = express(cs(n-1))
+e(3322233333)
+freq+val + freq+val + ...
+223
+  i
+count 1
+ans [22 13]
+'''
 class Solution:
     def countAndSay(self, n: int) -> str:
-        '''
-        12111333
-        x
-        for each x in countAndSay(n-1): 
-            ans = count(x)+x
-        return ans
-        n=5=>
-        1211 => 11_12_21 <--- ans
-        c(5)-c(4)-c(3)-c(2)-"1"
-        c2:
-            1
-            i
-            ans=11
-        c3: 
-            11
-            i
-            count=2
-            ans=21
-        c4:
-            21
-            i
-            count=1
-            i 
-            5|67890
-            count = 2
-
-            i
-            0
-            i=0
-            count=0
-            i = 7
-            7-2+1
-        '''
-        if n==1:
-            return "1"
-        s=self.countAndSay(n-1)
-        i=0
-        ans=''
-        while i<len(s):
-            count=0
-            while i+1<len(s) and s[i]==s[i+1]:
-                count+=1
+        def express(s: str) -> str:
+            i,n=0,len(s)
+            ans=[]
+            while i<n:
+                count=1
+                while i+1<n and s[i]==s[i+1]:
+                    count+=1
+                    i+=1
+                ans.append(f'{count}{s[i]}')
                 i+=1
-            ans+=str(count+1)+s[i-count]
-            i+=1
+            return ''.join(ans)
+
+        ans=prev='1'
+        for _ in range(n-1):
+            ans=express(prev)
+            prev=ans
         return ans
