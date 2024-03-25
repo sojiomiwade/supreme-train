@@ -1,43 +1,40 @@
 '''
-aaabbbcd
+4a 4d 3b 2c, n = 5
+objective: calculate idles
+then ans is number of tasks + idles
 
-  n=5
----maxfreq minus 1----
-a-b-c-d-i
-a b c i i
---rem--
-a b   <-- number of top guys
- 
-possible that the letters all fit
-same example above
---n=3--
-. . .
-. . .
----
-a b
-6 + 2 = 8 < maximum chars = 9
+layout a map with a at ends
+a d . . . .  a d . . . . a d . . . . a d, n = 5
+all open idles: (n-xwidth+1)*(xcount-1) 5-2
+used-up-idles --> m-(xcount*xwidth)
+idles equals: maximum of zero and difference between open and used
 
-so result is max(squrestuff, total number of chars)
-squre stuff
+a b c d a b, [n 1] -->
+a b a c b d --> 6
 
-a b c d a b, n=1 --> 
-exp
-a b c
-a b d
-ans=6
+a b . a b
+m 6
+xcount 2
+xwidth 2
+openidles (1-2) neg
+used
+idles
 
-aaabbb
-a b i i 
-a b i i
-a b 
+a a a b b b
 
-(3-1)*(3+1)+2  against 6= 
+a b . . a b . . a b , [n 3]
+count {a3 b3}
+xcount 3
+xwidth 2
+openidles (3-2)*(2)
 '''
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
-        ans=0
         m=len(tasks)
         count=Counter(tasks)
-        maxfreq=max(count.values())
-        maxelcount=sum(1 for x in count.values() if x==maxfreq)
-        return max((maxfreq-1)*(n+1)+maxelcount,m)
+        xcount=max(count.values())
+        xwidth=sum(1 for x in count.values() if x==xcount)
+        openidles=(n-xwidth+1)*(xcount-1)
+        used=m-(xcount*xwidth)
+        idles=max(0,openidles-used)
+        return m+idles
