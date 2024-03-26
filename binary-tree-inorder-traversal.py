@@ -5,51 +5,42 @@
 #         self.left = left
 #         self.right = right
 '''
-first: recursive: append  left, then root.val, then right
-    time,space: O(n),O(h+n)=O(n) since n>=h
-second: iterative:
+exp 2 4 1 5 3
            1
         /     \
        2       3
-      / \     / \
-     .   4   5   .
-              \
-               6 
-    ans=[2,4,1,5,6,3]
-    st=[3 6] 
-    root=
-    next=(6)
-    ans=[2 4 1 5 6]
+        \     /
+         4   5
+root 1
+stack []
+ans [2 4 1 5 3] 
 
-    st=[]
-    while st or root
-        if root
-            st.append(root)
-            root=root.left
-        else:
-            next=st.pop()
-            ans.append(next.val)
-            root=next.right
+1: root keeps going left filling the stack
+on no val: pop stack into ans, and assign root to the right
+back to 1 as long as there's root or stack
+
+root traverses and fills stack
+stack always gets the next element
+
+1 
+ \
+  2         --> [1 3 2]
+ /
+3 
+root n
+top 2
+st []
+ans [132]
 '''
 class Solution:
     def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
         st,ans=[],[]
-        while st or root:
-            if root:
+        while root or st:
+            while root:
                 st.append(root)
                 root=root.left
-            else:
-                next=st.pop()
-                ans.append(next.val)
-                root=next.right
+            top=st.pop()
+            ans.append(top.val)
+            if top.right:
+                root=top.right
         return ans
-
-        # def inorder(root):
-        #     if root:
-        #         inorder(root.left)
-        #         ans.append(root.val)
-        #         inorder(root.right)
-
-        # ans=[]
-        # inorder(root)    
-        # return ans
