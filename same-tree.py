@@ -5,7 +5,10 @@
 #         self.left = left
 #         self.right = right
 '''
-if roots have same value, and likewise for p.left q.left, and likewise for p.riht q.right. then they're the same
+when you call on a child, pass the other child
+1       1
+ \     /
+  2   2
 '''
 class Solution:
     def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
@@ -14,7 +17,4 @@ class Solution:
         if not p or not q:
             return False
         assert p and q
-        issame = p.val == q.val
-        issame = issame and self.isSameTree(p.left,q.left)
-        issame = issame and self.isSameTree(p.right,q.right)
-        return issame
+        return p.val==q.val and self.isSameTree(p.left,q.left) and self.isSameTree(p.right,q.right)
