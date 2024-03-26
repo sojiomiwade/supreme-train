@@ -1,12 +1,3 @@
-25
-16 + 8 + 1
-11001
-ans=10011
-approach:
-
-n=|11001
-ans=19 == 10011
-while n
-  ans = 2*ans + (n&1)
-  n>>=1
-return ans
+class Solution:
+    def reverseBits(self, n: int) -> int:
+        return int('0b'+''.join(reversed(bin(n)[2:].zfill(32))),base=0)
