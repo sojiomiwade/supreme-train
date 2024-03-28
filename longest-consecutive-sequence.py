@@ -1,25 +1,31 @@
 '''
-create a graph of neighbors for each x. well no need: just make a set
-of nums
+1. find the connected components, this requires setup of the neighbor graph
+2. return the length of the longest one
 
-now can check if num +/- 1 in set (which implies it is in graph)
-now withh a dfs on each num, we can get our ans
-need visited set
+2 0 5 1
 
-visited {100 4}
-4-3-2-1
+visited {2 1 0}
+comp {2 1 0}
 '''
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
-        def visit(val: int) -> int:
-            if val not in iset or val in visited:
-                return 0
-            visited.add(val)
-            return 1+max(visit(val-1),visit(val+1))
+        def compcount(num,comp):
+            if num not in visited:
+                comp.add(num)
+                visited.add(num)
+                for nb in nbs[num]:
+                    compcount(nb,comp)
+            return comp
             
-        ans=0
-        iset=set(nums)
+        nbs=collections.defaultdict(list)
+        numsset=set(nums)
+        for num in numsset:
+            if num-1 in numsset:
+                nbs[num].append(num-1)
+                nbs[num-1].append(num)
+        
         visited=set()
-        for x in sorted(nums):
-            ans=max(ans,visit(x))
+        ans=0
+        for num in numsset:
+            ans=max(ans,len(compcount(num,set())))
         return ans
