@@ -1,28 +1,12 @@
 '''
-1,2,3,1,2,3,1,2,...
-    l
+2 1 . . . . 3 1 2 3 1 2 
+l--> 
               r
-use the violation method
-keep track of max-freq
-
-1 2 1 2 k=1 --> ans=2
-    l
-      r
-count {11 21}
-
-3 1 1 2 3 . k=1 --> ans=2
-    l
-      r
-1 4 4 3 . . .
-    l
-    r
-heap --> (2,4)
 '''
 class Solution:
     def maxSubarrayLength(self, nums: List[int], k: int) -> int:
+        l,n,ans=0,len(nums),0
         count=collections.Counter()
-        l,n=0,len(nums)
-        ans=0
         for r in range(n):
             count[nums[r]]+=1
             while count[nums[r]]>k:
@@ -30,3 +14,4 @@ class Solution:
                 l+=1
             ans=max(ans,r-l+1)
         return ans
+
