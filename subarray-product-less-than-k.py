@@ -1,17 +1,25 @@
 '''
-10 5 2 6 k=100 --> 8
-   l
-     r
-count 1
-prod 100
+0  1 2 3 4
+5 5 2 6 4
+l
+r
+
+1 + 2 + 3 + 4 + 5
+
+5 2 3 | k 3 |
+  l
+  r
+prod 1
+ans 0
 '''
 class Solution:
     def numSubarrayProductLessThanK(self, nums: List[int], k: int) -> int:
-        count,left,prod=0,0,1
+        left,prod,ans=0,1,0
         for right in range(len(nums)):
+            #ensure ok window
             prod*=nums[right]
             while prod>=k and left<=right:
                 prod//=nums[left]
                 left+=1
-            count+=right-left+1
-        return count
+            ans+=right-left+1
+        return ans
