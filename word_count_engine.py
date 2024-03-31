@@ -1,48 +1,32 @@
 '''
-input:  document = "Practice makes perfect. you'll only
-                    get Perfect by practice. just practice!"
+orig_ord
+case insensitive -- just to lower the whole thing to start?
+strip puncation out 
 
-output: [ ["practice", "3"], ["perfect", "2"],
-          ["makes", "1"], ["youll", "1"], ["only", "1"], 
-          ["get", "1"], ["by", "1"], ["just", "1"] ]
+document a b c b' a
+doc  a b c b a
+splitdoc  [a b c b a]
+orig_ord {a0 b1 c2}
+count {a2 b2 c1}
+words [(a2) (b2) (c1)]
+  print(splitdoc)
+  print(count)
 
-can just lower the whole thing and also remove punctuation
-sort by frequency (descending).
-when 2 are the same sort by ordinal in original string
-can get ordinal using a count.
-for each word
-  if word not in ordlookup
-    ordlookup[word]=count, 
-    count ++
 '''
-from collections import Counter
+import collections
 
-
-def remove_punc(s):
-  return ''.join([ch for ch in s if ch.isalnum() or ch==' ']).split()
-
-def get_ord(s):
-  ordlookup={}
-  count=0
-  for word in s:
-    if word not in ordlookup:
-      ordlookup[word]=count
-      count+=1
-  return ordlookup
 
 def word_count_engine(document):
-  doc=remove_punc(document.lower())
-  ordlookup=get_ord(doc)
-  wcount=Counter(doc)
-  wtups=list(wcount.items()) # (a,2) (b,3)
-  wtups.sort(key=lambda x: (-x[1],ordlookup[x[0]]))
-  return [[word,str(freq)] for (word,freq) in wtups]
+  doc=''.join(ch for ch in document.lower() if ch==' ' or ch.isalnum())
+  splitdoc=doc.split()
+  orig_ord={}
+  for i,word in enumerate(splitdoc):
+    orig_ord.setdefault(word,i)
+  count=collections.Counter(splitdoc)
+  words=list(count.items())
+  aux=sorted(words,key=lambda x: (-x[1],orig_ord[x[0]]))
+  ans=[[s,str(freq)] for s,freq in aux]
+  return ans
 
-document = "Practice makes perfect. you'll only get Perfect by practice. just practice!"
-print(word_count_engine(document))
-
-'''
-output: [ ["practice", "3"], ["perfect", "2"],
-          ["makes", "1"], ["youll", "1"], ["only", "1"], 
-          ["get", "1"], ["by", "1"], ["just", "1"] ]
-'''
+doc='a b c b; a'
+print(word_count_engine(doc))
