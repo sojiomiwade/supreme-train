@@ -1,44 +1,78 @@
-from collections import Counter
-from typing import List
+'''
+problem 1
+if eveything is 3 or more of a kind, return True
+3 1 3 1 1 3
 
-# if eveything is 3 or more of a kind, return True
+problem 2
+if we can collect 5 consecutive from the arr, 
+and leave nothing in the arr, return True.
+otherwise, return False
+
+1 2 3 4 5  3 4 5 6 7  2 3 4 5 6
+
+1 2 3 4 5 6 7
+1 2 3 3 3 2 1
+1 2 3 3 3 2 1
+0 0 1 1 1 1 1
+
+start from the lowest and try to get the whole thing to 0
+
+
+'''
+from typing import Counter, List
+import collections
+
+
 def kind3(arr: List[int]) -> bool:
-    '''
-    2 3 3 3 3 
-    '''
-    count=Counter(arr)
-    return all(xcount>2 for (x,xcount) in count.items())
+    count=collections.Counter(arr)
+    return all(x==3 for x in count.values())
 
-a='23333'
-arr=[int(x) for x in a]
-print(kind3(arr)) # False
+# arr=[3, 1, 3, 1, 1, 3]
+# print(kind3(arr))
+# arr=[3, 1, 3, 1, 1, 3, 4]
+# print(kind3(arr))
 
-a='2223333'
-arr=[int(x) for x in a]
-print(kind3(arr)) # True
 
-# if we can collect 5 consecutive from the arr, 
-# and leave nothing in the arr, return True.
-# otherwise, return False
 '''
-1 2 3 3 4 4 5 5 6 7
-1 1 2 2 2 2 2 2 1 1  
-0 0 1 1 1 1 1 1 1 1
-    0 0 0 0 0 0 1 1
-              
+1 2 3 4 5  3 4 5 6 7  2 3 4 5 6
+
+1 2 3 4 5 6 7
+1 2 3 3 3 2 1
+1 2 3 3 3 2 1
+0 0 1 1 1 1 1
+
+1 2 3 4 5 3 4 5 6
+1 2 3 4 5
+1 1 2 2 2
+1 1 2 2 2
+0 0 1 1 1
+start from the lowest and try to get the whole thing to 0
+1 2 3 3 3 2 1
+1 2 3 4 5 6 7 | n 7 | True
+0 0 0 0 0 0 0
+seeds [1 2 3 4 5 6 7]
+       x
+x,val 1,1
+
+
 '''
-def is_straight(arr: List[int]) -> bool:
-    arr=sorted(arr)
+def con5(arr: List[int]) -> bool:
     count=Counter(arr)
-    for x in arr:
-        if count[x]:
-            for idx in range(5):
-                count[x+idx]-=1
-    return not any(count.values())
+    seeds=sorted(count)
+    n=len(count)
+    for x in seeds:
+        val=count[x]
+        if val:
+            for i in range(5):
+                if x+i not in count or count[x+i]<val:
+                    return False
+                count[x+i]-=val
+    return True
 
+s='1 2 3 4 5 3 4 5 6'
+arr=[int(x) for x in s.split()]
+print(con5(arr))
 
-arr=[1, 2, 3, 4, 5, 3, 4, 5, 6, 7, 4, 5, 6, 7, 8]
-print(is_straight(arr)) # True
-
-arr=[1, 2, 3, 4, 5, 3, 4, 5, 6, 4, 5, 6, 7, 8]
-print(is_straight(arr)) # False
+s='1 2 3 4 5  3 4 5 6 7  2 3 4 5 6'
+arr=[int(x) for x in s.split()]
+print(con5(arr))
