@@ -18,21 +18,29 @@ then pop 11
 heap [24 94]
 nc,n 13
 dist {20 11 31 42}
+
+BFS: stop when queue is empty
+now do we need dist? yes.
+don't proceed if it isn't better
+
+q [42]
+n,nc (31)
+dist {20 11 31 42}
 '''
 class Solution:
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
         cost=defaultdict(dict)
+        # E
         for u,v,w in times:
             cost[u][v]=w
 
-        dist={}
-        heap=[(0,k)]
-        while heap:
-            nodecost,node=heapq.heappop(heap)
-            if node in dist:
-                continue
-            dist[node]=nodecost
-            for nb,nb_node_cost in cost[node].items():
-                heapq.heappush(heap,(nodecost+nb_node_cost,nb))
-        # print(list(dist.items()))
+        q=collections.deque([(k,0)])
+        dist=defaultdict(lambda :float('inf'))
+        while q:
+            for i in range(len(q)):
+                node,nodecost=q.popleft()
+                if nodecost<dist[node]:
+                    dist[node]=nodecost
+                    for v,w in cost[node].items():
+                        q.append((v,nodecost+w))
         return -1 if len(dist)<n else max(dist.values())
