@@ -1,21 +1,25 @@
 '''
-get the frequenies with a counter
-insert them into heap as (freq,num), then pull out the first k => n lg n
-better: add element. if heap size is k+1, remove one
-return the heap
-comp: n lg k + n = n lg k
+13 22 31 --> counter space is u
+sort --> u log u with space possibly 1
+heap
+put el. if beyond heap size eject one
 
-time,space:O(n lg k)
-13 22 31
+k + (u-k) lg k VS u lg k
 
-[31 22]
+count []
+heap [22 31]
+
+[(5, 3), (2, 1), (3, 3), (1, 2)]
+ heap
 '''
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        count=Counter(nums)
+        count=collections.Counter(nums)
         heap=[]
-        for num,freq in count.items():
-            heapq.heappush(heap,(freq,num))
-            if len(heap)>k:
-                heapq.heappop(heap)
-        return [x for _,x in heap]
+        count_tups=list(count.items())
+        for i in range(min(k,len(count_tups))):
+            heap.append((count_tups[i][1],count_tups[i][0]))
+        heapq.heapify(heap)
+        for i in range(k,len(count_tups)):
+            heapq.heappushpop(heap,(count_tups[i][1],count_tups[i][0]))
+        return [el for freq,el in heap]
