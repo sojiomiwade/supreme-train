@@ -1,35 +1,21 @@
 '''
->=target
-could do it in O(n**2) by considering all l,r l<r
-
-cursum=0
-for r in [0..n-1]
-    cursum+=nums[r]
-    while cursum >=target 
-        L,R=l,r if l,r is smaller
-        cursum-=nums[l]
-        l+=1
-return R-L+1 if L is not -inf else 0
-1 3 -7 5 1 -3 4 . . .
-       L      R
-
-target = 2
-1 3 -7
-     l
-     r
-cs=0
-L,R=1,1
+0 1 2 3 4 5
+2 3 1 2 4 3
+        l
+          r
+sum_ 7
+al,ar (2 4)
 '''
 class Solution:
     def minSubArrayLen(self, target: int, nums: List[int]) -> int:
-        L,R=float('-inf'),float('inf')
-        cursum,n,l=0,len(nums),0
-        for r in range(n):
-            cursum+=nums[r]
-            while cursum>=target: 
-                if r-l<R-L:
-                    L,R=l,r
-                cursum-=nums[l]
-                l+=1
-        return R-L+1 if L != float('-inf') else 0
-        
+        sum_=left=0; al=-1; n=len(nums); ar=n
+        for right in range(n):
+            sum_+=nums[right]
+            while sum_>=target:
+                if right-left<ar-al:
+                    al,ar=left,right
+                sum_-=nums[left]
+                left+=1
+        if al!=-1:
+            return ar-al+1
+        return 0
