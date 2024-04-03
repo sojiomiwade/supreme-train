@@ -5,17 +5,20 @@
 #         self.left = left
 #         self.right = right
 '''
-5
+use a count that passed around
+if u get a value back, that's the ans
+
+count,node (1 3)
 '''
 class Solution:
     def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
-        def kthsmallest(root, idx) -> Tuple[bool, int]:
-            if not root:
-                return (False,idx)
-            found,idx=kthsmallest(root.left,idx)
-            if found:
-                return (True, idx)
-            if idx==k:
-                return (True,root.val)
-            return kthsmallest(root.right,idx+1)
-        return kthsmallest(root,1)[1]
+        def ksmallest(count: int, node: Optional[TreeNode]):
+            if not node:
+                return count
+            count=ksmallest(count,node.left)
+            if count<=0:
+                return count
+            if count==k:
+                return -node.val
+            return ksmallest(1+count,node.right)
+        return -ksmallest(1,root)
