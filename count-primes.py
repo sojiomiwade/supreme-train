@@ -1,26 +1,26 @@
 '''
-10
-let each prime wipe out multiples
-2 3 4 5 6 7 8 9 10 11 12 13 14 | 15
-    -   -   -   --    --    --
-       -     -       --
+n 18
+sieve of eratosthenes
+arr [2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17]
+     x x . x .   . .  .     .     .  .  .
+primes [2 3 5]
 
-# ans=[2,3,5,7]
-have a map a[x]=T/F
-at the end count everything that's true in a
-iterate from x*2, and x=2*x, for each x
-x in range(2*x,n,x)
+36
+19
+6 6
 
-n=7
-0 1 2 3 4 5 6 
-f f t t f t f 
+n 10
+      0 1 2 3 4 5 6 7 8 9
+comp [f f f f t f t f t t]
+          1 2   3 
 '''
 class Solution:
     def countPrimes(self, n: int) -> int:
-        isprime=[True for _ in range(n)]
-        isprime[0:2]=[False,False]
-        for num in range(2,n):
-            if isprime[num]:
-                for x in range(2*num,n,num):
-                    isprime[x]=False
-        return sum(isprime)
+        comp=[False for i in range(n)]
+        ans=0
+        for cand in range(2,n):
+            if not comp[cand]:
+                ans+=1
+                arrlen=len(range(cand,n,cand))
+                comp[cand::cand]=arrlen*[True]
+        return ans
