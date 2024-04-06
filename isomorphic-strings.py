@@ -1,29 +1,19 @@
 '''
-paper 
-title 
-^
-tbrother {pt ai}
-sbrother {tp ia}
-sigh. can do it by mapping
-p to t
-if cur is not mapped, then map it
-otherwise see if this is the right mapping. return false if it isn't
+e q a 
+a a b
 
-if e not there add ea
-else verify map[e] is a
-badc
-baba
-lookup {bb aa db}
+if chs in lookup, verify that lookup[chs]==cht
+also, if chs not in lookup but cht in lookup.values()  return  false
+regardless lookup[chs]=cht
+
 '''
 class Solution:
     def isIsomorphic(self, s: str, t: str) -> bool:
         lookup={}
         for chs,cht in zip(s,t):
-            if chs in lookup:
-                if lookup[chs]!=cht:
-                    return False
-            else:
-                if cht in lookup.values():
-                    return False
-                lookup[chs]=cht
+            if chs in lookup and lookup[chs]!=cht:
+                return False
+            if chs not in lookup and cht in lookup.values():
+                return False
+            lookup[chs]=cht
         return True
