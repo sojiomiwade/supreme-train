@@ -5,33 +5,25 @@
 #         self.left = left
 #         self.right = right
 '''
-               1
-            /     \ 
-           2       3
-1(2)(3)
-
-               1
-            /     \ 
-           2       3
-1()(3)
-
-               1
-            /     \ 
-           2       
-1(2)
-
-
-example 1: 1(2(4))(3)
-example 2: 1(2()(4))(3)
+parentheses not omitted only when tree has a right
+root will always omit par on null children, except
+    when that child is left and there is right
 '''
 class Solution:
     def tree2str(self, root: Optional[TreeNode]) -> str:
-        if not root:
-            return ''
-        ans=str(root.val)
-        if not root.left and not root.right:
+        def tree2str(root, ans):
+            if root:
+                ans.append(str(root.val))
+                
+                if root.left or root.right:
+                    ans.append('(')
+                    tree2str(root.left,ans)
+                    ans.append(')')
+
+                if root.right:
+                    ans.append('(')
+                    tree2str(root.right,ans)
+                    ans.append(')')
+
             return ans
-        ans+=f'({self.tree2str(root.left)})'
-        if root.right:
-            ans+=f'({self.tree2str(root.right)})'
-        return ans
+        return ''.join(tree2str(root,[]))
