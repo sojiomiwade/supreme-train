@@ -31,9 +31,7 @@ this Iss
 '''
 class Solution:
     def fullJustify(self, words: List[str], maxwidth: int) -> List[str]:
-        arr=[]
-        charlen=0
-        ans=[]
+        arr,charlen,ans=[],0,[]
         for word in words:
             if charlen+len(word)+len(arr)>maxwidth:
                 if len(arr)==1:
@@ -49,12 +47,7 @@ class Solution:
                     assert len(arr)==len(spaces)
                     subans=[word+sp for word,sp in zip(arr,spaces)]
                     ans.append(''.join(subans))
-                arr=[word]
-                charlen=len(word)
-            else:
-                arr.append(word)
-                charlen+=len(word)
-        ans2=''.join(word+' ' for word in arr)
-        ans2=ans2[:len(ans2)-1]
-        ans3=(maxwidth-len(ans2))*' '
-        return ans+[ans2+ans3]
+                arr,charlen=[],0
+            arr+=[word]
+            charlen+=len(word)
+        return ans+[' '.join(word for word in arr).ljust(maxwidth)]
