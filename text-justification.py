@@ -36,7 +36,6 @@ class Solution:
         ans=[]
         for word in words:
             if charlen+len(word)+len(arr)>maxwidth:
-                print(arr)
                 if len(arr)==1:
                     ans.append(arr[0]+(maxwidth-len(arr[0]))*' ')
                 else:
