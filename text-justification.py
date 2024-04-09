@@ -1,56 +1,61 @@
 '''
-["This", "is", "an", "example", "of", "text", "justification."], 
-maxWidth = 16
-[
-    0123456789012345
-    This is an .....
-    give each word spaces/word
 
-    20spaces 3words
-    55//8 = 6
-    55%8 = 7 --extra. give every word 1 from the extra as long as there's extra
-    say extra is 5 then 0...4 get an extra => add (idx<extra)
-    example of text.
-    justification.
-    0123456789012345
-   "This    is   and", spaces=16-(4+2+3)=7, 7
-   (16-3)-(4+2)=13-6=7
-   ah wait distribution is actually based on one less word
+0123456789
+ackn
+mw=10
+spacecount=10-4 = 6
+6//() <-- won't hold if only one string
 
-   "example  of text",
-   "justification.  "
-]
-1. getting the strings: use a buffer, and reset it when string will overflow
-2. justification: 
-    ignore last line
-    spaces=(maxWidth-len(last)) - sum(all words len except last)
-    to each words_except_last, pad in front spaces//wordcount + bool(idx<extra)
-    'ab cd '
-                spaces=(maxWidth-len(last)) - sum(all words len except last)
-                to each words_except_last, pad in front spaces//wordcount + bool(idx<extra)
-                16-4 - (7-4)
-      01234567
-["This        is        an","example        of        text","justification.  "]
-["This    is    an","example  of text","justification.  "]
+pack as many as you can to form arr. 
+then do lines 2-6 above if len(arr)==1. otherwise do lines 7-11
+a 4 b 4 c 3 d 3 e  <-- spacecount=maxwidth-charlen(arr)
+= 14 spaces
+14/(5-1) = 3
+14%(5-1) = 2
 
-012345678901234 = 
-aa bb cc d .... = total of 8 spaces
-0  1  2  3
-wordslist[i%(n-1 or 1)] <-- or 1 in case there's only 1
-collect all the spaces
-maxWidth-len(letters) <--that's how many we need to distribute
-need to do so in front of each word in wordslist
+mw 16
+0123456789012345
+This    iss   an  <-- expected ans
+words [This iss an]
+charlen 9
+arr [[This] [iss] [an]]
+subans,m [],3
+spacecount 16-9 = 7
+betcount 7//2 3
+extracount 7%2 1
+spaces ['    ','   ','']
+subans [This4 iss3 an]
+this Iss
+01234567
+4+3+2
 '''
 class Solution:
-    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
-        wordslist,letterslen=[],0
+    def fullJustify(self, words: List[str], maxwidth: int) -> List[str]:
+        arr=[]
+        charlen=0
         ans=[]
         for word in words:
-            if letterslen+len(wordslist)+len(word)>maxWidth:
-                for i in range(maxWidth-letterslen):
-                    wordslist[i%(len(wordslist)-1 or 1)]+=' '
-                ans.append(''.join(wordslist))
-                wordslist,letterslen=[],0
-            wordslist.append(word)
-            letterslen+=len(word)
-        return ans+[' '.join(wordslist).ljust(maxWidth)]
+            if charlen+len(word)+len(arr)>maxwidth:
+                print(arr)
+                if len(arr)==1:
+                    ans.append(arr[0]+(maxwidth-len(arr[0]))*' ')
+                else:
+                    m=len(arr)
+                    spacecount=maxwidth-charlen
+                    betcount=spacecount//(m-1)
+                    extracount=spacecount%(m-1)
+                    spaces=[' '*betcount]*(m-1)
+                    spaces=[spaces[i] + ' '*int(i<extracount)  for i in range(len(spaces))]
+                    spaces.append('')
+                    assert len(arr)==len(spaces)
+                    subans=[word+sp for word,sp in zip(arr,spaces)]
+                    ans.append(''.join(subans))
+                arr=[word]
+                charlen=len(word)
+            else:
+                arr.append(word)
+                charlen+=len(word)
+        ans2=''.join(word+' ' for word in arr)
+        ans2=ans2[:len(ans2)-1]
+        ans3=(maxwidth-len(ans2))*' '
+        return ans+[ans2+ans3]
