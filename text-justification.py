@@ -34,20 +34,10 @@ class Solution:
         arr,charlen,ans=[],0,[]
         for word in words:
             if charlen+len(word)+len(arr)>maxwidth:
-                if len(arr)==1:
-                    ans.append(arr[0]+(maxwidth-len(arr[0]))*' ')
-                else:
-                    m=len(arr)
-                    spacecount=maxwidth-charlen
-                    betcount=spacecount//(m-1)
-                    extracount=spacecount%(m-1)
-                    spaces=[' '*betcount]*(m-1)
-                    spaces=[spaces[i] + ' '*int(i<extracount)  for i in range(len(spaces))]
-                    spaces.append('')
-                    assert len(arr)==len(spaces)
-                    subans=[word+sp for word,sp in zip(arr,spaces)]
-                    ans.append(''.join(subans))
+                for i in range(maxwidth-charlen):
+                    arr[i%(len(arr)-1 or 1)]+=' '
+                ans.append(''.join(arr))
                 arr,charlen=[],0
             arr+=[word]
             charlen+=len(word)
-        return ans+[' '.join(word for word in arr).ljust(maxwidth)]
+        return ans+[' '.join(arr).ljust(maxwidth)]
