@@ -1,21 +1,44 @@
+'''
+5 10 -5 
+st [5 10]
+
+arr [-8 8]
+st []
+
+9 2 -5
+9
+
+9 2 
+as long as its negative, drill into stack
+    if stack top is neg, add cur
+    elif it sees same el, pop stack and lose the cur 
+    elif el is bigger in mag, lose the cur
+    else pop the top  and keep looping as cur isn't lost
+otherwise just place it on the stack, *unconditionally*
+
+arr [8 -8]
+        c
+st [8]
+top 8
+cur -8
+'''
 class Solution:
     def asteroidCollision(self, asteroids: List[int]) -> List[int]:
-        st=[]
-        for x in asteroids:
-            if x>0:
-                st.append(x)
-            else:
-                while st and st[-1]>0 and -x>st[-1]:
+        i,n,st=0,len(asteroids),[]
+        while i<n:
+            cur=asteroids[i]
+            if cur>0 or not st:
+                st.append(cur)
+            else: #cur<0 and there is a top 
+                top=st[-1]
+                if top<0:
+                    st.append(cur)
+                elif top==-cur:
                     st.pop()
-                if not st:
-                    st.append(x)
+                elif top>-cur:
+                    pass
                 else:
-                    top=st[-1]
-                    if top==-x:
-                        st.pop()
-                    else:
-                        if top<0:
-                            st.append(x)
-                        else:
-                            assert top>-x
+                    st.pop()
+                    i-=1
+            i+=1
         return st
