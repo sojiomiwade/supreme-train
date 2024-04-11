@@ -11,11 +11,15 @@
 
 approach: delete first then comeback
 
-0 5 8 9 3 4 5 11
+0 5 8 9 3 4 | 6 10 11 
 ----------------
-  5 8 9 
-0 3 4 5 11
+ -5-8-9 | 10 11 
 
+0 2 3 4 1 4
+0-2-3-4
+0-1
+
+p[]
 max 4
 init all to one to start with
 
@@ -38,19 +42,31 @@ nums 0 1 0 3 2 3
 9
 8 5   101 
 2 3 7 18
+
 if bisect-left is the length of the array, then append
 
 nusm [3 0 4]
-ans [0 1]
+ans [0 4]
 '''
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
         n=len(nums)
-        ans=[]
+        ans,pi=[],{}
         for x in nums:
             pos=bisect.bisect_left(ans,x)
             if pos==len(ans):
                 ans.append(x)
             else:
                 ans[pos]=x
+            if pos==0:
+                pi[ans[pos]]=None
+            else:
+                pi[ans[pos]]=ans[pos-1]
+
+        train=[]
+        cur=ans[-1]
+        while cur is not None:
+            train.append(cur)
+            cur=pi[cur]
+        print(train[::-1])
         return len(ans)
