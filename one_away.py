@@ -2,241 +2,63 @@
 One Away
 if an edit is in (insert, remove, replace) a character a string, given two strings, write a function to check if they're one (or zero) edit away
 
-pale, ple -> true: insert a at 1
-pales, pale -> true: insert s at 4
-pale, bale -> true: replace p with b
-pale, bake -> false: 2 replaces required (two differences found)
-
-don't need delete if we 'start' with smaller string 
-cant do insert when strings same length, must resort to replace check
-likewise, can't do replace when strings are different, must insert
-different len strings must be off by 1
+pale ale true
+pale kale true
+pale kele false -- 2 edits
+pale ali false -- 2 edits
 
 
-strings have same len
-replace check: run, counting number of differences, return imm if a 2nd is found
+consider s is the bigger string, and ignore insert
 
-insert check:
-return if len t  - len s != 1 (replace check cheched for 0 already)
-s: o r n g e
-t: o r a n g e
-s: p l e
-t: a p l e
-s: p l e
-t: p l e a  <-- ah ha!
-
-diff spotted? then move j, and rest of s and t must have no diff
-no diff spotted, that's ok! it is then 0 or 1 edit away since if t had an extra char, that's only one edit away; and we already chedcked the diff in 2 strings len is 1.
-
-
-
-if len of s and t are same, can only use edit
-else, can use insert (ignore remove since we can always start with smaller string)
-func edithelps -> boolean: 
-    assert len of s and t are same
-    verify only one loc is different
-    return true/false accordingly
-func inserthelps -> boolean
-    if len of s > len of t, then swap them
-    assert len of s is exactly one less than t
-        pale ... ple 
-        ple ... pale
-    verify one insert helps
-        find first char where there's a difference
-        verify the rest of the strings are the same
-t and s:
 p a l e
-p l e
-  ^
-p a l e
-p q e
+  i
+j
+a l e
 
-abc
-ac
-^
-first = 1
-sidx moves by one, but don't move tidx
-then verify rest of string
-pale
-fish
-'''
-
-def one_away(s: str, t: str) -> bool:
-    def edithelps() -> bool:
-        print("via edit: ", end='')
-        return sum(1 if ch_s != ch_t else 0 for ch_s, ch_t in zip(s, t)) <= 1
-        
-    def inserthelps() -> bool:
-        nonlocal s, t
-        print("via insert/remove: ", end='')
-        if len(s) > len(t):
-            s, t = t, s
-        if len(t) - len(s) != 1:
-            return False
-        for idx in range(len(s)): 
-            if s[idx] != t[idx]:
-                startidx = idx     #startidx = 1
-                break
-        else:
-            return True
-        for idx in range(startidx, len(s)):
-            if s[idx] != t[idx + 1]:
-                return False
-        else:
-            return True
-
-    if len(s) == len(t):
-        return edithelps()
-    return inserthelps()
-
-s, t = 'aaa', 'bb'
-print(one_away(s, t)) # False, via insert
-s, t = 'pale', 'bale'
-print(one_away(s, t)) # true, edit
-s, t = 'pale', 'ale'
-print(one_away(s, t)) # true, insert
-s, t = '', ''
-print(one_away(s, t)) # true, edit
-s, t = 'a', ''
-print(one_away(s, t)) # true, insert
-s, t = 'ab', ''
-print(one_away(s, t)) # true, insert
-
-#---again
-'''
-one edit away
-pale ple -- true
-pales pale -- true
-pale bale -- true
-pale bake -- false
-
-if s.len == t.len
-    is_one_replace_away()
-else
-    is_one_insert_away()
-
-def is_one_replace_away(s, t)
-    count places different.
-    return count == 1
-
-s,t:
-qple
-qpale
-^   j
-def is_one_insert_away(s, t)
-    if t.len < s.len
-        s, t = t, s
-    assert len.s = len.t - 1
-
-    loop until si not equal tj
-    inrement j
-
-    check si = tj till the end (end = is same for both)
-'''
-def oneaway(s, t):
-    if len(s) == len(t):
-        return is_one_replace_away(s, t)
-    return is_one_insert_away(s, t)
-
-def is_one_insert_away(s, t):
-    if len(t) < len(s):
-        s, t = t, s
-    if len(s) != len(t) - 1:
-        return False
-
-    pos = 0
-    for k in range(len(s)):
-        if s[k] != t[k]:
-            pos = k
-            break
-    else:
-        return True #ple and pleq
-    n = len(s)
-    for k in range(pos, n):
-        if s[k] != t[k+1]:
-            return False
-    return True # no other difference other than at pos found
-
-def is_one_replace_away(s, t):
-    count = 0
-    for cha, chb in zip(s, t):
-        if cha != chb:
-            count += 1
-    return count <= 1
-
-s, t = 'pale', 'ple' #-- true
-print(oneaway(s, t))
-s, t = 'pales', 'pale' #-- true
-print(oneaway(s, t))
-s, t = 'pale', 'bale' #-- true
-print(oneaway(s, t))
-s, t = 'pale', 'bake' #-- false
-print(oneaway(s, t))
-
-
-'''
-
-johnk
-joenm
+eq
+i
+j
+e
+found 0
+abcde
     i
-alreadyfound = True
-upon finding another difference, if alreadyfound is true return False
-at the end of the string, can just return True
+   j
+abde
+found 1
 
-af = true
-
-  j
-john      s
-joehn     t
-   i
-if alreadyfound, then we compare s[i] to t[i+1]. otherwise s[i] to t[i]
---> true
-
-john
-jqehn
-af = t 
---> False
+when there is a difference, advance only on s, and set difffound to true. if another is found, return false.
 '''
-def oneaway(s: str, t: str) -> bool:
-    def diff_len_oneaway():
-        nonlocal s, t
-        if abs(len(s) - len(t)) > 1:
-            return False
-        if len(s) > len(t):
-            s, t = t, s
-        alreadyfound = False
-        for i in range(len(t)):
-            if s[i-alreadyfound] != t[i]:
-                if alreadyfound:
-                    return False
-                alreadyfound = True
-        return True
-         
-    def same_len_oneaway():
-        if len(s) != len(t):
-            return False
-        alreadyfound = False
-        for sch, tch in zip(s, t):
-            if sch != tch:
-                if alreadyfound:
-                    return False
-                alreadyfound = True
-        return True
+def one_del_away(s: str, t: str) -> bool:
+    i=j=0
+    m,n=len(s),len(t)
+    assert m!=n
+    if m<n:
+        s,t=t,s
+        m,n=len(s),len(t)
+    if m-n!=1:
+        return False
+    diff_already_found=False
+    while i<m and j<n:
+        if s[i]!=t[j]:
+            if diff_already_found:
+                return False
+            diff_already_found=True
+            i+=1
+        else:
+            i,j=i+1,j+1
+    return True
 
-    return same_len_oneaway() or diff_len_oneaway()
-
-
-s, t = 'john', 'john'
-print(oneaway(s, t)) # true
-s, t = 'john', 'johen'
-print(oneaway(s, t)) # true
-s, t = 'john', 'qohen'
-print(oneaway(s, t)) # false
-s, t = '', ''
-print(oneaway(s, t)) # true
-s, t = 'abcdefgh', 'qohen'
-print(oneaway(s, t)) # false
-s, t = 'john', 'fish'
-print(oneaway(s, t)) # false
+s,t='abcde','abde'
+print(one_del_away(s,t)) # true
+s,t='pale','ale'
+print(one_del_away(s,t)) # true
+s,t='ale','alep'
+print(one_del_away(s,t)) # true
+s,t='abcde','abd'
+print(one_del_away(s,t)) # false
+s,t='pale',''
+print(one_del_away(s,t)) # false
+s,t='ale','qlep'
+print(one_del_away(s,t)) # false
 
 
