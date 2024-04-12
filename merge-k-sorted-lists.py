@@ -22,13 +22,13 @@ ans [d -> 1 -> 3 -> 7]
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         ans,INF=ListNode(),float('inf')
-        heap=[(x.val,i,0,x) if x else (INF,i,0,None) for i,x in enumerate(lists)]
+        heap=[(x.val,i,x) if x else (INF,i,None) for i,x in enumerate(lists)]
         heapq.heapify(heap)
         cur=ans
         while heap and heap[0][0]!=INF:
-            minval,minloc,_,node=heapq.heappop(heap)
+            minval,minloc,node=heapq.heappop(heap)
             cur.next=node
             cur=node
             val=node.next.val if node.next else INF
-            heapq.heappush(heap,(val,minloc,0,node.next))
+            heapq.heappush(heap,(val,minloc,node.next))
         return ans.next
