@@ -1,29 +1,20 @@
 '''
-1 2 3 1
-ans = 4
+need to do the tabulation here
+     2 7 9        3        1
+0 0  2 7 9+2      11        12
 
-1 2 3 1 9 12
-ans = ...
-use a tree. 
-    take current house, skip the next, and rob 2 down 
-    rob the next (which will recursively cauze )
-                                r(2)
-                      2 /               \
-                   r(9)                   r(7)
-                 /     \           7 /           \
-              r(1)     r(3)              7+r(3)        r(3)
-amount take   
+rob[i] is me+rob of two prior, or it's just one prior
 
-dp[idx]=
+             i
+         0 1 2 3 
+nums     1 2 3 1
+dp   0 0 1 2 4 4 
+         
 '''
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        def rob(idx: int) -> int:
-            if idx >= len(nums):
-                return 0
-            if idx in dp:
-                return dp[idx]
-            dp[idx]=max(nums[idx]+rob(idx+2),rob(idx+1))
-            return dp[idx]
-        dp={}
-        return rob(0)
+        n=len(nums)
+        dp=[0 for _ in range(2+n)]
+        for i in range(n):
+            dp[i+2]=max(nums[i]+dp[i],dp[i+1])
+        return dp[-1]
