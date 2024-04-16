@@ -1,10 +1,3 @@
-key note is that with only append_to_tail, we cant iterate the list. so we should probably implement append_to_head_for hash table. also ensure there are n/m slots so that each list size is m which is constant' >> hashmap_implementation.py
-
-'''
-approach 1
-use linked list for each slot, slot is an array element, so we have an array of linked lists. to minimize collisions, let's use a factor of 10 less than the worst case
-'''
-from typing_extensions import Self
 from typing import Optional, Tuple
 
 class Node:
@@ -12,9 +5,9 @@ class Node:
         self, 
         key: Optional[int],
         val: Optional[int], 
-        nextnode: Optional[Self],
+        nextnode: Optional['Node'],
         ) -> None:
-        self.key = key
+        seelf.key = key
         self.val = val
         self.nextnode = nextnode
 
@@ -67,32 +60,3 @@ class MyHashMap:
         if _findnode_return:
             prevnode, node = _findnode_return
             prevnode.nextnode = node.nextnode
-
-hm = MyHashMap()
-print(hm.get(2)) # -1
-hm.put(2, 3)
-print(hm.get(2)) # 3
-hm.put(2, 5)
-print(hm.get(2)) # 5
-hm.remove(2)
-print(hm.get(2)) # -1
-
-hm.put(1100, 42)
-hm.put(50000, 420) 
-print(hm.get(2)) # 5
-
-print(hm.get(1100)) # 42
-hm.remove(1100)
-print(hm.get(1100)) # -1
-
-print(hm.get(110)) # -1
-print(hm.get(50000)) # 420
-
-print('goodbye!')
-print(hm.put(100, 1))
-print('goodbye again!')
-print(hm.get(100))
-print('goodbye seen!')
-print(hm.get(1100))
-print('goodbye not seen!')
-
