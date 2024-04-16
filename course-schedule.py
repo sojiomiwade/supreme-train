@@ -1,44 +1,27 @@
 '''
-courses 0..n-1
+use the indegree of each node, quadratic!
+if at any point you cannot find a node with degree 0, return false
+after n repeats, can just return true.
 
-10 01
-
-15  23 34 42
-85
-
-if there is a cycle, return false. 
-otherwise return true
-1. build the graph
-2. from each node, visit the graph. but if you hit someone
-already visited who isn't your parent, then it is over
+setup the graph. b is a prereq of a => b --> a
+use that to get the indegree
 '''
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        '''
-        nbs {3[12] 1[4] 2[4]}
-        vis {}
-        call 
-        iscycle  2 {2} | 4 {24}
-            1<--3<--5
-            v   ^   ^
-            4<--2---
-
-        '''
-        def iscycle(node: int, vis: Set[int]) -> bool:
-            vis.add(node)
-            ans=False
-            for nb in nbs[node]:
-                if nb in vis or iscycle(nb,vis):
-                    ans=True
-                    break
-            vis.remove(node)
-            return ans
-
-        nbs=defaultdict(list)
+        nbs=[[] for _ in range(numCourses)]
+        indegree=Counter()
         for node,nb in prerequisites:
             nbs[node].append(nb)
-            nbs[nb]
-        for node in nbs:
-            if iscycle(node,set()):
+        for course in range(numCourses):
+            for nb in nbs[course]:
+                indegree[nb]+=1
+        for _ in range(numCourses):
+            for i in range(numCourses):
+                if indegree[i]==0:
+                    indegree[i]=-1
+                    for nb in nbs[i]:
+                        indegree[nb]-=1
+                    break
+            else:
                 return False
         return True
