@@ -12,20 +12,22 @@
                  15    7
 h(9) 1
 
-        1
-         \
-          2
-           \
-            3
+       1
+     /   \
+    4     2
+   /       \
+  5         3
+
+
 '''
 class Solution:
     def isBalanced(self, root: Optional[TreeNode]) -> bool:
-        def height(node: Optional[TreeNode]) -> int:
+        def depth(node: Optional[TreeNode]) -> int:
             if not node:
                 return 0
-            if abs(height(node.left)-height(node.right))<=1:
-                return 1+max(height(node.left),height(node.right))
+            if abs(depth(node.left)-depth(node.right))<=1:
+                return 1+max(depth(node.left),depth(node.right))
             return float('inf')
         if not root:
             return True
-        return abs(height(root.left)-height(root.right))<=1
+        return abs(depth(root.left)-depth(root.right))<=1
