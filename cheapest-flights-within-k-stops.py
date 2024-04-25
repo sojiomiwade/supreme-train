@@ -1,45 +1,38 @@
+'''
+with bfs, can head to dst, but prune at k
+
+so a node abstraction is (l,c,id)
+0 -- 1 -- 2
+k=1 stop => 1+k leaps
+src starts at 0 leaps
+
+time: k(v+e)
+space: queue can have k(v+e)
+when processing a node, (l,c,id)
+    if i am dst, return l
+    if leaps l for me is already L, then discard me
+    for all nbs, if i can't make the cost to nb cheaper, then do not add nb
+    keep a step on each node, so that we can prune when hit k
+
+f {0{1:100 2:500} 1{2:100} 2{}}
+q [(0 0 0)]
+L 1
+cost {0:0, 2:inf}
+l,cv,v (0 0 0)
+'''
 class Solution:
     def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
-        '''
-        if a (ucost,u,rem_hops) is removed, we will check if rem_hops is strictly less 
-        than  the last there
-        if it does, it could (i.e., not guaranteed to) win: the last didn't make it!
-        criteria to allow: if rem_hops > last_rem_lookup[u]
-        now if lrl[u] starts 0, and we hit a node with 0 rem_hops, we cannot advance!
-        now, we can freely change the cost (increase it because the last one couldn't)
-        now set the cost[u] (hashmap) to 5 from 3
-        what do we start each rem_hops to!
-            the 1st node must always make it, no matter. 
-            could use -inf. could also use 0. since if you come to a node
-            and you only have 0, then you can't move forward
-            src b c dst
-             3  2 1 0
-                rem_hops : 2
-        we don't have to exhaust the heap, but if we do, there's no way to get to 
-        dst in k stops
-
-        complexity: up to k times we run a 
-            heapsearch: E (lg E)
-        => k E lg E ? 
-        break it down to BFS
-        initialization: E (the number of nodes is the number of connections)
-        loop: think BFS but we do it k times:
-             k E lg E
-        '''
-        f=defaultdict(dict)
-        for u,v,cuv in flights:
-            f[u][v]=cuv
-        lrl=defaultdict(int)
-        MAXHOPS=k+1
-        heap=[(0,MAXHOPS,src)]
-        cost={}
-        while heap:
-            (cu,remhops,u)=heapq.heappop(heap)
-            if u==dst:
-                return cu
-            if remhops>lrl[u]:
-                cost[u]=cu
-                lrl[u]=remhops
-                for v,cuv in f[u].items():
-                    heapq.heappush(heap,(cu+cuv,remhops-1,v))
-        return -1
+        q=collections.deque([(0,0,src)])
+        f,L=defaultdict(dict),1+k
+        cost=defaultdict(lambda :float('inf'))
+        for u,v,price in flights:
+            f[u][v]=price
+        while q:
+            l,cv,v=q.popleft()
+            if cv>=cost[v]:
+                continue
+            cost[v]=cv
+            if l<L:
+                for w,cvw in f[v].items():
+                    q.append((1+l,cv+cvw,w))
+        return -1 if cost[dst]==float('inf') else cost[dst]
