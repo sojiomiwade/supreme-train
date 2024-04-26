@@ -1,4 +1,21 @@
 '''
+only comments, no code
+'''
+0 | 1 7 |   3 6 5 6 | 0
+      ^
+left 1 7
+right (1 7)-1-7
+
+left is 0, right starts at the sum
+for idx in 0 .. n-1
+    remove a[idx] from right
+    check left equals right? and return if it is
+    add a[idx] to left
+return -1
+
+'''
+
+'''
 loop idx=0..n-1
     deduct nums[idx] from sumright
     compare sumright to sumleft and return idx if it works
