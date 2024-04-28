@@ -1,47 +1,34 @@
 '''
-m*n*(mn)
-1 2 2 <-- p p p
-pacific behind and above, atlantic infront and below
-i-th cell is 
-p 5 4 3
-p 3
-p 2 1 1
-  a a a 
+on a DFS level, we have seeds for pacific from top and left
+if something is already true do not DFS it. otherwise try to recursively
+to try is to say it (all nbs) becomes true if it is bigger in height
 
-two passes
-then if pij and aij, then add (i,j) to result!
-
-  p p p      | exp
-p 1 2 2 a      f t t 
-p 3 1 3 a      t f t
-p 2 4 5 a      t t t
-  a a a
-
-a       p
-f T t   t t t
-T f t   t f f
-t t t   t f f
-
-res []
-
-1 2  3
-8 9 (4)
-7 6 (5)
+at the end, the ans is all cells where preachable and areachable
+3 2
+1 6 5
+0 1 4
+can only visit it if water can flow down
 '''
 class Solution:
     def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        def visit(rp: int, cp: int, r: int, c: int, reachable) -> None:
+            if not 0<=r<m or not 0<=c<n:
+                return 
+            if reachable[r][c]:
+                return
+            if rp is not None and heights[r][c]<heights[rp][cp]:
+                return
+            reachable[r][c]=True
+            for dr,dc in ((-1,0),(1,0),(0,1),(0,-1)):
+                visit(r,c,r+dr,c+dc,reachable)
+
         m,n=len(heights),len(heights[0])
-        p=[[True if 0 in (i,j) else False for j in range(n)] for i in range(m)]
-        a=[[True if i==m-1 or j==n-1 else False for j in range(n)] for i in range(m)]
-        for i in range(1,m):
-            for j in range(1,n):
-                left=p[i][j-1] and heights[i][j-1]<=heights[i][j]
-                top=p[i-1][j] and heights[i-1][j]<=heights[i][j]
-                p[i][j]=left or top
-        for i in range(m-2,-1,-1):
-            for j in range(n-2,-1,-1):
-                right=a[i][j+1] and heights[i][j+1]<=heights[i][j]
-                bot=a[i+1][j] and heights[i+1][j]<=heights[i][j]
-                a[i][j]=right or bot
-        print(p,a)
-        return [[i,j] for i in range(m) for j in range(n) if a[i][j] and p[i][j]]
+        preachable=[[False for _ in range(n)] for _ in range(m)]
+        areachable=[[False for _ in range(n)] for _ in range(m)]
+        for r in range(m):
+            visit(None,None,r,0,preachable)
+            visit(None,None,r,n-1,areachable)
+        for c in range(n):
+            visit(None,None,0,c,preachable)
+            visit(None,None,m-1,c,areachable)
+        return [[r,c] for c in range(n) for r in range(m) if preachable[r][c] and areachable[r][c]]
