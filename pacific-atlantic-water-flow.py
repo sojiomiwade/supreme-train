@@ -1,26 +1,4 @@
 '''
-failed the ff testcase 
-Input
-heights =
-[[1,2,3],[8,9,4],[7,6,5]]
-Stdout
-[[True, True, True], [True, True, True], [True, False, True]] [[False, False, True], [True, True, True], [True, True, True]]
-Output
-[[0,2],[1,0],[1,1],[1,2],[2,0],[2,2]]
-Expected
-[[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]
-
-passed 50/113 testcases. 
-
-ok, i have a good idea how to fix this: 
-do a pacific DFS looking for higher elevation. and mark nodes visited as you find them
-likewise for atlantic
-
-wait. i havea better way to think about this. the pacific borders form DFS seeds
-from which to populate p array. likewise the atlantic border form BFS seeds to 
-populate the a array. 
-
-
 m*n*(mn)
 1 2 2 <-- p p p
 pacific behind and above, atlantic infront and below
