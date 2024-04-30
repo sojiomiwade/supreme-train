@@ -5,19 +5,23 @@
 #         self.left = left
 #         self.right = right
 '''
-can use BFS inserting (x,depth)
-or just DFS, and when we find either recall the depth
+pi(x)!=pi(y) and depth(x)==depth(y)
+just go find those four values. 
+then in main function return the condition above
 '''
 class Solution:
     def isCousins(self, root: Optional[TreeNode], x: int, y: int) -> bool:
-        xdep=ydep=None
-        q=deque([(root,0,None)])
-        while q:
-            u,udep,upar=q.popleft()
-            if u.val==x:
-                xdep,xpar=udep,upar
-            elif u.val==y:
-                ydep,ypar=udep,upar
-            q.extend([(v,udep+1,u) for v in (u.left,u.right) if v])
-        assert None not in (xdep,ydep)
-        return xdep==ydep and xpar is not ypar
+        def preorder(node: Optional[TreeNode], depth: int, pi: int) -> None:
+            nonlocal xpi,ypi,xdepth,ydepth
+            if node:
+                if node.val==x:
+                    xdepth=depth
+                    xpi=pi
+                elif node.val==y:
+                    ydepth=depth
+                    ypi=pi
+                preorder(node.left,1+depth,node.val)
+                preorder(node.right,1+depth,node.val)
+        xpi=ypi=xdepth=ydepth=None
+        preorder(root,0,0)
+        return xpi!=ypi and xdepth==ydepth
