@@ -7,6 +7,7 @@ then that x doesn't count
 1 8 9 10
 
  5         55
+ 2
 1 8 8 8 8 8 99
   i
 
@@ -21,19 +22,13 @@ do a binary search for each arr1: mlgm, where m is the number of elements in arr
 '''
 class Solution:
     def findTheDistanceValue(self, arr1: List[int], arr2: List[int], d: int) -> int:
-        count=0
-        m,n=len(arr1),len(arr2)
+        n,count=len(arr2),0
         arr2.sort()
         for x in arr1:
-            idxs=set()
-            idxs.add(bisect.bisect_left(arr2,x))
-            idxs.add(bisect.bisect(arr2,x))
-            idxcount=0
-            for i in idxs:
-                if ((not 0<=i<n or abs(arr2[i]-x)>d) and
-                    (not 0<=i-1<n or abs(arr2[i-1]-x)>d)):
-                    idxcount+=1
-            count+=idxcount==len(idxs)
+            i=bisect.bisect_left(arr2,x)
+            if ((not 0<=i<n or abs(arr2[i]-x)>d) and
+                (not 0<=i-1<n or abs(arr2[i-1]-x)>d)):
+                count+=1
         return count
 
         
