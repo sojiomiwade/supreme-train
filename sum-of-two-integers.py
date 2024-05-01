@@ -1,57 +1,36 @@
 '''
-1
-010
-011
-101
+10001 exp 
+0010  a
+1011  b
+0010  c
 
-1100 -4
-1101 -3 1100 -> 3
-1001
-1001 -7 via 2 comp 1110 -> 7
+a 15  01111
+b 10  01010
 
+e 25  11001
+a 15  10111
+b 10  01100
+c ..  00100 <- carry places
 
-1101 -3 1100 -> 3
-0001  1
-1110 -2
+exp 5 11011 
+a -3  11011
+b -2  11000
+c ..  00000
 
-...x...
-...y...
-0001000
-
-carry is or(a,b) and not xor(a,b)
-val is xor(a,b)
-repeat 32 times starting from the rightmost bit
-get the bit val (mask everything away)
-then mask the bit val into ans
-mask moves from bit0 to bit 31
--7
-8
-15
-
-
- |0010  2
- |1111 -1
-  0001
-carry 0
-mask 1
-rc
-bm
-am
-val
+exp 1 00|0001
+a   2 00|0001
+b  -1 00|1000
+c  .. 00|1000
 '''
 class Solution:
     def getSum(self, a: int, b: int) -> int:
-        mask=1
-        carry=0
-        ans=0
-        for _ in range(32):
-            realcarry=mask if carry else 0
-            bm,am=b&mask,a&mask
-            val=bm^am^realcarry
-            carry=sum(bool(x) for x in (bm,am,realcarry))>1
-            ans|=val
-            mask<<=1
-        return ((-1*bool(val))<<32)|ans
-
-
-
+        a&=((1<<32)-1)
+        b&=((1<<32)-1)
+        while b:
+            c=a&b
+            a^=b
+            b=(c<<1)&((1<<32)-1)
+        # print(a)
+        if a&(1<<31)!=0:
+            a|=-1<<32
+        return a
