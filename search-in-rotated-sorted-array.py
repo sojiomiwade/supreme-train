@@ -1,4 +1,14 @@
 '''
+first find the min. then set lo and hi based on whether target is in
+4 5 6 7 8 0 1 2 3
+minidx...n-1
+0..minidx-1
+
+, or min+1..n
+0 1 2 3 4
+'''
+
+'''
 4560
 
 4,5,6,7,0,1,2
