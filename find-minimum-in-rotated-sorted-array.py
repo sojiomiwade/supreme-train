@@ -1,4 +1,13 @@
 '''
+2345678901
+0123456789
+78901
+01
+10
+check the right side first for violation. if there is, keep it as lo hi exclusive to mi. otherwise, toss the left exclusive of mi
+continue this until just one element left
+'''
+'''
 0123|456
 7012|456
 1245|670
