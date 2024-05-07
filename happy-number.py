@@ -1,22 +1,25 @@
-'''
-2 
-2**2 = 4
-4**2 = 16
-1 + 36 = 37
-3**2 + 7**2
-
-n=19
-19
-n : 82
-nn : 9**2 + 1**2
-'''
 class Solution:
     def isHappy(self, n: int) -> bool:
-        seen=set()
-        while n not in seen:
-            seen.add(n)
-            n=sum(int(digit)**2 for digit in str(n))
-        return n==1
-
-
-            
+        '''
+        key thing here is if you cycle back to a number 
+        you have seen, then you return False. but if you
+        hit 1 first (as a digit sum), then return true
+        as far as the 100 one. we actaully dont need squares
+        oh wait we do, to progress.
+        use modulo to get the squares for successive digits
+        19
+        have {19 82 100}
+        n 82
+        '''
+        have=set()
+        while n not in have:
+            have.add(n)
+            nn=0
+            while n:
+                dig=n%10
+                n//=10
+                nn+=dig*dig
+            n=nn
+            if n==1:
+                return True
+        return False
