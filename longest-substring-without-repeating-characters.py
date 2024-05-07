@@ -1,4 +1,12 @@
 '''
+can just use a sliding window and a dictionary for location of elements
+when we see an element, we have it if 
+1. ch is in loc lookup
+2. loc of ch is greater or equal to l
+always update the max window via the l to r distance, 
+'''
+
+'''
 aba
   i
  l
