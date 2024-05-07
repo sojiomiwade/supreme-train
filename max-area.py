@@ -1,4 +1,5 @@
 '''
+Reference: https://www.geeksforgeeks.org/problems/max-rectangle/1
 2   -1  3   4   0
 .   .   .   .   .
 .   .   .   .   .
