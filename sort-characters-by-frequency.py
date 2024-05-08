@@ -1,36 +1,19 @@
 '''
-assume n is len(s)
-can do it in n lg n. 
-could also do it in 
-manmanm
-a2m3n2
+can just call sort on the -ve of the frequency 
+t r e e 
 
-could make a list out of above, 
-    after creating the hashmap counter
-    and sort that and spit out elements by their frequency of those
-m3 a2 n2
-sort: n + k log k
-space: k
+e 2, r 1, t 1
+1 [r,t]
+2 [e]
 
-finally, after creating hashmap counter, could bucket each char,
-    then come from the bottom, spitting out chars by frequency
-0
-1
-2 : a,n
-3 : m
-mmm + aa + nn
-time: n + k
-space: k
+first get lcount.
+then use that to get chars 
+time: O(n); space also O(n)
 '''
 class Solution:
     def frequencySort(self, s: str) -> str:
-        count=Counter(s)
-        maxf=max(count.values())
-        chlookup=defaultdict(list)
-        for ch,chcount in count.items():
-            chlookup[chcount].append(ch)
-        ans=[]
-        for freq in range(maxf,0,-1):
-            for ch in chlookup[freq]:
-                ans.extend(freq*[ch])
-        return ''.join(ans)
+        lcount=collections.Counter(s)
+        # chars=collections.defaultdict(list)
+        # for count,let in lcount.items():
+        #     chars[count].append(let)
+        return ''.join(sorted(s,key=lambda ch: (-lcount[ch],ord(ch))))
