@@ -13,12 +13,12 @@ time complexity is just the size of data
 space is O(1)
 """
 def find_busiest_period(data):
-  maxvcount,maxts=float('-inf'),None
+  ts,vcount,enteredj=data[0]
+  maxvcount,maxts=float('-inf'),data[0]
   i,j,n=0,0,len(data)
-  prev=0
+  netvcount=0
   while i<n:
     ts,_,_=data[i]
-    netvcount=0
     while j<n and data[j][0]==ts:
       tsj,vcountj,enteredj=data[j]
       if enteredj==1:
@@ -26,10 +26,9 @@ def find_busiest_period(data):
       else:
         netvcount-=vcountj
       j+=1
-    if netvcount-prev>maxvcount:
-      maxts=tsj
+    if netvcount>maxvcount:
+      maxts=ts
       maxvcount=netvcount
-    prev=netvcount
     i=j
   assert maxts is not None
   return maxts
