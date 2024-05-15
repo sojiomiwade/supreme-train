@@ -28,16 +28,21 @@ check for elem-k,elem  and elem+k,elem
 have {0 1}
 ans [[1,0]]
 -2+1=-1
+input: [1,5,11,7], 6
+Expected: [[7,1],[11,5]]
+
+wait, just put all the elements in a dict! and just check for y+k. done!
+if so, then put [y+k,y]
+
+input 1 5 11 7 | k 6
+        y
+have {1 5 11 7}
+ans [[7 1] [11 5]]
 '''
 def find_pairs_with_given_difference(arr, k):
-  have=set()
   ans=[]
-  for elem in arr:
-    if elem-k in have:
-      ans.append([elem,elem-k])
-    if elem+k in have:
-      ans.append([elem+k,elem])
-    have.add(elem)
-  loc={elem:i for i,elem in enumerate(arr)}
-  ans.sort(key=lambda x: loc[x[1]])
+  have=set(arr)
+  for y in arr:
+    if y+k in have:
+      ans.append([y+k,y])
   return ans
