@@ -1,19 +1,42 @@
-'''
-X can say if something comes after me and it is bigger, then remove X from sum
-Likewise I, and C
-now this way, you either add the token or remove it. simple!
-'''
-class Solution:
-    def romanToInt(self, s: str) -> int:
-        letters='IVXLCDM'
-        values=[1,5,10,50,100,500,1000]
-        vl={let:val for let,val in zip(letters,values)}
-        ans=0
-        n=len(s)
-        for i in range(n):
-            if i+1<n and vl[s[i]]<vl[s[i+1]]:
-                ans-=vl[s[i]]
-            else:
-                ans+=vl[s[i]]
-        return ans
+/***
+iii 3
+lviii 50 
+if no i, no deductions
+i iv ix
+xl xc
+cd cm
+ixc require looking forward
 
+1st pass
+just add everything
+
+2nd pass
+iv/ix -- remove 2; 
+xl/xc -- remove 20
+cd/cm -- remove 200
+
+liv
+***/
+func romanToInt(s string) int {
+   s = strings.ToLower(s)
+   ans := 0
+   for i,c := range s {
+    switch c {
+        case 'i': ans += 1
+        case 'v': ans += 5
+        case 'x': ans += 10
+        case 'l': ans += 50
+        case 'c': ans += 100
+        case 'd': ans += 500
+        case 'm': ans += 1000
+    }
+    if i!=len(s)-1 {
+        switch s[i:i+2] {
+            case "iv","ix" : ans -= 2
+            case "xl","xc": ans -= 20
+            case "cd","cm": ans -= 200 
+        }
+    }
+   }
+   return ans
+}

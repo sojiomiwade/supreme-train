@@ -1,38 +1,46 @@
-# Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
-'''
-ch
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ 1 2 4
+   ^
+ 1 3 4
+ ^
 
-        l2  
- 1   8  95 100
- 
- 58  93 94
-           l1
-         c
+loop until a and b are both nil
+    aval = bval = 101
+    reset them if the node vals if not nil
+    if aval < bval
+        r.next = a
+        a = a.next
+    else 
+        r.next = b
+        b = b.next
 
+ return r
 
-       l2
-h-1  2 4
-  V /| |
-  1  3-4
-       c  l1
-if l1 > l2, then swap l1 and l2
-cur points to l1, l1 advances to its next
-cur advances to its next
-at the end cur can just point to l1 or l2
-'''
-class Solution:
-    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
-        l1,l2=list1,list2
-        head=cur=ListNode(0)
-        while l1 and l2:
-            if l1.val>l2.val:
-                l1,l2=l2,l1
-            cur.next=l1
-            cur=cur.next
-            l1=l1.next
-        cur.next=l2 or l1
-        return head.next
+ 1
+ 2
+ av bv = 1 2
+ r = (0) -> 1
+ */
+func mergeTwoLists(a *ListNode, b *ListNode) *ListNode {
+    r := &ListNode{}
+    rr := r
+    inf := math.MaxInt
+    for ; a != nil || b != nil; r = r.Next {
+        aval, bval := inf, inf
+        if a != nil {aval = a.Val}
+        if b != nil {bval = b.Val}
+        if aval < bval {
+            r.Next = a
+            a = a.Next
+        } else {
+            r.Next = b
+            b = b.Next
+        }
+    }
+    return rr.Next
+}
