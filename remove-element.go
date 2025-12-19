@@ -18,10 +18,10 @@ corner:
 */
 func removeElement(nums []int, val int) int {
     a := -1
-    for b := range(len(nums)) {
-        if nums[b] != val {
+    for _, valb := range(nums) {
+        if valb != val {
             a++
-            nums[a] = nums[b]
+            nums[a] = valb
         }
     }
     return a + 1   
