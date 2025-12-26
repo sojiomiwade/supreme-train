@@ -34,7 +34,7 @@ carry: '1'
 
 **/
 func addBinary(a string, b string) string {
-    m, n := len(a), len(b)
+	m, n := len(a), len(b)
     if m < n {
         a, b = b, a
         m, n = n, m
@@ -44,17 +44,14 @@ func addBinary(a string, b string) string {
         buf += "0"
     }
     b = buf + b
-    var carry byte = '0'
+	var carry byte
     ans := make([]byte, m)
     for i := m - 1; i >= 0; i-- {
-        count := carry - '0' + byte(a[i]) - '0' + byte(b[i]) - '0'
-        carry = '0'
-        if count > 1 { carry = '1' }
-        ans[i] = '0'
-        if count % 2 == 1 { ans[i] = '1' }
+        sum := carry + byte(a[i]) - '0' + byte(b[i]) - '0'
+        carry = sum / 2
+        ans[i] = (sum % 2) + '0'  
     }   
 
-    if carry == '1' { return "1" + string(ans[:]) }
+    if carry == 1 { return "1" + string(ans[:]) }
     return string(ans[:])
-
 }
