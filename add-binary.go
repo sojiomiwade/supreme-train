@@ -23,6 +23,15 @@ carry "1"
 ans [0 0]
 count 1 + 1 + 0 = 2
 s 0
+
+11 01 100
+a b m n: 11 01 2 2 
+buf: ""
+ans: 1 + ['0' '0']
+i 0
+count = 1 + 1 + 0 = 2
+carry: '1'
+
 **/
 func addBinary(a string, b string) string {
     m, n := len(a), len(b)
@@ -35,17 +44,17 @@ func addBinary(a string, b string) string {
         buf += "0"
     }
     b = buf + b
-    carry := "0"
+    var carry byte = '0'
     ans := make([]byte, m)
     for i := m - 1; i >= 0; i-- {
-        count := strconv.Atoi(carry) + strconv.Atoi(a[i]) + strconv.Atoi(b[i])
-        carry = "0"
-        if count > 1 { carry = "1" }
-        s := '0'
-        if count % 2 == 1 { s = '1' }
-        ans[i] = s
+        count := carry - '0' + byte(a[i]) - '0' + byte(b[i]) - '0'
+        carry = '0'
+        if count > 1 { carry = '1' }
+        ans[i] = '0'
+        if count % 2 == 1 { ans[i] = '1' }
     }   
 
-    if carry == "1" { return "1" + string(ans[:]) }
+    if carry == '1' { return "1" + string(ans[:]) }
     return string(ans[:])
+
 }
