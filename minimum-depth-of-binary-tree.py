@@ -6,14 +6,29 @@
 #         self.right = right
 # depth is min depth of (left, right), when both exist
 # otherwise, it is max depth of left, right; because a zero depth is not a depth
-# 1 
-#   2
-#     3
+# 1 -- 0  
+#   2 -- 1 
+#     3 -- 2
+# lfs, the first one you find is the answer
+# expect 3
+# q [3]
+# level 3
+# r []
 class Solution:
     def minDepth(self, root: Optional[TreeNode]) -> int:
         if not root:
             return 0
-        if root.left and root.right:
-            return 1 + min(self.minDepth(root.left), self.minDepth(root.right))
-        return 1 + max(self.minDepth(root.left), self.minDepth(root.right))
-        
+        level = 0
+        q = [root]
+        while q:
+            level += 1
+            r = []
+            for node in q:
+                if not node.left and not node.right:
+                    return level
+                if node.left:
+                    r.append(node.left)
+                if node.right:
+                    r.append(node.right)
+            q = r
+        return -1
