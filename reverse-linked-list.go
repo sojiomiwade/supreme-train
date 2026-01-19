@@ -6,34 +6,29 @@
  * }
  */
 /*
-1 > 2 > 3 > 4 > 5 > x
-1 < 2.< 3.< 4.< 5.  x
-on come back of recursive function, 
-have next point at you, then return what was returned!
+x   1 > 2 > 3 > 4 > 5 > x
+                        t    
+                    c 
+                p   
+x < 1 < 2 < 3 < 4 < 5 > x
+loop on as long as c is not nil
+t holds c's next
+current next points to prev
+next it: pre moves to c, c moves to t
+. > 1 > 2 > x
+n < 1 < 2 > x
+        p
+            c
+            t    
 
-h
-c
-c
-1 > 2 > 3 > x
-1 < 2 < 3 
-a:3
-
-1 > 2
 */
-func rl(head *ListNode) *ListNode {
-    if head.Next == nil {
-        return head
-    }
-    ans := rl(head.Next)
-    head.Next.Next = head
-    return ans
-}
-
 func reverseList(head *ListNode) *ListNode {
-    if head == nil {
-        return nil
+    var p *ListNode
+    c := head
+    for ; c != nil; {
+        t := c.Next
+        c.Next = p
+        p, c = c, t
     }
-    ans := rl(head)
-    head.Next = nil
-    return ans
+    return p
 }
