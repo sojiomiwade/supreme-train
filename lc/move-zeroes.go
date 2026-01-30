@@ -21,11 +21,19 @@
 //         move l to first zero less than or equal to r, or itself
 //         swap them
 // 4 5 1 3 0 0 0 <-- expected
+// 0 0 4 5
+// 4 5 4 5
+//     l
+//       i
 func moveZeroes(nums []int)  {
-    for l, r := 0, 0; r < len(nums); r ++ {
-        if nums[r] != 0 {
-            for ; l<r && nums[l]!=0; {l++}
-            nums[l],nums[r] = nums[r],nums[l]
+    l := 0
+    for i := 0; i < len(nums); i ++ {
+        if nums[i] != 0 {
+            nums[l] = nums[i]
+            l++
         }        
+    }
+    for i := l; i < len(nums); i ++ {
+        nums[i] = 0
     }
 }
