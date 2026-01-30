@@ -39,32 +39,32 @@ all {1}
 0 1 2 3
 */
 func missingNumber(nums []int) int {
-    n := len(nums)
-    ans := 0
-    for i := range n {
-        ans ^= i ^ nums[i]
-    }
-    return ans ^ n
-
     // n := len(nums)
-    // sum := n * (n + 1) / 2 
-    // for _, v := range nums {
-    //     sum -= v
+    // ans := 0
+    // for i := range n {
+    //     ans ^= i ^ nums[i]
     // }
-    // return sum
-    // nlen := len(nums)
-    // for i, _ := range nums {
-    //     for ; i != nums[i] && nums[i] != nlen; {
-    //         v := nums[i]
-    //         nums[i], nums[v] = nums[v], nums[i]
-    //     }
-    // }
-    // for i,v := range nums {
-    //     if v == nlen {
-    //         return i
-    //     }
-    // }
-    // return nlen
+    // return ans ^ n
+
+    n := len(nums)
+    sum := n * (n + 1) / 2 
+    for _, v := range nums {
+        sum -= v
+    }
+    return sum
+    nlen := len(nums)
+    for i, _ := range nums {
+        for ; i != nums[i] && nums[i] != nlen; {
+            // nums[nums[i]], nums[i] = nums[i], nums[nums[i]]
+            nums[i], nums[nums[i]] = nums[nums[i]], nums[i]
+        }
+    }
+    for i,v := range nums {
+        if v == nlen {
+            return i
+        }
+    }
+    return nlen
 
 
     // all := map[int]struct{} {}
