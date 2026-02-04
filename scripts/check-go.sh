@@ -1,5 +1,8 @@
 #!/bin/bash
 
+##############################################################
+# get a random go file, for which there is no python file
+##############################################################
 # Check if a directory argument was provided; default to current directory (.)
 target_dir="${1:-.}"
 
