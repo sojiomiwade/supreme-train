@@ -1,3 +1,4 @@
+from typing import List
 # 1 4 2 1 2
 # xor maybe? 
 # 000

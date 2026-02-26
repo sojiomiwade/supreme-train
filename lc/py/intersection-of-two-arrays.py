@@ -1,3 +1,5 @@
+from typing import List
+import bisect
 # 1 2 2 1
 # 2 2
 

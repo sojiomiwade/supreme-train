@@ -1,3 +1,4 @@
+from typing import List
 '''
 2 7 11 15 | 9 --> 0 1
 el: 7 
